@@ -66,6 +66,7 @@ class FireStore {
                                         for (documentSnapshot in querySnapshot.documents) {
                                             val profile =
                                                 documentSnapshot.toObject(Profile::class.java)
+                                            Log.d("FUJI", "Pfofileに格納してあるよ")
                                             profile?.let {
                                                 if (!profileList.contains(profile)) {
                                                     profileList.add(profile)
