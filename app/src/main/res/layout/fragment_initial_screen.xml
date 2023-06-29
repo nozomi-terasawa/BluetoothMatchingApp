@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".fragment.InitialScreenFragment">
+
+    <TextView
+        android:id="@+id/login_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="ログイン"
+        android:textSize="50sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="100dp"
+        android:paddingBottom="30dp"
+        />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/login_email_text_input"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/login_text"
+        app:errorEnabled="true"
+        app:counterEnabled="true"
+        app:counterMaxLength="30"
+        app:hintEnabled="true"
+        app:hintAnimationEnabled="true"
+        android:layout_margin="15dp">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/login_user_email_input"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="メールアドレス"
+            android:imeOptions="actionSend"
+            android:inputType="text"
+            android:maxLines="1" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/login_password_text_input"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/login_email_text_input"
+        app:errorEnabled="true"
+        app:counterEnabled="true"
+        app:counterMaxLength="30"
+        app:hintEnabled="true"
+        app:hintAnimationEnabled="true"
+        android:layout_margin="15dp">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/login_user_password_input"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="パスワード"
+            android:imeOptions="actionSend"
+            android:inputType="text"
+            android:maxLines="1" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <Button
+        android:id="@+id/login_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="ログイン"
+        android:textSize="40sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/login_password_text_input"
+        android:layout_margin="30dp" />
+
+    <Button
+        android:id="@+id/signup_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="新規登録"
+        android:textSize="40sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/login_button"
+        android:layout_marginTop="15sp"
+        />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "379905908826",
+    "project_id": "bluetoothmatching",
+    "storage_bucket": "bluetoothmatching.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:379905908826:android:42978a8eca368d25517863",
+        "android_client_info": {
+          "package_name": "com.example.bluettoothmatching"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "379905908826-98iie96ig88jiiudlcof4311qoesnihf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDsZZVfRSHAIOO0voRNKpE4DmfQv52Ovfw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "379905908826-98iie96ig88jiiudlcof4311qoesnihf.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

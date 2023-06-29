@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/initialScreenFragment">
+
+    <fragment
+        android:id="@+id/profileDetailFragment"
+        android:name="com.example.bluettoothmatching.fragment.ProfileDetailFragment"
+        android:label="fragment_profile_detail"
+        tools:layout="@layout/fragment_profile_detail" />
+    <fragment
+        android:id="@+id/initialScreenFragment"
+        android:name="com.example.bluettoothmatching.fragment.InitialScreenFragment"
+        android:label="fragment_initial_screen"
+        tools:layout="@layout/fragment_initial_screen" >
+        <action
+            android:id="@+id/action_initialScreenFragment_to_profileListFragment"
+            app:destination="@id/profileListFragment" />
+        <action
+            android:id="@+id/action_initialScreenFragment_to_signUpFragment"
+            app:destination="@id/signUpFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/signUpFragment"
+        android:name="com.example.bluettoothmatching.fragment.SignUpFragment"
+        android:label="fragment_sigup"
+        tools:layout="@layout/fragment_sigup" >
+        <action
+            android:id="@+id/action_signUpFragment_to_createProfileFragment"
+            app:destination="@id/createProfileFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/pastProfileListFragment"
+        android:name="com.example.bluettoothmatching.fragment.PastProfileListFragment"
+        android:label="fragment_past_profile_list"
+        tools:layout="@layout/fragment_past_profile_list" />
+    <fragment
+        android:id="@+id/createProfileFragment"
+        android:name="com.example.bluettoothmatching.fragment.CreateProfileFragment"
+        android:label="fragment_create_profile"
+        tools:layout="@layout/fragment_create_profile" >
+        <action
+            android:id="@+id/action_createProfileFragment_to_profileListFragment"
+            app:destination="@id/profileListFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/profileListFragment"
+        android:name="com.example.bluettoothmatching.fragment.ProfileListFragment"
+        android:label="fragment_profile_list"
+        tools:layout="@layout/fragment_profile_list" >
+        <action
+            android:id="@+id/action_profileListFragment_to_pastProfileListFragment2"
+            app:destination="@id/pastProfileListFragment" />
+        <action
+            android:id="@+id/action_profileListFragment_to_profileDetailFragment2"
+            app:destination="@id/profileDetailFragment" />
+    </fragment>
+</navigation>

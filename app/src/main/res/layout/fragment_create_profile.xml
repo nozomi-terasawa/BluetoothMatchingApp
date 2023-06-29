@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".fragment.CreateProfileFragment">
+
+    <TextView
+        android:id="@+id/introduction_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="あなたのプロフィールを完成させましょう"
+        android:textSize="30sp"
+        android:gravity="center"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/first_text_input"
+        android:padding="30sp"/>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/first_text_input"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/introduction_text"
+        app:layout_constraintBottom_toTopOf="@+id/second_text_input"
+        app:errorEnabled="true"
+        app:counterEnabled="true"
+        app:counterMaxLength="12"
+        app:hintEnabled="true"
+        app:hintAnimationEnabled="true"
+        android:layout_margin="15dp">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/user_address_input"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Macアドレス(数字のみ)"
+            android:imeOptions="actionSend"
+            android:inputType="number"
+            android:maxLines="1" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/second_text_input"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/first_text_input"
+        app:layout_constraintBottom_toTopOf="@+id/third_text_input"
+        app:errorEnabled="true"
+        app:counterEnabled="true"
+        app:counterMaxLength="10"
+        app:hintEnabled="true"
+        app:hintAnimationEnabled="true"
+        android:layout_margin="15dp">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/user_name_input"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="ユーザー名"
+            android:imeOptions="actionSend"
+            android:inputType="text"
+            android:maxLines="1" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/third_text_input"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/second_text_input"
+        app:layout_constraintBottom_toBottomOf="@id/save_button"
+        app:errorEnabled="true"
+        app:counterEnabled="true"
+        app:counterMaxLength="20"
+        app:hintEnabled="true"
+        app:hintAnimationEnabled="true"
+        android:layout_margin="15dp">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/user_info"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="自己紹介"
+            android:imeOptions="actionSend"
+            android:inputType="text"
+            android:maxLines="3" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <Button
+        android:id="@+id/save_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="保存"
+        android:textSize="30sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/third_text_input"
+        android:layout_marginTop="30dp"
+        android:layout_marginRight="15dp"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
