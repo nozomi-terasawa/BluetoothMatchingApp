@@ -9,7 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.bluettoothmatching.ItemListAdapter
-import com.example.bluettoothmatching.bluetooth.BluetoothBK
+import com.example.bluettoothmatching.bluetooth.BlutoothBK
 import com.example.bluettoothmatching.database.FireStore
 import com.example.bluettoothmatching.databinding.FragmentProfileListBinding
 
@@ -27,6 +27,7 @@ class ProfileListFragment : Fragment() {
     ): View {
         _binding = FragmentProfileListBinding.inflate(inflater, container, false)
         return binding.root
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -48,12 +49,14 @@ class ProfileListFragment : Fragment() {
         }
 
         binding.button.setOnClickListener { //スタート
-            val intent = Intent(requireActivity(), BluetoothBK::class.java)
+            val intent = Intent(requireActivity(), BlutoothBK::class.java)
             requireActivity().startForegroundService(intent);
+
+
         }
 
         binding.button2.setOnClickListener {
-            val intent = Intent(requireContext() , BluetoothBK::class.java)
+            val intent = Intent(requireContext() , BlutoothBK::class.java)
             requireActivity(). stopService(intent);
         }
     }

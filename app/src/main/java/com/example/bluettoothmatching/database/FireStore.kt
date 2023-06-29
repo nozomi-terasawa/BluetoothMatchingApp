@@ -1,9 +1,9 @@
 package com.example.bluettoothmatching.database
 
-// import com.example.bluettoothmatching.bluetooth.tmpList
 import android.util.Log
 import androidx.fragment.app.Fragment
 import com.example.bluettoothmatching.ItemListAdapter
+import com.example.bluettoothmatching.bluetooth.tmpList
 // import com.example.bluettoothmatching.bluetooth.tmpList
 import com.example.firestoresample_todo.database.Profile
 import com.google.android.gms.tasks.Task
@@ -16,13 +16,15 @@ import com.google.firebase.ktx.Firebase
 
 class FireStore {
     private val db = Firebase.firestore
-
+/*
     private var scannedAddress = listOf<String>(
         "11:11:11:11:11:11",
         "22:22:22:22:22:22",
         "33:33:33:33:33:33",
         "44:44:44:44:44:44"
     ) // スキャン済みアドレス
+
+ */
 
 
     fun insertData(userAddress: String, userName: String, userInfo: String) {
@@ -40,16 +42,17 @@ class FireStore {
 
 
     fun getData(itemListAdapter: ItemListAdapter, fragment: Fragment) {
+        Log.d("FUJI", "true")
 
         val profileList = ArrayList<Profile>() // [Profile(address="", name="", message=""),...]
         val tasks = mutableListOf<Task<QuerySnapshot>>() // 非同期タスクのリストを作成
 
         db.collection("users") // CollectionReference
             .addSnapshotListener { profile, e -> // profileは取得されたドキュメントのsnapshot addSnapshotでリアルタイム更新
-                //tmpList.observe(fragment.viewLifecycleOwner, {
-                    val size = scannedAddress.size ?: 0
+                tmpList.observe(fragment.viewLifecycleOwner, {
+                    val size = tmpList.value?.size ?: 0
                         for (i in 0 until size) {
-                            val item = scannedAddress[i]
+                            val item = tmpList.value?.get(i)
                             val collectionRef =
                                 db.collection("users") // todo usersのドキュメントフィールドのaddressがscannedAddress[i]のドキュメントにアクセス
                             val query = collectionRef.whereEqualTo(
@@ -70,10 +73,10 @@ class FireStore {
                                             }
                                         }
                                     } else {
-                                        Log.d("FUJI", "失敗" + item)
+                                         // Log.d("FUJI", "失敗" + item)
                                     }
 
-                                    Log.d("FUJI", profileList.toString())
+                                    // Log.d("FUJI", profileList.toString())
 
                                 }
                                 .addOnFailureListener { }
@@ -84,7 +87,7 @@ class FireStore {
                                 itemListAdapter.submitList(profileList) // UIの更新
                             }
                             .addOnFailureListener {} // 参照の取得に失敗したとき
-                    //})
+                    })
                 }
             }
 

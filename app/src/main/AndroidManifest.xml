@@ -4,9 +4,7 @@
 
     <!-- Bluetooth関係のパーミッション -->
     <uses-permission android:name="android.permission.BLUETOOTH" />
-    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
-
-    <!-- Bluetoothを使うための位置情報パーミッション -->
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" /> <!-- Bluetoothを使うための位置情報パーミッション -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
@@ -23,13 +21,17 @@
         android:theme="@style/Theme.BluettoothMatching"
         tools:targetApi="31">
         <service
-            android:name=".bluetooth.BluetoothBK"
+            android:name=".bluetooth.BlutoothBK"
             android:enabled="true"
             android:exported="false"></service>
 
-        <receiver android:name=".bluetoothForegroundReceiver" android:exported="true">
+
+        <receiver
+            android:name=".bluetoothForegroundReceiver"
+            android:exported="true">
             <intent-filter>
                 <action android:name="com.fujikouki.Bluetoothapp" />
+
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </receiver>
