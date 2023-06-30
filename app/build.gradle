@@ -64,6 +64,9 @@ dependencies {
     // firebaseauth
     implementation 'com.google.firebase:firebase-auth:22.0.0'
 
+    //firebasestorage
+    implementation 'com.google.firebase:firebase-storage-ktx'
+
     // livedata
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.6.1"
 

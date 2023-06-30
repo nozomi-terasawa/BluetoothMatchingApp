@@ -58,11 +58,11 @@ class BlutoothBK : Service() {
 
                     MacAddressList.clear()
                     MacAddressList.addAll(MacAddressSet)
-                    //MacAddressList.add("80:9F:F5:79:8C:E2")
+                    MacAddressList.add("80:9F:F5:79:8C:E2")
                     //MacAddressList.add("1")
                     //MacAddressList.add("2")
                     //MacAddressList.add("3")
-                    tmpList.value = MacAddressList.filterNotNull().toMutableList()
+                    tmpList.value = MacAddressList.filterNotNull().distinct().toMutableList()
                     return
                 }
                 BluetoothAdapter.ACTION_DISCOVERY_FINISHED ->{

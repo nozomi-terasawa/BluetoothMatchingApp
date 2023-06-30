@@ -35,14 +35,9 @@
         android:id="@+id/pastProfileListFragment"
         android:name="com.example.bluettoothmatching.fragment.PastProfileListFragment"
         android:label="fragment_past_profile_list"
-        tools:layout="@layout/fragment_past_profile_list" />
-    <fragment
-        android:id="@+id/createProfileFragment"
-        android:name="com.example.bluettoothmatching.fragment.CreateProfileFragment"
-        android:label="fragment_create_profile"
-        tools:layout="@layout/fragment_create_profile" >
+        tools:layout="@layout/fragment_past_profile_list" >
         <action
-            android:id="@+id/action_createProfileFragment_to_profileListFragment"
+            android:id="@+id/action_pastProfileListFragment_to_profileListFragment"
             app:destination="@id/profileListFragment" />
     </fragment>
     <fragment
@@ -57,4 +52,14 @@
             android:id="@+id/action_profileListFragment_to_profileDetailFragment2"
             app:destination="@id/profileDetailFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/createProfileFragment"
+        android:name="com.example.bluettoothmatching.fragment.CreateProfileFragment"
+        android:label="fragment_create_profile"
+        tools:layout="@layout/fragment_create_profile" >
+        <action
+            android:id="@+id/action_createProfileFragment_to_profileListFragment"
+            app:destination="@id/profileListFragment" />
+    </fragment>
+
 </navigation>

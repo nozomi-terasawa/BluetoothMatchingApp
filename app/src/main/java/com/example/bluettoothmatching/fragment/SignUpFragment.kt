@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import com.example.bluettoothmatching.R
 import com.example.bluettoothmatching.database.MyFirebaseAuth
 import com.example.bluettoothmatching.databinding.FragmentSigupBinding
 
@@ -25,6 +26,7 @@ class SignUpFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        activity?.findViewById<View>(R.id.bottom_navigation_view)?.visibility = View.GONE
 
         // todo ６文字以上のパスワードとメールアドレスの書式を強制刺せる
         binding.signupButton.setOnClickListener {
@@ -42,6 +44,7 @@ class SignUpFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
+        //activity?.findViewById<View>(R.id.bottom_navigation_view)?.visibility = View.VISIBLE
         _binding = null
     }
 }

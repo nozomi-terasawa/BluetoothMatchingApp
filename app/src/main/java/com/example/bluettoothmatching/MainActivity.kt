@@ -20,9 +20,29 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+
+
         val navHostFragment = supportFragmentManager
             .findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         navController = navHostFragment.navController
+
+        binding.bottomNavigationView.setOnNavigationItemSelectedListener { menuItem ->
+            val currentDestination = navController.currentDestination?.id
+            val selectedDestination = when (menuItem.itemId) {
+                R.id.home -> R.id.profileListFragment
+                R.id.odl_list -> R.id.pastProfileListFragment
+                else -> null
+            }
+
+            if (currentDestination != selectedDestination) {
+                selectedDestination?.let { destination ->
+                    navController.navigate(destination)
+                }
+                true
+            } else {
+                false
+            }
+        }
 
         checkSignInStatus()
     }

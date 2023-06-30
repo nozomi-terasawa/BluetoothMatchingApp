@@ -26,6 +26,11 @@ class InitialScreenFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        // activity?.findViewById<View>(R.id.bottom_navigation_view)?.visibility = View.GONE
+
+
+
+
 
         binding.loginButton.setOnClickListener {
                 val loginUserEmail = binding.loginUserEmailInput.text.toString()
@@ -50,9 +55,10 @@ class InitialScreenFragment : Fragment() {
             this.findNavController().navigate(action)
         }
     }
-
     override fun onDestroyView() {
         super.onDestroyView()
+        //activity?.findViewById<View>(R.id.bottom_navigation_view)?.visibility = View.VISIBLE
+
         _binding = null
     }
 }
