@@ -3,11 +3,9 @@ package com.example.bluettoothmatching.fragment
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
@@ -78,6 +76,7 @@ class ProfileListFragment : Fragment() {
             selectPhoto()
         }
 
+        /*
         // navdrawer
         drawerLayout = binding.drawerLayout
         navigationView = binding.navigationDrawer
@@ -115,7 +114,11 @@ class ProfileListFragment : Fragment() {
                 else -> false
             }
         }
+
+         */
     }
+
+
 
     override fun onDestroyView() {
         super.onDestroyView()

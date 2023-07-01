@@ -16,7 +16,7 @@ class ItemListAdapter(private val onItemClicked: (Profile) -> Unit)
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
         return ItemViewHolder(
             UserProfileItemBinding.inflate(
-                LayoutInflater.from(parent.context)
+                LayoutInflater.from(parent.context), parent, false
             )
         )
     }
