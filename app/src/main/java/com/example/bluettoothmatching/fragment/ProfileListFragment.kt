@@ -21,6 +21,7 @@ lateinit var imageUri: Uri
 private val storage = FireBaseStorage()
 class ProfileListFragment : Fragment() {
 
+    private val fireBaseStorage = FireBaseStorage()
 
     companion object {
         private const val READ_REQUEST_CODE: Int = 42
@@ -55,6 +56,8 @@ class ProfileListFragment : Fragment() {
         binding.button.setOnClickListener { //スタート
             val intent = Intent(requireActivity(), BlutoothBK::class.java)
             requireActivity().startForegroundService(intent);
+            //fireBaseStorage.getImage()
+
         }
 
         binding.button2.setOnClickListener {

@@ -5,11 +5,13 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.example.bluettoothmatching.database.FireBaseStorage
 import com.example.bluettoothmatching.databinding.UserProfileItemBinding
 import com.example.firestoresample_todo.database.Profile
 
 class ItemListAdapter(private val onItemClicked: (Profile) -> Unit)
     : ListAdapter<Profile, ItemListAdapter.ItemViewHolder>(DiffCallback){
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
         return ItemViewHolder(
@@ -30,9 +32,14 @@ class ItemListAdapter(private val onItemClicked: (Profile) -> Unit)
     class ItemViewHolder(private var binding: UserProfileItemBinding)
         : RecyclerView.ViewHolder(binding.root) {
 
+        private val storage = FireBaseStorage()
+
         fun bind(profile: Profile) {
             binding.userName.text = profile.name
             binding.userInfo.text = profile.message
+            storage.getImage(binding) // 戻り値として受けとる画像
+            // binding.userImage.setImageBitmap(bitmap)
+
         }
     }
 
