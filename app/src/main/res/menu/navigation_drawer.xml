@@ -1,15 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    >
+
 
     <group android:checkableBehavior="single">
         <item
+            android:icon="@drawable/baseline_bluetooth_24"
             android:id="@+id/on_bluetooth"
             android:title = "ON Bluetooth" />
         <item
+            android:icon="@drawable/baseline_bluetooth_disabled_24"
             android:id="@+id/of_bluetooth"
-            android:title="OF_Bluetooth" />
+            android:title="OFF_Bluetooth" />
         <item
+            android:icon="@drawable/baseline_person_search_24"
             android:id="@+id/edit_profile"
             android:title="Edit Profile" />
+        <item
+            android:icon="@drawable/baseline_wifi_find_24"
+            android:id="@+id/seemy"
+            android:title="detection"/>
     </group>
+
 </menu>
