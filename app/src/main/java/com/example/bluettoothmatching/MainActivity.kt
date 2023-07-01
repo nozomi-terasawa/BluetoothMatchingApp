@@ -66,7 +66,7 @@ class MainActivity : AppCompatActivity() {
         super.onBackPressed()
     }
 
-    /*
+    // todo 絶対に消せーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
     private fun checkSignInStatus() {
         val currentUser = auth.currentUser
         if (currentUser != null) {
@@ -78,6 +78,6 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-     */
+
 
 }

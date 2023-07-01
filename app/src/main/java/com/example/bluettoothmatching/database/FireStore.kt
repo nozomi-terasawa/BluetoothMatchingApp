@@ -22,8 +22,12 @@ class FireStore {
         "33:33:33:33:33:33",
         "44:44:44:44:44:44"
     ) // スキャン済みアドレス
-
  */
+
+    fun allQuery() {
+        
+    }
+
     fun insertData(userAddress: String, userName: String, userInfo: String) {
         val profile = Profile(
             userAddress,

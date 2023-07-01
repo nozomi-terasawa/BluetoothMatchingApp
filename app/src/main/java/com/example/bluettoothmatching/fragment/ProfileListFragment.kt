@@ -3,10 +3,13 @@ package com.example.bluettoothmatching.fragment
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -16,12 +19,14 @@ import com.example.bluettoothmatching.bluetooth.BlutoothBK
 import com.example.bluettoothmatching.database.FireBaseStorage
 import com.example.bluettoothmatching.database.FireStore
 import com.example.bluettoothmatching.databinding.FragmentProfileListBinding
+import com.google.android.material.navigation.NavigationView
 
 lateinit var imageUri: Uri
 private val storage = FireBaseStorage()
 class ProfileListFragment : Fragment() {
 
-    private val fireBaseStorage = FireBaseStorage()
+    private lateinit var drawerLayout: DrawerLayout
+    private lateinit var navigationView: NavigationView
 
     companion object {
         private const val READ_REQUEST_CODE: Int = 42
@@ -37,6 +42,10 @@ class ProfileListFragment : Fragment() {
     ): View {
         _binding = FragmentProfileListBinding.inflate(inflater, container, false)
         return binding.root
+
+        // NavigationDrawer
+
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -65,13 +74,46 @@ class ProfileListFragment : Fragment() {
             requireActivity(). stopService(intent);
         }
 
-        binding.updateButton.setOnClickListener {
-            val action = ProfileListFragmentDirections.actionProfileListFragmentToUpDateProfileFragment32()
-            this.findNavController().navigate(action)
-        }
-
         binding.imageButton.setOnClickListener {
             selectPhoto()
+        }
+
+        // navdrawer
+        drawerLayout = binding.drawerLayout
+        navigationView = binding.navigationDrawer
+        val toolbar = binding.toolbar
+
+        val actionBarDrawerToggle = ActionBarDrawerToggle(
+            requireActivity(), drawerLayout,toolbar, R.string.open_bar, R.string.close_bar
+        )
+        drawerLayout.addDrawerListener(actionBarDrawerToggle)
+        actionBarDrawerToggle.syncState()
+
+        val navigationView = binding.navigationDrawer
+        navigationView.setNavigationItemSelectedListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.on_bluetooth -> {
+                    // メニュー項目1が選択されたときの処理
+                    Log.d("nav", "true")
+                    true
+                }
+
+                R.id.of_bluetooth -> {
+                    // メニュー項目2が選択されたときの処理
+                    Log.d("nav", "true")
+                    true
+                }
+
+                R.id.edit_profile -> {
+                    Log.d("nav", "true")
+                    val action =
+                        ProfileListFragmentDirections.actionProfileListFragmentToUpDateProfileFragment32()
+                    this.findNavController().navigate(action)
+                    true
+                }
+                // 他のメニュー項目に対する処理を追加
+                else -> false
+            }
         }
     }
 
