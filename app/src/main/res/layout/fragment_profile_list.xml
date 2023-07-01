@@ -49,14 +49,24 @@
         app:layout_constraintBottom_toBottomOf="parent"
         android:layout_marginBottom="100dp"/>
 
-    <ImageView
-        android:id="@+id/imageView"
+    <Button
+        android:id="@+id/update_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="242dp"
-        android:src="@drawable/my_old_list"
+        android:text="update"
+        android:textSize="30sp"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        android:layout_marginBottom="100dp" />
+
+    <Button
+        android:id="@+id/image_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="画像"
+        android:textSize="30sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/button2" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

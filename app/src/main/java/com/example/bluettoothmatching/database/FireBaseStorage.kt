@@ -1,32 +1,41 @@
 package com.example.bluettoothmatching.database
 
+import android.graphics.BitmapFactory
 import android.net.Uri
+import android.util.Log
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.ktx.storage
-import java.io.File
 
 class FireBaseStorage {
-    val storage = Firebase.storage
 
+    private val storage = Firebase.storage
     var storageRef = storage.reference
-    var imageRef: StorageReference? = storageRef.child("images")
 
-    // 格納
-    var spaceRef = storageRef.child("/path/to/images/my_home.svg")
+    fun uploadImageToFirebaseStorage(imageUri: Uri) {
 
-    var file = Uri.fromFile(File("Path/to/images/my_home.ping"))
-    val riversRef = storageRef.child("images/${file.lastPathSegment}")
+        var imageRef: StorageReference? = storageRef.child(uid.toString())
 
-/*
-    var uploadTask = riversRef.putFile(file)
-    uploadTask.addOnFailureListener {
-        // Handle unsuccessful uploads
-    }.addOnSuccessListener { taskSnapshot ->
-        // taskSnapshot.metadata contains file metadata such as size, content-type, etc.
-        // ...
+        val uploadTask = imageRef?.putFile(imageUri)
+
+        // 格納
+        uploadTask?.addOnSuccessListener {
+            Log.d("image", "成功")
+            }
+            ?.addOnFailureListener {
+                Log.d("image", "失敗")
+            }
     }
 
- */
+    fun getImage() {
+        val MAX_SIZE_BYTES: Long = 1024 * 1024
+        val userImageRef = storageRef.child(uid.toString())
+
+        userImageRef.getBytes(MAX_SIZE_BYTES)
+            .addOnSuccessListener { imageData ->
+                val bitmap = BitmapFactory.decodeByteArray(imageData, 0, imageData.size)
+                // imageView.setImgeBitmap(bitmap)
+            }
+    }
 
 }

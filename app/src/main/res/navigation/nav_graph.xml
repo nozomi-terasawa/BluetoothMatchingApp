@@ -51,6 +51,9 @@
         <action
             android:id="@+id/action_profileListFragment_to_profileDetailFragment2"
             app:destination="@id/profileDetailFragment" />
+        <action
+            android:id="@+id/action_profileListFragment_to_upDateProfileFragment32"
+            app:destination="@id/upDateProfileFragment3" />
     </fragment>
     <fragment
         android:id="@+id/createProfileFragment"
@@ -61,5 +64,9 @@
             android:id="@+id/action_createProfileFragment_to_profileListFragment"
             app:destination="@id/profileListFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/upDateProfileFragment3"
+        android:name="com.example.bluettoothmatching.fragment.UpDateProfileFragment"
+        android:label="UpDateProfileFragment" />
 
 </navigation>

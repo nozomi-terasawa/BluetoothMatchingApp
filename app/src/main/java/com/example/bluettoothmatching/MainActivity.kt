@@ -44,12 +44,14 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        checkSignInStatus()
+        // checkSignInStatus()
     }
 
     override fun onSupportNavigateUp(): Boolean {
         return navController.navigateUp() || super.onSupportNavigateUp()
     }
+
+
 
     // ProfileListFragmentでバックするとアプリを終了
     override fun onBackPressed() {
@@ -64,6 +66,7 @@ class MainActivity : AppCompatActivity() {
         super.onBackPressed()
     }
 
+    /*
     private fun checkSignInStatus() {
         val currentUser = auth.currentUser
         if (currentUser != null) {
@@ -74,5 +77,7 @@ class MainActivity : AppCompatActivity() {
             navController.navigate(R.id.initialScreenFragment)
         }
     }
+
+     */
 
 }

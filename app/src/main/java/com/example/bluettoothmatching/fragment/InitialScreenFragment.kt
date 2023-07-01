@@ -1,12 +1,15 @@
 package com.example.bluettoothmatching.fragment
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import com.example.bluettoothmatching.database._uid
+import com.example.bluettoothmatching.database.uid
 import com.example.bluettoothmatching.databinding.FragmentInitialScreenBinding
 import com.google.firebase.auth.FirebaseAuth
 
@@ -27,11 +30,8 @@ class InitialScreenFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         // activity?.findViewById<View>(R.id.bottom_navigation_view)?.visibility = View.GONE
-
-
-
-
-
+        
+        // login
         binding.loginButton.setOnClickListener {
                 val loginUserEmail = binding.loginUserEmailInput.text.toString()
                 val loginUserPassword = binding.loginUserPasswordInput.text.toString()
@@ -39,7 +39,8 @@ class InitialScreenFragment : Fragment() {
                     auth.signInWithEmailAndPassword(loginUserEmail, loginUserPassword)
                         .addOnCompleteListener() { task ->
                             if (task.isSuccessful) {
-                                //_uid = auth.currentUser?.uid // 現在ログインしているユーザーのUIDを取得
+                                _uid = auth.currentUser?.uid // 現在ログインしているユーザーのUIDを取得
+                                Log.d("testUid", uid.toString())
                                 val action =
                                     InitialScreenFragmentDirections.actionInitialScreenFragmentToProfileListFragment()
                                 this.findNavController().navigate(action)
