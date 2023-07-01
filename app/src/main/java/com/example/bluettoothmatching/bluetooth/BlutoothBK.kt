@@ -5,26 +5,28 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
 import android.app.Service
-import android.app.Service.START_NOT_STICKY
 import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothDevice
 import android.content.BroadcastReceiver
 import android.content.Context
-import android.content.Context.LOCATION_SERVICE
-import android.content.Context.NOTIFICATION_SERVICE
 import android.content.Intent
 import android.content.IntentFilter
 import android.location.LocationManager
 import android.os.IBinder
 import android.util.Log
 import androidx.core.app.NotificationCompat
-import androidx.core.content.ContextCompat.getSystemService
-import androidx.core.content.ContextCompat.registerReceiver
+import androidx.lifecycle.MutableLiveData
 import com.example.bluettoothmatching.MainActivity
 import com.example.bluettoothmatching.R
 
+var tmpList = MutableLiveData<List<String>>()
 
-class BluetoothBK : Service() {
+class BlutoothBK : Service() {
+
+    private var MacAddressSet = mutableSetOf<String?>()
+    private var MacAddressList = mutableListOf<String?>()
+
+
     companion object {
         const val CHANNEL_ID = "1111"
     }
@@ -32,9 +34,6 @@ class BluetoothBK : Service() {
     private var bluetoothAdapter: BluetoothAdapter? = null
 
     private var gpsEnabled: Boolean = false
-
-    var MacAddressSet = mutableSetOf<String?>()
-    var MacAddressList = mutableListOf<String?>()
 
     private val receiver = object : BroadcastReceiver() {
 
@@ -56,21 +55,24 @@ class BluetoothBK : Service() {
 
                     MacAddressSet.add(deviceHardwareAddress)
                     Log.d("MacA", MacAddressSet.toString())
+
+                    MacAddressList.clear()
+                    MacAddressList.addAll(MacAddressSet)
+                    MacAddressList.add("80:9F:F5:79:8C:E2")
+                    //MacAddressList.add("1")
+                    //MacAddressList.add("2")
+                    //MacAddressList.add("3")
+                    tmpList.value = MacAddressList.filterNotNull().distinct().toMutableList()
                     return
                 }
                 BluetoothAdapter.ACTION_DISCOVERY_FINISHED ->{
                     Log.d("FUJI",MacAddressSet.toString())
-                    MacAddressList.clear()
-                    MacAddressList.addAll(MacAddressSet)
-                    // MacAddressList.add("80:9F:F5:79:8C:E2")
-                    // MacAddressList.add("1")
-                    // MacAddressList.add("2")
-                    // MacAddressList.add("3")
-                    //tmpList.value = MacAddressList.filterNotNull().toMutableList()
                 }
             }
         }
     }
+
+
 
 
     override fun onCreate() {
@@ -112,7 +114,7 @@ class BluetoothBK : Service() {
         val manager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
         manager.createNotificationChannel(channel)
 
-        val sendIntent = Intent(this, BluetoothBK::class.java).apply {
+        val sendIntent = Intent(this, BlutoothBK::class.java).apply {
             action = Intent.ACTION_SEND
         }
         val sendPendingIntent = PendingIntent.getBroadcast(this, 0, sendIntent, 0)
@@ -152,7 +154,7 @@ class BluetoothBK : Service() {
 
         val repeatPeriod: Long = 1* 60 * 1000
 
-        val intent = Intent(context, BluetoothBK::class.java)
+        val intent = Intent(context, BlutoothBK::class.java)
 
         val startMillis = System.currentTimeMillis() + repeatPeriod
 
@@ -166,7 +168,7 @@ class BluetoothBK : Service() {
         )
     }
     private fun stopAlarmService() {
-        val intent = Intent(this, BluetoothBK::class.java)
+        val intent = Intent(this, BlutoothBK::class.java)
         val pendingIntent = PendingIntent.getService(this, 0, intent, 0)
 
         val alarmManager = this.getSystemService(Context.ALARM_SERVICE) as AlarmManager?
@@ -193,5 +195,6 @@ class BluetoothBK : Service() {
     override fun onBind(intent: Intent): IBinder {
         TODO("Return the communication channel to the service.")
     }
-
 }
+
+

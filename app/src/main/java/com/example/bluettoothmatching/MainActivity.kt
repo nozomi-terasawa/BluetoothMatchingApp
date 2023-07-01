@@ -20,16 +20,38 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+
+
         val navHostFragment = supportFragmentManager
             .findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         navController = navHostFragment.navController
 
-        checkSignInStatus()
+        binding.bottomNavigationView.setOnNavigationItemSelectedListener { menuItem ->
+            val currentDestination = navController.currentDestination?.id
+            val selectedDestination = when (menuItem.itemId) {
+                R.id.home -> R.id.profileListFragment
+                R.id.odl_list -> R.id.pastProfileListFragment
+                else -> null
+            }
+
+            if (currentDestination != selectedDestination) {
+                selectedDestination?.let { destination ->
+                    navController.navigate(destination)
+                }
+                true
+            } else {
+                false
+            }
+        }
+
+        // checkSignInStatus()
     }
 
     override fun onSupportNavigateUp(): Boolean {
         return navController.navigateUp() || super.onSupportNavigateUp()
     }
+
+
 
     // ProfileListFragmentでバックするとアプリを終了
     override fun onBackPressed() {
@@ -44,6 +66,7 @@ class MainActivity : AppCompatActivity() {
         super.onBackPressed()
     }
 
+    // todo 絶対に消せーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
     private fun checkSignInStatus() {
         val currentUser = auth.currentUser
         if (currentUser != null) {
@@ -54,5 +77,7 @@ class MainActivity : AppCompatActivity() {
             navController.navigate(R.id.initialScreenFragment)
         }
     }
+
+
 
 }
