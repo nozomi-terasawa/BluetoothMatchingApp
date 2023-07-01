@@ -28,7 +28,6 @@ class FireBaseStorage {
             }
     }
 
-
     fun getImage(binding: UserProfileItemBinding) {
         val MAX_SIZE_BYTES: Long = 1024 * 1024
         val userImageRef = storageRef.child(uid.toString())
