@@ -1,20 +1,24 @@
 package com.example.bluettoothmatching.database
 
-import android.util.Log
 import androidx.fragment.app.Fragment
 import com.example.bluettoothmatching.ItemListAdapter
 import com.example.bluettoothmatching.bluetooth.tmpList
+import com.example.bluettoothmatching.databinding.UserProfileItemBinding
 import com.example.firestoresample_todo.database.Profile
 import com.google.android.gms.tasks.Task
 import com.google.android.gms.tasks.Tasks
-import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.Query
-import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.ktx.storage
 
 class FireStore {
     private val db = Firebase.firestore
+
+    private val storage = Firebase.storage
+    var storageRef = storage.reference
+
+    val newProfileList = mutableListOf<NewProfile>()
 /*
     private var scannedAddress = listOf<String>(
         "11:11:11:11:11:11",
@@ -24,8 +28,60 @@ class FireStore {
     ) // スキャン済みアドレス
  */
 
-    fun allQuery() {
-        
+        fun allQuery(
+            itemListAdapter: ItemListAdapter,
+            fragment: Fragment,
+            binding: UserProfileItemBinding
+        ) {
+            val collectionRef = db.collection("users")
+            val MAX_SIZE_BYTES: Long = 1024 * 1024
+
+            val tasks = mutableListOf<Task<*>>()
+
+            collectionRef.addSnapshotListener { querySnapshot, e ->
+                for (document in querySnapshot?.documents ?: emptyList()) {
+                    val uid = document.id
+                    val userImageRef = storageRef.child(uid)
+                    val userCollectionRef = collectionRef.document(uid)
+
+                    val imageTask = userImageRef.getBytes(MAX_SIZE_BYTES).addOnCanceledListener { }
+                    val documentTask = userCollectionRef.get().addOnCanceledListener { }
+
+                    tasks.add(imageTask)
+                    tasks.add(documentTask)
+                    // ここまではok
+
+                    tmpList.observe(fragment.viewLifecycleOwner, {
+                        val tmpListValue = tmpList.value // tmpList
+                        if (tmpListValue != null) {
+                            for (item in tmpListValue) { // tmpListからMacAddressを取り出す
+                                userCollectionRef.get().addOnSuccessListener { userSnapshot ->
+                                    val name = userSnapshot.getString("name")
+                                    val message = userSnapshot.getString("message")
+                                    val address = userSnapshot.getString("address")
+                                    val query = collectionRef.whereEqualTo("address", item).orderBy(
+                                        "address",
+                                        Query.Direction.ASCENDING // クエリ条件を保持
+                                    )
+                                    val queryTask = query.get()
+                                        .addOnSuccessListener { querySnapshot -> // 成功したら（アドレスが同じだったら）
+                                            val newProfile = NewProfile(
+                                                name = name,
+                                                message = message,
+                                                // 写真も対応させる
+                                            )
+                                            newProfileList.add(newProfile)
+                                        }
+                                    tasks.add(queryTask)
+                                }
+                            }
+                        }
+                        Tasks.whenAllSuccess<Any>(*tasks.toTypedArray()).addOnSuccessListener {
+                            itemListAdapter.submitList(newProfileList)
+                        }
+                    })
+                }
+            }
     }
 
     fun insertData(userAddress: String, userName: String, userInfo: String) {
@@ -40,6 +96,7 @@ class FireStore {
             .addOnSuccessListener { } //成功したとき
             .addOnFailureListener { } // 失敗したとき
     }
+    /*
 
         fun getData(itemListAdapter: ItemListAdapter, fragment: Fragment) {
             Log.d("FUJI", "true")
@@ -116,4 +173,6 @@ class FireStore {
                     })
                 }
         }
+
+     */
 }

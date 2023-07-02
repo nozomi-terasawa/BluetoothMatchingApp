@@ -6,11 +6,11 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.bluettoothmatching.database.FireBaseStorage
+import com.example.bluettoothmatching.database.NewProfile
 import com.example.bluettoothmatching.databinding.UserProfileItemBinding
-import com.example.firestoresample_todo.database.Profile
 
-class ItemListAdapter(private val onItemClicked: (Profile) -> Unit)
-    : ListAdapter<Profile, ItemListAdapter.ItemViewHolder>(DiffCallback){
+class ItemListAdapter(private val onItemClicked: (NewProfile) -> Unit)
+    : ListAdapter<NewProfile, ItemListAdapter.ItemViewHolder>(DiffCallback){
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
@@ -34,22 +34,22 @@ class ItemListAdapter(private val onItemClicked: (Profile) -> Unit)
 
         private val storage = FireBaseStorage()
 
-        fun bind(profile: Profile) {
-            binding.userName.text = profile.name
-            binding.userInfo.text = profile.message
-            storage.getImage(binding) // 戻り値として受けとる画像
+        fun bind(newProfile: NewProfile) {
+            binding.userName.text = newProfile.name
+            binding.userInfo.text = newProfile.message
+            //storage.getImage(binding) // 戻り値として受けとる画像
             // binding.userImage.setImageBitmap(bitmap)
 
         }
     }
 
     companion object {
-        private val DiffCallback = object: DiffUtil.ItemCallback<Profile>() {
-            override fun areItemsTheSame(oldItem: Profile, newItem: Profile): Boolean {
+        private val DiffCallback = object: DiffUtil.ItemCallback<NewProfile>() {
+            override fun areItemsTheSame(oldItem: NewProfile, newItem: NewProfile): Boolean {
                 return oldItem == newItem
             }
 
-            override fun areContentsTheSame(oldItem: Profile, newItem: Profile): Boolean {
+            override fun areContentsTheSame(oldItem: NewProfile, newItem: NewProfile): Boolean {
                 return oldItem.name == newItem.name
             }
         }

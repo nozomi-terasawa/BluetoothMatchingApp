@@ -66,7 +66,7 @@ class PastProfileListFragment : Fragment() {
         tasks.add(task)
         Tasks.whenAllSuccess<DocumentSnapshot>(tasks) // すべての非同期タスクが完了するまで待機
             .addOnSuccessListener {
-                itemListAdapter.submitList(allList)
+                //itemListAdapter.submitList(allList)
             }
     }
 

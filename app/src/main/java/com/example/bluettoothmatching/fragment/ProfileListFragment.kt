@@ -64,7 +64,7 @@ class ProfileListFragment : Fragment() {
         binding.recyclerView.layoutManager = LinearLayoutManager(this.context)
         binding.recyclerView.adapter = itemListAdapter
 
-        fireStore.getData(itemListAdapter, this)
+        // fireStore.getData(itemListAdapter, this)
 
         binding.button.setOnClickListener { //スタート
             val intent = Intent(requireActivity(), BlutoothBK::class.java)
