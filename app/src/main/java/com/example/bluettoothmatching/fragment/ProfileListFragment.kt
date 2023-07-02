@@ -70,9 +70,9 @@ class ProfileListFragment : Fragment() {
 
 
 
-        binding.imageButton.setOnClickListener {
-            selectPhoto()
-        }
+        //binding.imageButton.setOnClickListener {
+          //  selectPhoto()
+        //}
 
         // navdrawer
         drawerLayout = binding.drawerLayout
