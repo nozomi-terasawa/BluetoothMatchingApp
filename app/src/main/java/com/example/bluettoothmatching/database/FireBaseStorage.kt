@@ -33,8 +33,8 @@ class FireBaseStorage {
         val userImageRef = storageRef.child(uid.toString())
         userImageRef.getBytes(MAX_SIZE_BYTES)
             .addOnSuccessListener { imageData ->
-                val bitmap = BitmapFactory.decodeByteArray(imageData, 0, imageData.size).toString()
-                // binding.userImage.setImageBitmap(bitmap)
+                val bitmap = BitmapFactory.decodeByteArray(imageData, 0, imageData.size)
+                binding.userImage.setImageBitmap(bitmap).toString()
             }
     }
 }

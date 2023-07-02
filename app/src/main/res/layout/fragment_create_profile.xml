@@ -80,7 +80,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/second_text_input"
-        app:layout_constraintBottom_toBottomOf="@id/save_button"
+        app:layout_constraintBottom_toTopOf="@id/image_button"
         app:errorEnabled="true"
         app:counterEnabled="true"
         app:counterMaxLength="20"
@@ -94,10 +94,21 @@
             android:layout_height="wrap_content"
             android:hint="自己紹介"
             android:imeOptions="actionSend"
-            android:inputType="text"
+            android:inputType="textMultiLine"
             android:maxLines="3" />
 
     </com.google.android.material.textfield.TextInputLayout>
+
+    <Button
+        android:id="@+id/image_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="画像の挿入"
+        android:textSize="30sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/third_text_input"
+        app:layout_constraintBottom_toTopOf="@id/save_button" />
 
     <Button
         android:id="@+id/save_button"
@@ -106,8 +117,8 @@
         android:text="保存"
         android:textSize="30sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/third_text_input"
+        app:layout_constraintTop_toBottomOf="@+id/image_button"
         android:layout_marginTop="30dp"
-        android:layout_marginRight="15dp"/>
+        android:layout_marginRight="15dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -15,15 +15,12 @@
         android:orientation="horizontal">
 
 
-
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:background="@color/secondary"
             android:layout_height="?attr/actionBarSize"
+            android:background="@color/secondary"
             android:elevation="10dp" />
-
-
 
 
     </LinearLayout>
@@ -52,19 +49,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/current_profile_list"
             android:layout_margin="15dp"/>
-
-
-
-
-
-        <Button
-            android:id="@+id/image_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="画像"
-            android:textSize="30sp"
-            app:layout_constraintEnd_toEndOf="parent" />
-
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
