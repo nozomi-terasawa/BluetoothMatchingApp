@@ -1,11 +1,14 @@
 package com.example.bluettoothmatching.fragment
 
+import android.bluetooth.BluetoothAdapter
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
@@ -26,6 +29,8 @@ class ProfileListFragment : Fragment() {
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var navigationView: NavigationView
 
+
+
     companion object {
         private const val READ_REQUEST_CODE: Int = 42
     }
@@ -35,6 +40,7 @@ class ProfileListFragment : Fragment() {
     private val fireStore = FireStore()
 
     override fun onCreateView(
+
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
@@ -76,7 +82,6 @@ class ProfileListFragment : Fragment() {
             selectPhoto()
         }
 
-        /*
         // navdrawer
         drawerLayout = binding.drawerLayout
         navigationView = binding.navigationDrawer
@@ -92,12 +97,17 @@ class ProfileListFragment : Fragment() {
         navigationView.setNavigationItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.on_bluetooth -> {
+                    val intent = Intent(requireActivity(), BlutoothBK::class.java)
+                    requireActivity().startForegroundService(intent);
+
                     // メニュー項目1が選択されたときの処理
                     Log.d("nav", "true")
                     true
                 }
 
                 R.id.of_bluetooth -> {
+                    val intent = Intent(requireContext() , BlutoothBK::class.java)
+                    requireActivity(). stopService(intent);
                     // メニュー項目2が選択されたときの処理
                     Log.d("nav", "true")
                     true
@@ -111,11 +121,25 @@ class ProfileListFragment : Fragment() {
                     true
                 }
                 // 他のメニュー項目に対する処理を追加
-                else -> false
+                R.id.seemy -> {
+
+                    val discoverableIntent: Intent = Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE).apply {
+                        putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION, 300)
+                    }
+                    startActivity(discoverableIntent)
+
+
+                    true
+                }
+
+
+                else -> {
+                    true
+                }
             }
         }
 
-         */
+
     }
 
 
