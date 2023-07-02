@@ -11,7 +11,10 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
@@ -19,6 +22,9 @@
             android:background="@color/secondary"
             android:layout_height="?attr/actionBarSize"
             android:elevation="10dp" />
+
+
+
 
     </LinearLayout>
 
@@ -47,26 +53,9 @@
             app:layout_constraintTop_toBottomOf="@id/current_profile_list"
             android:layout_margin="15dp"/>
 
-        <Button
-            android:id="@+id/button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="スタート"
-            android:textSize="30sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            android:layout_marginBottom="100dp"/>
 
-        <Button
-            android:id="@+id/button2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="stop"
-            android:textSize="30sp"
-            app:layout_constraintStart_toEndOf="@id/button"
-            app:layout_constraintBottom_toBottomOf="parent"
-            android:layout_marginBottom="100dp"/>
+
+
 
         <Button
             android:id="@+id/image_button"
@@ -74,8 +63,7 @@
             android:layout_height="wrap_content"
             android:text="画像"
             android:textSize="30sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/button2" />
+            app:layout_constraintEnd_toEndOf="parent" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

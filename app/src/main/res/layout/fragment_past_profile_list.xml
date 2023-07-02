@@ -9,15 +9,18 @@
 
     <TextView
         android:id="@+id/past_profile_list"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="過去にすれ違った人"
-        android:textSize="40sp"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:text="過去に受け取ったカード"
+        android:textSize="30sp"
+        android:paddingTop="10dp"
+        android:paddingLeft="30dp"
+        android:background="@color/secondary"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toTopOf="@id/recyclerView"
-        android:layout_marginTop="15dp" />
+        android:layout_marginTop="0dp" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
