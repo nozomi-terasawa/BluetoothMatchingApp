@@ -66,17 +66,9 @@ class ProfileListFragment : Fragment() {
 
         fireStore.getData(itemListAdapter, this)
 
-        binding.button.setOnClickListener { //スタート
-            val intent = Intent(requireActivity(), BlutoothBK::class.java)
-            requireActivity().startForegroundService(intent);
-            //fireBaseStorage.getImage()
 
-        }
 
-        binding.button2.setOnClickListener {
-            val intent = Intent(requireContext() , BlutoothBK::class.java)
-            requireActivity(). stopService(intent);
-        }
+
 
         binding.imageButton.setOnClickListener {
             selectPhoto()
