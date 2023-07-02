@@ -7,7 +7,7 @@
 
         <item name="colorPrimary">@color/primary</item>
         <item name="colorAccent">@color/secondary</item>
-        <item name="android:background">@color/white</item>
+
 
 
 

@@ -40,6 +40,7 @@ class ProfileListFragment : Fragment() {
     private val fireStore = FireStore()
 
     override fun onCreateView(
+
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
