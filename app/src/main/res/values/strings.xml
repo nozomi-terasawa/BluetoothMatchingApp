@@ -5,5 +5,7 @@
     <string name="open_bar">開</string>
     <string name="close_bar">閉</string>
 
+    <string name="name">名前：%s</string>
+
 
 </resources>
