@@ -38,7 +38,7 @@ class UpDateProfileFragment : Fragment() {
             val userAddress = newAddress.toString()
 
             if (!userName.isNullOrEmpty() && !userInfo.isNullOrEmpty() && !userAddress.isNullOrEmpty()) {
-                myFirebaseAuth.upDate(userAddress, userName, userInfo)
+                myFirebaseAuth.upData(userAddress, userName, userInfo)
             }
         }
     }

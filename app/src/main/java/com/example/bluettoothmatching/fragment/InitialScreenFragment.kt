@@ -15,7 +15,6 @@ import com.example.bluettoothmatching.databinding.FragmentInitialScreenBinding
 import com.google.firebase.auth.FirebaseAuth
 
 class InitialScreenFragment : Fragment() {
-    // TODO: Rename and change types of parameters
     private var _binding: FragmentInitialScreenBinding? = null
     private val binding get() = _binding!!
     private var auth = FirebaseAuth.getInstance()

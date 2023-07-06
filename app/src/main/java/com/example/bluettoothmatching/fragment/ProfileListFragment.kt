@@ -58,7 +58,8 @@ class ProfileListFragment : Fragment() {
         binding.recyclerView.layoutManager = LinearLayoutManager(this.context)
         binding.recyclerView.adapter = itemListAdapter
 
-        fireStore.getData(itemListAdapter, this)
+        // fireStore.getData(itemListAdapter, this)
+        fireStore.newGetData(itemListAdapter, this)
 
         // navdrawer
         drawerLayout = binding.drawerLayout

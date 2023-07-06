@@ -16,11 +16,9 @@ import com.google.firebase.storage.ktx.storage
 
 class FireStore {
     private val db = Firebase.firestore
-
     private val storage = Firebase.storage
-    var storageRef = storage.reference
+    private val storageRef = storage.reference
 
-    // val newProfileList = mutableListOf<NewProfile>()
 /*
     private var scannedAddress = listOf<String>(
         "11:11:11:11:11:11",
@@ -29,65 +27,6 @@ class FireStore {
         "44:44:44:44:44:44"
     ) // スキャン済みアドレス
  */
-
-    /*
-        fun allQuery(
-            itemListAdapter: ItemListAdapter,
-            fragment: Fragment,
-            // binding: UserProfileItemBinding
-        ) {
-            val collectionRef = db.collection("users")
-            val MAX_SIZE_BYTES: Long = 1024 * 1024
-
-            val tasks = mutableListOf<Task<*>>()
-
-            collectionRef.addSnapshotListener { querySnapshot, e ->
-                for (document in querySnapshot?.documents ?: emptyList()) {
-                    val uid = document.id
-                    val userImageRef = storageRef.child(uid)
-                    val userCollectionRef = collectionRef.document(uid)
-
-                    val imageTask = userImageRef.getBytes(MAX_SIZE_BYTES).addOnCanceledListener { }
-                    val documentTask = userCollectionRef.get().addOnCanceledListener { }
-
-                    tasks.add(imageTask)
-                    tasks.add(documentTask)
-                    // ここまではok
-
-                    tmpList.observe(fragment.viewLifecycleOwner, {
-                        val tmpListValue = tmpList.value // tmpList
-                        if (tmpListValue != null) {
-                            for (item in tmpListValue) { // tmpListからMacAddressを取り出す
-                                userCollectionRef.get().addOnSuccessListener { userSnapshot ->
-                                    val name = userSnapshot.getString("name")
-                                    val message = userSnapshot.getString("message")
-                                    val address = userSnapshot.getString("address")
-                                    val query = collectionRef.whereEqualTo("address", item).orderBy(
-                                        "address",
-                                        Query.Direction.ASCENDING // クエリ条件を保持
-                                    )
-                                    val queryTask = query.get()
-                                        .addOnSuccessListener { querySnapshot -> // 成功したら（アドレスが同じだったら）
-                                            val newProfile = NewProfile(
-                                                name = name,
-                                                message = message,
-                                                // 写真も対応させる
-                                            )
-                                            newProfileList.add(newProfile)
-                                        }
-                                    tasks.add(queryTask)
-                                }
-                            }
-                        }
-                        Tasks.whenAllSuccess<Any>(*tasks.toTypedArray()).addOnSuccessListener {
-                            itemListAdapter.submitList(newProfileList)
-                        }
-                    })
-                }
-            }
-    }
-
-     */
 
     fun insertData(userAddress: String, userName: String, userInfo: String) {
         val profile = Profile(
@@ -101,8 +40,6 @@ class FireStore {
             .addOnSuccessListener { } //成功したとき
             .addOnFailureListener { } // 失敗したとき
     }
-
-
         fun getData(itemListAdapter: ItemListAdapter, fragment: Fragment) {
             Log.d("FUJI", "true")
 
@@ -178,5 +115,33 @@ class FireStore {
                 }
         }
 
+    fun newGetData(itemListAdapter: ItemListAdapter, fragment: Fragment) {
 
+        val profileList = ArrayList<Profile>() // [Profile(address="", name="", message=""),...]
+
+        db.collection("users") // CollectionReference
+            .addSnapshotListener { snapshot, e -> // profileは取得されたドキュメントのsnapshot addSnapshotでリアルタイム更新
+                tmpList.observe(fragment.viewLifecycleOwner, {
+                    for (document in snapshot!!) {
+                        val address = document.getString("address")
+                        val currentList = tmpList.value?.toList()
+                        if (currentList != null && address!! in currentList) {
+                            val matchId = document.id
+                            val matchName = document.getString("name")
+                            val matchInfo = document.getString("message")
+                            val matchImage = storageRef.child(matchId)
+
+                            val profile = Profile(
+                                address = matchId,
+                                name = matchName,
+                                message = matchInfo,
+                                image = matchImage
+                            )
+                            profileList.add(profile)
+                        }
+                    }
+                    itemListAdapter.submitList(profileList) // UIの更新
+                })
+            }
+    }
 }

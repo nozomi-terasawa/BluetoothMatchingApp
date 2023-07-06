@@ -13,20 +13,15 @@ import com.example.bluettoothmatching.database.FireBaseStorage
 import com.example.bluettoothmatching.database.FireStore
 import com.example.bluettoothmatching.databinding.FragmentCreateProfileBinding
 
-
 class CreateProfileFragment : Fragment() {
 
-
-
+    private var _binding: FragmentCreateProfileBinding? = null
+    private val binding get() = _binding!!
     private val storage = FireBaseStorage()
-
     private val fireStore = FireStore()
     private lateinit var userAddress: String
     private lateinit var userName: String
     private lateinit var userInfo: String
-
-    private var _binding: FragmentCreateProfileBinding? = null
-    private val binding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -35,12 +30,10 @@ class CreateProfileFragment : Fragment() {
         _binding = FragmentCreateProfileBinding.inflate(inflater, container, false)
         return binding.root
     }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         binding.saveButton.setOnClickListener {
-
             userName = binding.userNameInput.text.toString()
             userInfo = binding.userInfo.text.toString()
             val _address = binding.userAddressInput.text.toString()
@@ -64,14 +57,11 @@ class CreateProfileFragment : Fragment() {
         binding.imageButton.setOnClickListener {
             selectPhoto()
         }
-
     }
-
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
-
     // intentの結果を受け取る
     override fun onActivityResult(requestCode: Int, resultCode: Int, resultData: Intent?) {
         super.onActivityResult(requestCode, resultCode, resultData)

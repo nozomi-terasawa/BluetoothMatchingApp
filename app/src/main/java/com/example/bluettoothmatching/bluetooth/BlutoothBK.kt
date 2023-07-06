@@ -26,7 +26,6 @@ class BlutoothBK : Service() {
     private var MacAddressSet = mutableSetOf<String?>()
     private var MacAddressList = mutableListOf<String?>()
 
-
     companion object {
         const val CHANNEL_ID = "1111"
     }
@@ -58,11 +57,13 @@ class BlutoothBK : Service() {
 
                     MacAddressList.clear()
                     MacAddressList.addAll(MacAddressSet)
-                    //MacAddressList.add("80:9F:F5:79:8C:E2")
+                    MacAddressList.add("80:9F:F5:79:8C:E2")
+                    MacAddressList.add("12:34:56:78")
+                    MacAddressList.add("ab:cd:ef:gh:ij:kl")
+                    MacAddressList.add("あい:うえ:お")
+
                     //MacAddressList.add("58:C6:F0:5C:85:68")
-                    //MacAddressList.add("1")
-                    //MacAddressList.add("2")
-                    //MacAddressList.add("3")
+
                     tmpList.value = MacAddressList.filterNotNull().distinct().toMutableList()
                     return
                 }

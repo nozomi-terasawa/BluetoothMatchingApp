@@ -1,13 +1,15 @@
 package com.example.bluettoothmatching
 
+import android.graphics.BitmapFactory
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.bluettoothmatching.database.FireBaseStorage
 import com.example.bluettoothmatching.databinding.UserProfileItemBinding
 import com.example.firestoresample_todo.database.Profile
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.ktx.storage
 
 class ItemListAdapter(private val onItemClicked: (Profile) -> Unit)
     : ListAdapter<Profile, ItemListAdapter.ItemViewHolder>(DiffCallback){
@@ -32,14 +34,18 @@ class ItemListAdapter(private val onItemClicked: (Profile) -> Unit)
     class ItemViewHolder(private var binding: UserProfileItemBinding)
         : RecyclerView.ViewHolder(binding.root) {
 
-        private val storage = FireBaseStorage()
+        private val storage = Firebase.storage
+        var storageRef = storage.reference
 
         fun bind(profile: Profile) {
             binding.userName.text = profile.name
             binding.userInfo.text = profile.message
-            storage.getImage(binding) // 戻り値として受けとる画像
-            // binding.userImage.setImageBitmap(bitmap)
-
+            val MAX_SIZE_BYTES: Long = 1024 * 1024
+            profile.image?.getBytes(MAX_SIZE_BYTES)
+                ?.addOnSuccessListener { imageData ->
+                    val bitmap = BitmapFactory.decodeByteArray(imageData, 0, imageData.size)
+                    binding.userImage.setImageBitmap(bitmap)
+                }
         }
     }
 

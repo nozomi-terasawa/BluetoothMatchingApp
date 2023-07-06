@@ -10,28 +10,23 @@ var _uid: String? = null // uidの初期化
 val uid get() = _uid
 
 class MyFirebaseAuth {
-
     private val db = Firebase.firestore
     private var auth = FirebaseAuth.getInstance()
 
-    // 新規登録
     fun signUp(email: String, password: String) {
         auth.createUserWithEmailAndPassword(email, password)
-            .addOnCompleteListener() { task ->
-                if (task.isSuccessful) {
+            .addOnCompleteListener { task ->
                     _uid = auth.currentUser?.uid // 現在ログインしているユーザーのUIDを取得
-
-                } else { }
             }
     }
 
-    fun upDate(userAddress: String, userName: String, userInfo: String) {
-        Log.d("nozomi", "true")
-        val collectionRef = db.collection("users")
+    fun upData(userAddress: String, userName: String, userInfo: String) {
+//        val collectionRef = db.collection("users")
         if (uid != null) {
-            val documentRef = collectionRef.document(uid!!) // todo uidがnull
+            val documentRef = db.collection("users")
+                .document(uid!!) // todo uidがnull
             val updates = hashMapOf<String, Any>(
-                "address" to "58:C6:F0:5C:85:68",
+                "address" to userAddress,
                 "message" to userInfo,
                 "name" to userName
             )
@@ -40,7 +35,7 @@ class MyFirebaseAuth {
                 .addOnFailureListener { Log.d("nozomi", "更新に失敗しました") }
 
         } else {
-            Log.d("nozomi", "失敗しています")
+            Log.d("nozomi", "uidが未参照です")
         }
     }
 }
