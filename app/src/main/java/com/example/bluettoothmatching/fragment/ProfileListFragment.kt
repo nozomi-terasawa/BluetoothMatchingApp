@@ -60,6 +60,7 @@ class ProfileListFragment : Fragment() {
 
         fireStore.getData(itemListAdapter, this)
 
+
         // navdrawer
         drawerLayout = binding.drawerLayout
         navigationView = binding.navigationDrawer
