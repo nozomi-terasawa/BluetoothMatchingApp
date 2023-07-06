@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import com.example.bluettoothmatching.R
 import com.example.bluettoothmatching.database._uid
 import com.example.bluettoothmatching.database.uid
 import com.example.bluettoothmatching.databinding.FragmentInitialScreenBinding
@@ -29,7 +30,7 @@ class InitialScreenFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        // activity?.findViewById<View>(R.id.bottom_navigation_view)?.visibility = View.GONE
+        activity?.findViewById<View>(R.id.bottom_navigation_view)?.visibility = View.GONE
         
         // login
         binding.loginButton.setOnClickListener {
