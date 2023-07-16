@@ -37,7 +37,7 @@ class ItemListAdapter(private val onItemClicked: (Profile) -> Unit)
         fun bind(profile: Profile) {
             binding.userName.text = profile.name
             binding.userInfo.text = profile.message
-            storage.getImage(binding) // 戻り値として受けとる画像
+            //storage.getImage(binding) // 戻り値として受けとる画像
             // binding.userImage.setImageBitmap(bitmap)
 
         }
