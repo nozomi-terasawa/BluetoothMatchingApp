@@ -24,6 +24,7 @@ class FireStore {
             userAddress,
             userName,
             userInfo,
+
             // Todo userAddressを追加、FireStoreにも追加される
         )
         db.collection("users").document(uid!!)
@@ -41,7 +42,7 @@ class FireStore {
 
             db.collection("users") // CollectionReference
                 .addSnapshotListener { profile, e -> // profileは取得されたドキュメントのsnapshot addSnapshotでリアルタイム更新
-                    tmpList.observe(fragment.viewLifecycleOwner, {
+                    tmpList.observe(fragment.viewLifecycleOwner, { // todo fragmentのインスタンスの取得が遅れるとnullになって、ライフサイクルエラーになる
                         val size = tmpList.value?.size ?: 0
                         for (i in 0 until size) {
                             val item = tmpList.value?.get(i)

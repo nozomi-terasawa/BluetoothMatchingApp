@@ -6,7 +6,7 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
 
-var _uid: String? = null // uidの初期化
+private var _uid: String? = null // uidの初期化
 val uid get() = _uid
 
 class MyFirebaseAuth {
@@ -22,6 +22,16 @@ class MyFirebaseAuth {
                     _uid = auth.currentUser?.uid // 現在ログインしているユーザーのUIDを取得
 
                 } else { }
+            }
+    }
+
+    fun login(email: String, password: String) {
+        auth.signInWithEmailAndPassword(email, password)
+            .addOnCompleteListener() { task ->
+                if (task.isSuccessful) {
+                    _uid = auth.currentUser?.uid // 現在ログインしているユーザーのUIDを取得
+
+                }
             }
     }
 
