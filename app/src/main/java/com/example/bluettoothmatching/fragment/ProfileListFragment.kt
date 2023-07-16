@@ -39,10 +39,6 @@ class ProfileListFragment : Fragment() {
     ): View {
         _binding = FragmentProfileListBinding.inflate(inflater, container, false)
         return binding.root
-
-        // NavigationDrawer
-
-
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -60,6 +56,10 @@ class ProfileListFragment : Fragment() {
 
         fireStore.getData(itemListAdapter, this)
 
+        binding.createPostButton.setOnClickListener {
+            val action = ProfileListFragmentDirections.actionProfileListFragmentToCreatePostFragment2()
+            this.findNavController().navigate(action)
+        }
 
         // navdrawer
         drawerLayout = binding.drawerLayout
