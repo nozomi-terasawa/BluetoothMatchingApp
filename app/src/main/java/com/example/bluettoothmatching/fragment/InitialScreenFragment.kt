@@ -1,16 +1,13 @@
 package com.example.bluettoothmatching.fragment
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
 import com.example.bluettoothmatching.R
 import com.example.bluettoothmatching.database.MyFirebaseAuth
-import com.example.bluettoothmatching.database.uid
 import com.example.bluettoothmatching.databinding.FragmentInitialScreenBinding
 import com.google.firebase.auth.FirebaseAuth
 
@@ -39,10 +36,12 @@ class InitialScreenFragment : Fragment() {
             val loginUserPassword = binding.loginUserPasswordInput.text.toString()
             if (!loginUserEmail.isNullOrEmpty() && !loginUserPassword.isNullOrEmpty()) {
                 myAuth.login(loginUserEmail, loginUserPassword)
-                Log.d("testUid", uid.toString())
+                /*
                 val action =
                     InitialScreenFragmentDirections.actionInitialScreenFragmentToProfileListFragment()
                 this.findNavController().navigate(action)
+
+                 */
             } else {
             Toast.makeText(context, "メールアドレスとパスワードを正しく入力してください", Toast.LENGTH_SHORT).show()
             }
@@ -53,13 +52,17 @@ class InitialScreenFragment : Fragment() {
             val userEmail = binding.loginUserEmailInput.text.toString()
             if (!userPassword.isNullOrEmpty() && !userEmail.isNullOrEmpty()) {
                 myAuth.signUp(userEmail, userPassword) // 登録
+                /*
                 val action = InitialScreenFragmentDirections.actionInitialScreenFragmentToCreateProfileFragment()
                 this.findNavController().navigate(action)
+
+                 */
             } else {
                 Toast.makeText(context, "メールアドレスとパスワードを正しく入力してください", Toast.LENGTH_SHORT).show()
             }
         }
     }
+
     override fun onDestroyView() {
         super.onDestroyView()
         //activity?.findViewById<View>(R.id.bottom_navigation_view)?.visibility = View.VISIBLE

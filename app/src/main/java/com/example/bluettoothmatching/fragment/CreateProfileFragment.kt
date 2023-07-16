@@ -46,7 +46,7 @@ class CreateProfileFragment : Fragment() {
             userAddress = newAddress.toString()
 
             if (!userName.isNullOrEmpty() && !userInfo.isNullOrEmpty() && !userAddress.isNullOrEmpty()) {
-                fireStore.insertData(userAddress, userName, userInfo)
+                fireStore.createProfile(userAddress, userName, userInfo)
                 val action = CreateProfileFragmentDirections.actionCreateProfileFragmentToProfileListFragment()
                 this.findNavController().navigate(action)
             } else {
@@ -60,3 +60,4 @@ class CreateProfileFragment : Fragment() {
         _binding = null
     }
 }
+

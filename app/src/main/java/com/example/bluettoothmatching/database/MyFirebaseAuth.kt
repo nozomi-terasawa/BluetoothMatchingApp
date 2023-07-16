@@ -1,6 +1,8 @@
 package com.example.bluettoothmatching.database
 
 import android.util.Log
+import com.example.bluettoothmatching.fragment.InitialScreenFragmentDirections
+import com.example.bluettoothmatching.navController
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -20,7 +22,8 @@ class MyFirebaseAuth {
             .addOnCompleteListener() { task ->
                 if (task.isSuccessful) {
                     _uid = auth.currentUser?.uid // 現在ログインしているユーザーのUIDを取得
-
+                    val action = InitialScreenFragmentDirections.actionInitialScreenFragmentToCreateProfileFragment()
+                    navController.navigate(action)
                 } else { }
             }
     }
@@ -30,6 +33,9 @@ class MyFirebaseAuth {
             .addOnCompleteListener() { task ->
                 if (task.isSuccessful) {
                     _uid = auth.currentUser?.uid // 現在ログインしているユーザーのUIDを取得
+                    val action =
+                        InitialScreenFragmentDirections.actionInitialScreenFragmentToProfileListFragment()
+                    navController.navigate(action)
 
                 }
             }

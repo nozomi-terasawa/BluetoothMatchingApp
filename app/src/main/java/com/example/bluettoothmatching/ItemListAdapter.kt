@@ -1,16 +1,17 @@
 package com.example.bluettoothmatching
 
+import android.graphics.BitmapFactory
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.bluettoothmatching.database.FireBaseStorage
+import com.example.bluettoothmatching.data.Post
+import com.example.bluettoothmatching.database.FireStore
 import com.example.bluettoothmatching.databinding.UserProfileItemBinding
-import com.example.firestoresample_todo.database.Profile
 
-class ItemListAdapter(private val onItemClicked: (Profile) -> Unit)
-    : ListAdapter<Profile, ItemListAdapter.ItemViewHolder>(DiffCallback){
+class ItemListAdapter(private val onItemClicked: (Post) -> Unit)
+    : ListAdapter<Post, ItemListAdapter.ItemViewHolder>(DiffCallback){
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
@@ -32,25 +33,36 @@ class ItemListAdapter(private val onItemClicked: (Profile) -> Unit)
     class ItemViewHolder(private var binding: UserProfileItemBinding)
         : RecyclerView.ViewHolder(binding.root) {
 
-        private val storage = FireBaseStorage()
+        private val fireStore = FireStore()
 
-        fun bind(profile: Profile) {
-            binding.userName.text = profile.name
-            binding.userInfo.text = profile.message
-            //storage.getImage(binding) // 戻り値として受けとる画像
-            // binding.userImage.setImageBitmap(bitmap)
+        fun bind(post: Post) {
+            binding.author.text = post.author
+            binding.body.text = post.body
+            post.image?.getBytes(1024 * 1024)
+                ?.addOnSuccessListener { imageData ->
+                    val bitmap = BitmapFactory.decodeByteArray(imageData, 0, imageData.size)
+                    binding.image.setImageBitmap(bitmap)
+                }
+            // binding.time.text = post.createTime.toString()
+
+            binding.likeButton.setOnClickListener {
+                val uid = post.uid
+                val postId = post.postId
+                fireStore.addLikedUserToPost(uid, postId)
+                binding.likeCount.text = post.likedCount.toString()
+            }
 
         }
     }
 
     companion object {
-        private val DiffCallback = object: DiffUtil.ItemCallback<Profile>() {
-            override fun areItemsTheSame(oldItem: Profile, newItem: Profile): Boolean {
+        private val DiffCallback = object: DiffUtil.ItemCallback<Post>() {
+            override fun areItemsTheSame(oldItem: Post, newItem: Post): Boolean {
                 return oldItem == newItem
             }
 
-            override fun areContentsTheSame(oldItem: Profile, newItem: Profile): Boolean {
-                return oldItem.name == newItem.name
+            override fun areContentsTheSame(oldItem: Post, newItem: Post): Boolean {
+                return oldItem.author == newItem.author
             }
         }
     }
