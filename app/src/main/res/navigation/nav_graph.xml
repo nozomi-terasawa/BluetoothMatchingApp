@@ -19,16 +19,7 @@
             android:id="@+id/action_initialScreenFragment_to_profileListFragment"
             app:destination="@id/profileListFragment" />
         <action
-            android:id="@+id/action_initialScreenFragment_to_signUpFragment"
-            app:destination="@id/signUpFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/signUpFragment"
-        android:name="com.example.bluettoothmatching.fragment.SignUpFragment"
-        android:label="fragment_sigup"
-        tools:layout="@layout/fragment_sigup" >
-        <action
-            android:id="@+id/action_signUpFragment_to_createProfileFragment"
+            android:id="@+id/action_initialScreenFragment_to_createProfileFragment"
             app:destination="@id/createProfileFragment" />
     </fragment>
     <fragment

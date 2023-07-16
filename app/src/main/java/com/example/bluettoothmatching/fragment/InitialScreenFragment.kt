@@ -9,6 +9,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.bluettoothmatching.R
+import com.example.bluettoothmatching.database.MyFirebaseAuth
 import com.example.bluettoothmatching.database._uid
 import com.example.bluettoothmatching.database.uid
 import com.example.bluettoothmatching.databinding.FragmentInitialScreenBinding
@@ -19,6 +20,7 @@ class InitialScreenFragment : Fragment() {
     private var _binding: FragmentInitialScreenBinding? = null
     private val binding get() = _binding!!
     private var auth = FirebaseAuth.getInstance()
+    private val myAuth = MyFirebaseAuth()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -53,8 +55,15 @@ class InitialScreenFragment : Fragment() {
         }
 
         binding.signupButton.setOnClickListener {
-            val action = InitialScreenFragmentDirections.actionInitialScreenFragmentToSignUpFragment()
-            this.findNavController().navigate(action)
+            val userPassword = binding.loginUserPasswordInput.text.toString()
+            val userEmail = binding.loginUserEmailInput.text.toString()
+            if (!userPassword.isNullOrEmpty() && !userEmail.isNullOrEmpty()) {
+                myAuth.signUp(userEmail, userPassword) // 登録
+                val action = InitialScreenFragmentDirections.actionInitialScreenFragmentToCreateProfileFragment()
+                this.findNavController().navigate(action)
+            } else {
+                Toast.makeText(context, "メールアドレスとパスワードを正しく入力してください", Toast.LENGTH_SHORT).show()
+            }
         }
     }
     override fun onDestroyView() {
