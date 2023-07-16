@@ -2,7 +2,6 @@ package com.example.bluettoothmatching.fragment
 
 import android.bluetooth.BluetoothAdapter
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -19,8 +18,6 @@ import com.example.bluettoothmatching.bluetooth.BlutoothBK
 import com.example.bluettoothmatching.database.FireStore
 import com.example.bluettoothmatching.databinding.FragmentProfileListBinding
 import com.google.android.material.navigation.NavigationView
-
-lateinit var imageUri: Uri
 
 class ProfileListFragment : Fragment() {
 
@@ -101,18 +98,13 @@ class ProfileListFragment : Fragment() {
                 }
                 // 他のメニュー項目に対する処理を追加
                 R.id.seemy -> {
-
                     val discoverableIntent: Intent =
                         Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE).apply {
                             putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION, 300)
                         }
                     startActivity(discoverableIntent)
-
-
                     true
                 }
-
-
                 else -> {
                     true
                 }
@@ -124,11 +116,6 @@ class ProfileListFragment : Fragment() {
         super.onDestroyView()
         _binding = null
     }
-
-    companion object {
-        val READ_REQUEST_CODE: Int = 42
-    }
-
 }
 
 

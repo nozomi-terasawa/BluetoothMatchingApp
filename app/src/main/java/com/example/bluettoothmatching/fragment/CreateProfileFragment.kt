@@ -7,16 +7,10 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import com.example.bluettoothmatching.database.FireBaseStorage
 import com.example.bluettoothmatching.database.FireStore
 import com.example.bluettoothmatching.databinding.FragmentCreateProfileBinding
 
-
 class CreateProfileFragment : Fragment() {
-
-
-
-    private val storage = FireBaseStorage()
 
     private val fireStore = FireStore()
     private lateinit var userAddress: String
