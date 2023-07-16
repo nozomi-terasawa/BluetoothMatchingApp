@@ -1,12 +1,10 @@
 package com.example.bluettoothmatching.fragment
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.bluettoothmatching.database.FireBaseStorage
@@ -61,41 +59,10 @@ class CreateProfileFragment : Fragment() {
                 Toast.makeText(context, "すべての項目を入力してください", Toast.LENGTH_SHORT).show()
             }
         }
-        binding.imageButton.setOnClickListener {
-            selectPhoto()
-        }
-
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-    }
-
-    // intentの結果を受け取る
-    override fun onActivityResult(requestCode: Int, resultCode: Int, resultData: Intent?) {
-        super.onActivityResult(requestCode, resultCode, resultData)
-        if (resultCode != AppCompatActivity.RESULT_OK) {
-            return
-        }
-        when (requestCode) {
-            ProfileListFragment.READ_REQUEST_CODE -> {
-                try {
-                    resultData?.data?.also { uri ->
-                        imageUri = uri // 画像のURI取得
-                        storage.uploadImageToFirebaseStorage(imageUri)
-                    }
-                } catch (e: Exception) {
-                }
-            }
-        }
-    }
-
-    fun selectPhoto() {
-        val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
-            addCategory(Intent.CATEGORY_OPENABLE)
-            type = "image/*"
-        }
-        startActivityForResult(intent, ProfileListFragment.READ_REQUEST_CODE)
     }
 }
