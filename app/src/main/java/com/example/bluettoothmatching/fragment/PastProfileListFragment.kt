@@ -8,12 +8,10 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.bluettoothmatching.ItemListAdapter
+import com.example.bluettoothmatching.data.Profile
 import com.example.bluettoothmatching.database.FireStore
 import com.example.bluettoothmatching.databinding.FragmentPastProfileListBinding
-import com.example.firestoresample_todo.database.Profile
 import com.google.android.gms.tasks.Task
-import com.google.android.gms.tasks.Tasks
-import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -50,7 +48,7 @@ class PastProfileListFragment : Fragment() {
 
         val tasks = mutableListOf<Task<QuerySnapshot>>()
 
-        val allUserRef = db.collection("allusers")
+/*        val allUserRef = db.collection("allusers")
         val task = allUserRef.get()
             .addOnSuccessListener { querySnapshot ->
                 for (documentSnapshot in querySnapshot) {
@@ -68,6 +66,8 @@ class PastProfileListFragment : Fragment() {
             .addOnSuccessListener {
                 itemListAdapter.submitList(allList)
             }
+
+ */
     }
 
     override fun onDestroyView() {

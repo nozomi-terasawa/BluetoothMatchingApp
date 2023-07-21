@@ -19,16 +19,7 @@
             android:id="@+id/action_initialScreenFragment_to_profileListFragment"
             app:destination="@id/profileListFragment" />
         <action
-            android:id="@+id/action_initialScreenFragment_to_signUpFragment"
-            app:destination="@id/signUpFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/signUpFragment"
-        android:name="com.example.bluettoothmatching.fragment.SignUpFragment"
-        android:label="fragment_sigup"
-        tools:layout="@layout/fragment_sigup" >
-        <action
-            android:id="@+id/action_signUpFragment_to_createProfileFragment"
+            android:id="@+id/action_initialScreenFragment_to_createProfileFragment"
             app:destination="@id/createProfileFragment" />
     </fragment>
     <fragment
@@ -54,6 +45,9 @@
         <action
             android:id="@+id/action_profileListFragment_to_upDateProfileFragment32"
             app:destination="@id/upDateProfileFragment3" />
+        <action
+            android:id="@+id/action_profileListFragment_to_createPostFragment2"
+            app:destination="@id/createPostFragment2" />
     </fragment>
     <fragment
         android:id="@+id/createProfileFragment"
@@ -68,5 +62,10 @@
         android:id="@+id/upDateProfileFragment3"
         android:name="com.example.bluettoothmatching.fragment.UpDateProfileFragment"
         android:label="UpDateProfileFragment" />
+    <fragment
+        android:id="@+id/createPostFragment2"
+        android:name="com.example.bluettoothmatching.fragment.CreatePostFragment"
+        android:label="fragment_create_post"
+        tools:layout="@layout/fragment_create_post" />
 
 </navigation>

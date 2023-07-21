@@ -8,10 +8,12 @@ import com.example.bluettoothmatching.databinding.ActivityMainBinding
 import com.example.bluettoothmatching.fragment.ProfileListFragment
 import com.google.firebase.auth.FirebaseAuth
 
+lateinit var navController: NavController
+
+
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
-    private lateinit var navController: NavController
     private var auth = FirebaseAuth.getInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
