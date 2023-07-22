@@ -33,12 +33,13 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="500dp"
             android:scrollbars="vertical"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginTop="70dp" />
+            android:layout_marginTop="60dp"
+            android:padding="10dp"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -54,11 +55,11 @@
             android:id="@+id/create_post_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="投稿を作製"
+            android:text="投稿"
             android:textSize="30sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            android:layout_marginBottom="60dp" />
+            android:layout_marginBottom="80dp" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

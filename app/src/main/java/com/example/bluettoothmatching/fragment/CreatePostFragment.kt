@@ -36,9 +36,17 @@ class CreatePostFragment : Fragment() {
 
         binding.postButton.setOnClickListener {
             val body = binding.createBody.text.toString()
-
-            // todo nullを許容させない
             fireStore.post(body)
+
+            if (imageUri != null) {
+                storage.uploadImageToFirebaseStorage(imageUri!!, imageRef.toString())
+                imageUri = null
+            }
+        }
+
+        binding.advertiseButton.setOnClickListener {
+            val body = binding.createBody.text.toString()
+            fireStore.advertise(body)
 
             if (imageUri != null) {
                 storage.uploadImageToFirebaseStorage(imageUri!!, imageRef.toString())

@@ -50,6 +50,18 @@ class FireStore {
         )
     }
 
+    fun advertise(body: String) {
+        val advertiseRef = userRef.collection("advertise").document()
+        imageRef = advertiseRef.id
+        advertiseRef.set(
+            mapOf(
+                "body" to body,
+                "author" to userRef,
+                "createTime" to FieldValue.serverTimestamp(),
+            )
+        )
+    }
+
     fun addLikedUserToPost(userId: String, postId: String) {
         Log.d("like", "true")
         val userRef = userDocumentRef.document(userId)

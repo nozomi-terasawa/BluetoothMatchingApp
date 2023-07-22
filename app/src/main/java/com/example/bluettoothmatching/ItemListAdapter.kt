@@ -12,8 +12,6 @@ import com.example.bluettoothmatching.databinding.UserProfileItemBinding
 
 class ItemListAdapter(private val onItemClicked: (Post) -> Unit)
     : ListAdapter<Post, ItemListAdapter.ItemViewHolder>(DiffCallback){
-
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
         return ItemViewHolder(
             UserProfileItemBinding.inflate(
