@@ -42,10 +42,23 @@
         android:id="@+id/post_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="投稿する"
+        android:text="自分で発信する"
         android:textSize="20dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/advertise_button"
+        android:layout_margin="15dp" />
+
+    <Button
+        android:id="@+id/advertise_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="宣伝してもらう"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_margin="60dp" />
+        android:layout_margin="20dp" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

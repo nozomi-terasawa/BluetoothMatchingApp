@@ -48,6 +48,9 @@
         <action
             android:id="@+id/action_profileListFragment_to_createPostFragment2"
             app:destination="@id/createPostFragment2" />
+        <action
+            android:id="@+id/action_profileListFragment_to_advertiseListFragment"
+            app:destination="@id/advertiseListFragment" />
     </fragment>
     <fragment
         android:id="@+id/createProfileFragment"
@@ -67,5 +70,10 @@
         android:name="com.example.bluettoothmatching.fragment.CreatePostFragment"
         android:label="fragment_create_post"
         tools:layout="@layout/fragment_create_post" />
+    <fragment
+        android:id="@+id/advertiseListFragment"
+        android:name="com.example.bluettoothmatching.fragment.AdvertiseListFragment"
+        android:label="fragment_advertise_list"
+        tools:layout="@layout/fragment_advertise_list" />
 
 </navigation>

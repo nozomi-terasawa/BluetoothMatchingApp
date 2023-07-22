@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import com.example.bluettoothmatching.R
 import com.example.bluettoothmatching.database.FireBaseStorage
 import com.example.bluettoothmatching.database.FireStore
 import com.example.bluettoothmatching.database.imageRef
@@ -31,6 +32,8 @@ class CreatePostFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        activity?.findViewById<View>(R.id.bottom_navigation_view)?.visibility = View.GONE
+
         binding.postButton.setOnClickListener {
             val body = binding.createBody.text.toString()
 
