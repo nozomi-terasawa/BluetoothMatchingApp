@@ -2,7 +2,8 @@ package com.example.bluettoothmatching.database
 
 import android.util.Log
 import androidx.fragment.app.Fragment
-import com.example.bluettoothmatching.ItemListAdapter
+import com.example.bluettoothmatching.adapter.AdvertiseAdapter
+import com.example.bluettoothmatching.adapter.ItemListAdapter
 import com.example.bluettoothmatching.bluetooth.tmpList
 import com.example.bluettoothmatching.data.Post
 import com.google.firebase.firestore.FieldValue
@@ -18,6 +19,7 @@ class FireStore {
     private val storage = Firebase.storage
     private val storageRef = storage.reference
     private val postList = mutableListOf<Post>()
+    private val advertiseList = mutableListOf<Post>()
     private var likedCount: Int = 0
 
     private val userDocumentRef = db.collection("users")
@@ -101,7 +103,6 @@ class FireStore {
         userDocumentRef
             .addSnapshotListener { snapshot, e -> // users
                 for (userDocument in snapshot!!.documents) {
-                    val uid = userDocument.id
                     val address = userDocument.getString("macAddress")
                     tmpList.observe(fragment.viewLifecycleOwner, {
                         Log.d("get", "オブザーバー突入")
@@ -119,7 +120,7 @@ class FireStore {
                                         //val createTime = FieldValue.serverTimestamp()
 
                                         val userPost = Post(
-                                            uid = uid,
+                                            uid = matchUid,
                                             postId = postId,
                                             body = body!!,
                                             likedCount = likedCount,
@@ -140,6 +141,41 @@ class FireStore {
                     })
                 }
             }
+    }
+
+    fun getAdvertise(advertiseAdapter: AdvertiseAdapter) {
+        userDocumentRef
+            .addSnapshotListener { snapshot, e ->
+                for (userDocument in snapshot!!.documents) {
+                    val uid = userDocument.id
+                    val author = userDocument.getString("name")
+                    val advertiseRef = userDocumentRef.document(uid).collection("advertise")
+                    advertiseRef
+                        .get()
+                        .addOnSuccessListener { querySnapshot ->
+                            for (documentSnapshot in querySnapshot.documents) {
+                                val advertiseId = documentSnapshot.id
+                                val body = documentSnapshot.getString("body")
+
+                                val advertise = Post(
+                                    uid = uid,
+                                    postId = advertiseId,
+                                    body = body!!,
+                                    likedCount = likedCount,
+                                    image = storageRef.child(advertiseId),
+                                    author = author!!,
+                                    //createTime = createTime
+                                )
+                                if (!advertiseList.contains(advertise)) {
+                                    advertiseList.add(advertise)
+                                }
+                            }
+                            advertiseAdapter.submitList(advertiseList)
+                            Log.d("getAdvertise", advertiseList.toString())
+                        }
+                }
+            }
+
     }
 
 

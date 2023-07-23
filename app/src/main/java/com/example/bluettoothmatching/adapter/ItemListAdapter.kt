@@ -1,4 +1,4 @@
-package com.example.bluettoothmatching
+package com.example.bluettoothmatching.adapter
 
 import android.graphics.BitmapFactory
 import android.view.LayoutInflater
@@ -10,8 +10,8 @@ import com.example.bluettoothmatching.data.Post
 import com.example.bluettoothmatching.database.FireStore
 import com.example.bluettoothmatching.databinding.UserProfileItemBinding
 
-class ItemListAdapter(private val onItemClicked: (Post) -> Unit)
-    : ListAdapter<Post, ItemListAdapter.ItemViewHolder>(DiffCallback){
+class ItemListAdapter()
+    : ListAdapter<Post, ItemListAdapter.ItemViewHolder>(DiffUtilItemCallback){
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
         return ItemViewHolder(
             UserProfileItemBinding.inflate(
@@ -22,9 +22,6 @@ class ItemListAdapter(private val onItemClicked: (Post) -> Unit)
 
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
         val current = getItem(position)
-        holder.itemView.setOnClickListener {
-            onItemClicked(current)
-        }
         holder.bind(current)
     }
 
@@ -54,7 +51,7 @@ class ItemListAdapter(private val onItemClicked: (Post) -> Unit)
     }
 
     companion object {
-        private val DiffCallback = object: DiffUtil.ItemCallback<Post>() {
+        private val DiffUtilItemCallback = object: DiffUtil.ItemCallback<Post>() {
             override fun areItemsTheSame(oldItem: Post, newItem: Post): Boolean {
                 return oldItem == newItem
             }

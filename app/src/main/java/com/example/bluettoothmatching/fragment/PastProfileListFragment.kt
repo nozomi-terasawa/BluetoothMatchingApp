@@ -5,9 +5,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.bluettoothmatching.ItemListAdapter
+import com.example.bluettoothmatching.adapter.ItemListAdapter
 import com.example.bluettoothmatching.data.Profile
 import com.example.bluettoothmatching.database.FireStore
 import com.example.bluettoothmatching.databinding.FragmentPastProfileListBinding
@@ -36,11 +35,11 @@ class PastProfileListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val itemListAdapter = ItemListAdapter({
-            val action =
-                ProfileListFragmentDirections.actionProfileListFragmentToProfileDetailFragment2() // ToDo navgraphで引数を渡す
-            this.findNavController().navigate(action)
-        })
+        val itemListAdapter = ItemListAdapter(
+            //val action =
+              //  ProfileListFragmentDirections.actionProfileListFragmentToProfileDetailFragment2() // ToDo navgraphで引数を渡す
+            //this.findNavController().navigate(action)
+        )
         binding.recyclerView.layoutManager = LinearLayoutManager(this.context)
         binding.recyclerView.adapter = itemListAdapter
         // itemListAdapter.submitList(allList)

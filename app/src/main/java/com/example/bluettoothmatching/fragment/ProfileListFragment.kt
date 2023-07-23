@@ -12,8 +12,8 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.bluettoothmatching.ItemListAdapter
 import com.example.bluettoothmatching.R
+import com.example.bluettoothmatching.adapter.ItemListAdapter
 import com.example.bluettoothmatching.bluetooth.BlutoothBK
 import com.example.bluettoothmatching.database.FireStore
 import com.example.bluettoothmatching.databinding.FragmentProfileListBinding
@@ -42,11 +42,7 @@ class ProfileListFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         activity?.findViewById<View>(R.id.bottom_navigation_view)?.visibility = View.VISIBLE
 
-        val itemListAdapter = ItemListAdapter({
-            val action =
-                ProfileListFragmentDirections.actionProfileListFragmentToProfileDetailFragment2() // ToDo navgraphで引数を渡す
-            this.findNavController().navigate(action)
-        })
+        val itemListAdapter = ItemListAdapter()
 
         binding.recyclerView.layoutManager = LinearLayoutManager(this.context)
         binding.recyclerView.adapter = itemListAdapter
