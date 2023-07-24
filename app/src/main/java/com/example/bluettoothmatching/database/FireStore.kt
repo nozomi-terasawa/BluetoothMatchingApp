@@ -6,8 +6,12 @@ import com.example.bluettoothmatching.adapter.AdvertiseAdapter
 import com.example.bluettoothmatching.adapter.ItemListAdapter
 import com.example.bluettoothmatching.bluetooth.tmpList
 import com.example.bluettoothmatching.data.Post
+import com.google.android.gms.tasks.Task
+import com.google.android.gms.tasks.Tasks
+import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.Query
+import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
@@ -18,8 +22,6 @@ class FireStore {
     private val db = Firebase.firestore
     private val storage = Firebase.storage
     private val storageRef = storage.reference
-    private val postList = mutableListOf<Post>()
-    private val advertiseList = mutableListOf<Post>()
     private var likedCount: Int = 0
 
     private val userDocumentRef = db.collection("users")
@@ -99,80 +101,113 @@ class FireStore {
     }
 
     fun getData(itemListAdapter: ItemListAdapter, fragment: Fragment) {
-        Log.d("get", "開始")
+        Log.d("getData", "開始")
         userDocumentRef
             .addSnapshotListener { snapshot, e -> // users
-                for (userDocument in snapshot!!.documents) {
-                    val address = userDocument.getString("macAddress")
-                    tmpList.observe(fragment.viewLifecycleOwner, {
-                        Log.d("get", "オブザーバー突入")
-                        val currentList = tmpList.value?.toList()
-                        if (currentList != null && address!! in currentList) {
-                            val author = userDocument.getString("name")
-                            val matchUid = userDocument.id
-                            val postRef = userDocumentRef.document(matchUid).collection("post")
-                            postRef
-                                .get()
-                                .addOnSuccessListener { querySnapshot ->
-                                    for (documentSnapshot in querySnapshot.documents) {
-                                        val postId = documentSnapshot.id
-                                        val body = documentSnapshot.getString("body")
-                                        //val createTime = FieldValue.serverTimestamp()
+                if (snapshot != null) {
+                    val postList = mutableListOf<Post>()
+                    val tasks = mutableListOf<Task<QuerySnapshot>>() // 非同期タスクのリストを作成
+                    for (userDocument in snapshot.documents) {
+                        val address = userDocument.getString("macAddress")
+                        tmpList.observe(fragment.viewLifecycleOwner, {
+                            Log.d("getData", "オブザーバー突入")
+                            val currentList = tmpList.value?.toList()
+                            if (currentList != null && address!! in currentList) {
+                                val author = userDocument.getString("name")
+                                val matchUid = userDocument.id
+                                val task = userDocumentRef.document(matchUid).collection("post")
+                                    .get()
+                                    .addOnSuccessListener { querySnapshot ->
+                                        for (documentSnapshot in querySnapshot.documents) {
+                                            val postId = documentSnapshot.id
+                                            val body = documentSnapshot.getString("body")
+                                            //val createTime = FieldValue.serverTimestamp()
 
-                                        val userPost = Post(
-                                            uid = matchUid,
-                                            postId = postId,
-                                            body = body!!,
-                                            likedCount = likedCount,
-                                            image = storageRef.child(postId),
-                                            author = author!!,
-                                            //createTime = createTime
-                                        )
+                                            val userPost = Post(
+                                                uid = matchUid,
+                                                postId = postId,
+                                                body = body!!,
+                                                likedCount = likedCount,
+                                                image = storageRef.child(postId),
+                                                author = author!!,
+                                                //createTime = createTime
+                                            )
 
-                                        if (!postList.contains(userPost)) {
-                                            postList.add(userPost)
-                                            Log.d("get", postList.toString())
+                                            if (!postList.contains(userPost)) {
+                                                postList.add(userPost)
+                                                Log.d("getData", postList.toString())
+                                            }
+                                            // itemListAdapter.submitList(postList)
+                                            Log.d("getData", "画面の更新")
                                         }
+                                        /*
+                                        itemListAdapter.submitList(postList)
+                                        Log.d("getData", "画面の更新")
+
+                                         */
                                     }
-                                    itemListAdapter.submitList(postList)
-                                    Log.d("get", "画面の更新")
-                                }
-                        }
-                    })
+                                tasks.add(task)
+                                Tasks.whenAllSuccess<DocumentSnapshot>(tasks) // すべての非同期タスクが完了するまで待機
+                                    .addOnSuccessListener {
+                                        itemListAdapter.submitList(postList) // UIの更新
+                                    }
+                            }
+                        })
+                    }
                 }
             }
     }
 
     fun getAdvertise(advertiseAdapter: AdvertiseAdapter) {
-        userDocumentRef
+        // userDocumentRef
+        db.collection("users")
             .addSnapshotListener { snapshot, e ->
-                for (userDocument in snapshot!!.documents) {
-                    val uid = userDocument.id
-                    val author = userDocument.getString("name")
-                    val advertiseRef = userDocumentRef.document(uid).collection("advertise")
-                    advertiseRef
-                        .get()
-                        .addOnSuccessListener { querySnapshot ->
-                            for (documentSnapshot in querySnapshot.documents) {
-                                val advertiseId = documentSnapshot.id
-                                val body = documentSnapshot.getString("body")
+                if (e != null) {
+                    Log.d("snapshot", e.toString() + "のエラーです")
+                }
 
-                                val advertise = Post(
-                                    uid = uid,
-                                    postId = advertiseId,
-                                    body = body!!,
-                                    likedCount = likedCount,
-                                    image = storageRef.child(advertiseId),
-                                    author = author!!,
-                                    //createTime = createTime
-                                )
-                                if (!advertiseList.contains(advertise)) {
-                                    advertiseList.add(advertise)
+                if (snapshot != null) {
+                    Log.d("snapshot", "addSnapshotが動いています")
+                    val advertiseList = mutableListOf<Post>()
+                    val tasks = mutableListOf<Task<QuerySnapshot>>() // 非同期タスクのリストを作成
+                    Log.d("snapshot", "advertiseListが作られました")
+                        for (userDocument in snapshot.documents) {
+                        val uid = userDocument.id
+                        val author = userDocument.getString("name")
+                        val advertiseRef = userDocumentRef.document(uid).collection("advertise")
+
+                            val task = advertiseRef
+                            .get()
+                            .addOnSuccessListener { querySnapshot ->
+                                for (documentSnapshot in querySnapshot.documents) {
+                                    val advertiseId = documentSnapshot.id
+                                    val body = documentSnapshot.getString("body").toString()
+
+                                    val advertise = Post(
+                                        uid = uid,
+                                        postId = advertiseId,
+                                        body = body,
+                                        likedCount = likedCount,
+                                        image = storageRef.child(advertiseId),
+                                        author = author!!,
+                                        //createTime = createTime
+                                    )
+                                    Log.d("snapshot", advertise.toString())
+
+                                    if (!advertiseList.contains(advertise)) {
+                                        advertiseList.add(advertise)
+                                        Log.d("snapshot", "advertiseListに加えられました")
+                                    }
+                                    //advertiseAdapter.submitList(advertiseList)
+                                    Log.d("snapshot", "現在のリスト" + advertiseList.toString())
                                 }
                             }
-                            advertiseAdapter.submitList(advertiseList)
-                            Log.d("getAdvertise", advertiseList.toString())
-                        }
+                            tasks.add(task)
+                            Tasks.whenAllSuccess<DocumentSnapshot>(tasks) // すべての非同期タスクが完了するまで待機
+                                .addOnSuccessListener {
+                                    advertiseAdapter.submitList(advertiseList) // UIの更新
+                                }
+                    }
                 }
             }
 

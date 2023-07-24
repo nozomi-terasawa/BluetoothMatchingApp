@@ -18,11 +18,14 @@ import com.example.bluettoothmatching.bluetooth.BlutoothBK
 import com.example.bluettoothmatching.database.FireStore
 import com.example.bluettoothmatching.databinding.FragmentProfileListBinding
 import com.google.android.material.navigation.NavigationView
+import com.google.firebase.firestore.ListenerRegistration
 
 class ProfileListFragment : Fragment() {
 
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var navigationView: NavigationView
+
+    private var snapshotListener: ListenerRegistration? = null
 
 
     private var _binding: FragmentProfileListBinding? = null
@@ -110,6 +113,7 @@ class ProfileListFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
+        snapshotListener?.remove()
         _binding = null
     }
 }
