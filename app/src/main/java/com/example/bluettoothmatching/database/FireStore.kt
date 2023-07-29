@@ -105,11 +105,14 @@ class FireStore {
         userDocumentRef
             .addSnapshotListener { snapshot, e -> // users
                 if (snapshot != null) {
+                    Log.d("getData", "snapshotが存在する")
                     val postList = mutableListOf<Post>()
                     val tasks = mutableListOf<Task<QuerySnapshot>>() // 非同期タスクのリストを作成
+                    tmpList.observe(fragment.viewLifecycleOwner, {
                     for (userDocument in snapshot.documents) {
+                        Log.d("getData", "documentが存在する")
                         val address = userDocument.getString("macAddress")
-                        tmpList.observe(fragment.viewLifecycleOwner, {
+                        // tmpList.observe(fragment.viewLifecycleOwner, {
                             Log.d("getData", "オブザーバー突入")
                             val currentList = tmpList.value?.toList()
                             if (currentList != null && address!! in currentList) {
@@ -137,7 +140,7 @@ class FireStore {
                                                 postList.add(userPost)
                                                 Log.d("getData", postList.toString())
                                             }
-                                            // itemListAdapter.submitList(postList)
+                                            //itemListAdapter.submitList(postList)
                                             Log.d("getData", "画面の更新")
                                         }
                                         /*
@@ -152,8 +155,8 @@ class FireStore {
                                         itemListAdapter.submitList(postList) // UIの更新
                                     }
                             }
-                        })
-                    }
+                        }
+                    })
                 }
             }
     }
