@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.bluettoothmatching.data.Post
+import com.example.bluettoothmatching.database.FireStore
 import com.example.bluettoothmatching.databinding.AdvertiseItemBinding
 
 class AdvertiseAdapter()
@@ -34,6 +35,8 @@ class AdvertiseAdapter()
     class ItemViewHolder(private var binding: AdvertiseItemBinding)
         :RecyclerView.ViewHolder(binding.root) {
 
+        private val fireStore = FireStore()
+
             fun bind(post: Post) {
                 binding.author.text = post.author
                 binding.body.text = post.body
@@ -43,7 +46,7 @@ class AdvertiseAdapter()
                         binding.image.setImageBitmap(bitmap)
                     }
                 binding.getAdsButton.setOnClickListener {
-                    
+                    fireStore.insertAdsForPost(post.uid, post.postId)
                 }
             }
         }

@@ -100,6 +100,29 @@ class FireStore {
         // todo ページング処理
     }
 
+    fun insertAdsForPost(uid: String, postId: String) {
+        userDocumentRef.document(uid)
+            .addSnapshotListener { snapshot, e ->
+                if (snapshot != null) {
+                    val otherName = snapshot.getString("name")
+                    userDocumentRef.document(uid).collection("advertise").document(postId)
+                        .get()
+                        .addOnSuccessListener { advertiseSnapshot ->
+                            val body = advertiseSnapshot.getString("body")
+                            val myPostRef = userRef.collection("post").document() // ドキュメントIDを自動生成
+                            imageRef = postId
+                            myPostRef.set(
+                                mapOf(
+                                    "otherName" to otherName,
+                                    "body" to body,
+                                    "likeCount" to 0 // いいねされた数
+                                )
+                            )
+                        }
+                }
+            }
+    }
+
     fun getData(itemListAdapter: ItemListAdapter, fragment: Fragment) {
         Log.d("getData", "開始")
         userDocumentRef
