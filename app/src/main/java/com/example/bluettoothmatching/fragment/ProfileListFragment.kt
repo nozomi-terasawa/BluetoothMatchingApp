@@ -51,11 +51,9 @@ class ProfileListFragment : Fragment() {
         binding.recyclerView.layoutManager = LinearLayoutManager(this.context)
         binding.recyclerView.adapter = itemListAdapter
 
-
         tmpList.observe(viewLifecycleOwner, { value ->
             fireStore.getData(itemListAdapter, this)
         })
-
 
         binding.createPostButton.setOnClickListener {
             val action = ProfileListFragmentDirections.actionProfileListFragmentToCreatePostFragment2()

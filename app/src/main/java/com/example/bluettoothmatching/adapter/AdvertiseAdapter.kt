@@ -47,6 +47,7 @@ class AdvertiseAdapter()
                     }
                 binding.getAdsButton.setOnClickListener {
                     fireStore.insertAdsForPost(post.uid, post.postId)
+
                 }
             }
         }

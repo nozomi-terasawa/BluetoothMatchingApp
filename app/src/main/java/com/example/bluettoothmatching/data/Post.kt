@@ -9,5 +9,6 @@ data class Post(
     val image: StorageReference? = null,
     val author: String,
     //val createTime: Timestamp,
-    val likedCount: Int // いいねされた数
+    val likedCount: Int, // いいねされた数
+    val type: Int,
 )
