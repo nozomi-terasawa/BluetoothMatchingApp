@@ -42,6 +42,9 @@ class AdvertiseAdapter()
                         val bitmap = BitmapFactory.decodeByteArray(imageData, 0, imageData.size)
                         binding.image.setImageBitmap(bitmap)
                     }
+                binding.getAdsButton.setOnClickListener {
+                    
+                }
             }
         }
     companion object {
