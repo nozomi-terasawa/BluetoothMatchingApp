@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.bluettoothmatching.R
 import com.example.bluettoothmatching.adapter.ItemListAdapter
 import com.example.bluettoothmatching.bluetooth.BlutoothBK
+import com.example.bluettoothmatching.bluetooth.tmpList
 import com.example.bluettoothmatching.database.FireStore
 import com.example.bluettoothmatching.databinding.FragmentProfileListBinding
 import com.google.android.material.navigation.NavigationView
@@ -50,7 +51,11 @@ class ProfileListFragment : Fragment() {
         binding.recyclerView.layoutManager = LinearLayoutManager(this.context)
         binding.recyclerView.adapter = itemListAdapter
 
-        fireStore.getData(itemListAdapter, this)
+
+        tmpList.observe(viewLifecycleOwner, { value ->
+            fireStore.getData(itemListAdapter, this)
+        })
+
 
         binding.createPostButton.setOnClickListener {
             val action = ProfileListFragmentDirections.actionProfileListFragmentToCreatePostFragment2()

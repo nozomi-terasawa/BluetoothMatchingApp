@@ -40,11 +40,14 @@ class BlutoothBK : Service() {
         override fun onReceive(context: Context, intent: Intent) {
             //Log.d("startSuccess1", "onReceive() success")
             val action: String? = intent.action
+
             when(action) {
                 BluetoothDevice.ACTION_FOUND -> {
 
                     val device: BluetoothDevice? =
                         intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE)
+                    Log.d("FUJI", "起動")
+
 
                     if (device == null) {
                         Log.d("nullDevice", "Device is null")
@@ -62,11 +65,18 @@ class BlutoothBK : Service() {
                     //MacAddressList.add("58:C6:F0:5C:85:68")
                     MacAddressList.add("1")
                     //MacAddresst.add("2")
+                    MacAddressList.add("3C:01:EF:0e:ee:e3")
                     MacAddressList.add("12:34:56:78:9")
                     tmpList.value = MacAddressList.filterNotNull().distinct().toMutableList()
                     return
                 }
                 BluetoothAdapter.ACTION_DISCOVERY_FINISHED ->{
+                    MacAddressList.clear()
+                    MacAddressList.addAll(MacAddressSet)
+                    MacAddressList.add("1") // todo ここはスタートに入れるものだからあとで消す
+                    tmpList.value = MacAddressList.filterNotNull().distinct().toMutableList()
+
+
                     Log.d("FUJI",MacAddressSet.toString())
                 }
             }

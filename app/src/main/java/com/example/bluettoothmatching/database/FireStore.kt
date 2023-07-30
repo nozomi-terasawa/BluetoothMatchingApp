@@ -108,7 +108,7 @@ class FireStore {
                     Log.d("getData", "snapshotが存在する")
                     val postList = mutableListOf<Post>()
                     val tasks = mutableListOf<Task<QuerySnapshot>>() // 非同期タスクのリストを作成
-                    tmpList.observe(fragment.viewLifecycleOwner, {
+                    //tmpList.observe(fragment.viewLifecycleOwner, {
                     for (userDocument in snapshot.documents) {
                         Log.d("getData", "documentが存在する")
                         val address = userDocument.getString("macAddress")
@@ -156,7 +156,7 @@ class FireStore {
                                     }
                             }
                         }
-                    })
+                    // })
                 }
             }
     }
