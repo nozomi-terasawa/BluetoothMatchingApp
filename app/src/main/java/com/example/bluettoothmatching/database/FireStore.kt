@@ -151,12 +151,20 @@ class FireStore {
                                     .addOnSuccessListener { querySnapshot ->
                                         for (documentSnapshot in querySnapshot.documents) {
                                             // todo type2のデータに、otherPostIdを作り、それをimageRefとして渡す。if文で分ける
-
+                                            var otherName = ""
+                                            if (documentSnapshot.getString("otherName") != null) {
+                                                otherName = documentSnapshot.getString("otherName").toString()
+                                            }
                                             val postId = documentSnapshot.id
                                             val body = documentSnapshot.getString("body")
                                             val type = documentSnapshot.getLong("type")!!.toInt()
                                             lateinit var imageRef: String
-                                            if (type == 1) imageRef = postId else imageRef = documentSnapshot.getString("postId").toString()
+                                            if (type == 1) {
+                                                imageRef = postId
+                                            } else {
+                                                imageRef = documentSnapshot.getString("postId").toString()
+
+                                            }
                                             //val createTime = FieldValue.serverTimestamp()
 
                                             val userPost = Post(
@@ -167,7 +175,7 @@ class FireStore {
                                                 image = storageRef.child(imageRef),
                                                 author = author!!,
                                                 type = type,
-
+                                                otherAuthor = otherName
                                                 //createTime = createTime
                                             )
 
@@ -229,6 +237,7 @@ class FireStore {
                                         image = storageRef.child(advertiseId),
                                         author = author!!,
                                         //createTime = createTime
+                                        otherAuthor = "",
                                         type = 0
                                     )
                                     Log.d("snapshot", advertise.toString())

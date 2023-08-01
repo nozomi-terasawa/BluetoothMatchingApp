@@ -1,11 +1,13 @@
 package com.example.bluettoothmatching.adapter
 
+import android.content.Context
 import android.graphics.BitmapFactory
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.example.bluettoothmatching.R
 import com.example.bluettoothmatching.data.Post
 import com.example.bluettoothmatching.database.FireStore
 import com.example.bluettoothmatching.databinding.RepostAdsItemBinding
@@ -23,7 +25,7 @@ class ItemListAdapter()
         if (viewType == 1) {
             return ItemViewHolder(UserProfileItemBinding.inflate(LayoutInflater.from(parent.context), parent, false))
         } else {
-            return AdsItemViewHolder(RepostAdsItemBinding.inflate(LayoutInflater.from(parent.context), parent, false))
+            return AdsItemViewHolder(RepostAdsItemBinding.inflate(LayoutInflater.from(parent.context), parent, false), parent.context)
         }
     }
 
@@ -63,13 +65,14 @@ class ItemListAdapter()
         }
     }
 
-    class AdsItemViewHolder(private var binding: RepostAdsItemBinding)
+    class AdsItemViewHolder(private var binding: RepostAdsItemBinding, private val context: Context)
         :RecyclerView.ViewHolder(binding.root) {
 
         private val fireStore = FireStore()
         fun bind(post: Post) {
             binding.author.text = post.author
-            //binding.originalPoster.text =
+
+            binding.originalPoster.text = context.getString(R.string.original_poster, post.otherAuthor)
             binding.body.text = post.body
             post.image?.getBytes(1024 * 1024)
                 ?.addOnSuccessListener { imageData ->
