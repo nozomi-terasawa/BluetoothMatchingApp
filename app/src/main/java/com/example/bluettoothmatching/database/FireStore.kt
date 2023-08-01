@@ -9,7 +9,6 @@ import com.example.bluettoothmatching.data.Post
 import com.google.android.gms.tasks.Task
 import com.google.android.gms.tasks.Tasks
 import com.google.firebase.firestore.DocumentSnapshot
-import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.firestore.ktx.firestore
@@ -34,8 +33,8 @@ class FireStore {
                     "macAddress" to macAddress,
                     "name" to name,
                     "introduction" to introduction,
-                    "createTime" to FieldValue.serverTimestamp(),
-                    "likePostCount" to 0,
+                    // "createTime" to FieldValue.serverTimestamp(),
+                    // "likePostCount" to 0,
 
                 )
             )
@@ -48,8 +47,8 @@ class FireStore {
         postRef.set(
             mapOf(
                 "body" to body,
-                "author" to userRef,
-                "createTime" to FieldValue.serverTimestamp(),
+                // "author" to userRef,
+                // "createTime" to FieldValue.serverTimestamp(),
                 "likeCount" to 0, // いいねされた数
                 "type" to 1
             )
@@ -62,8 +61,8 @@ class FireStore {
         advertiseRef.set(
             mapOf(
                 "body" to body,
-                "author" to userRef,
-                "createTime" to FieldValue.serverTimestamp(),
+                // "author" to userRef,
+                // "createTime" to FieldValue.serverTimestamp(),
             )
         )
     }
@@ -78,7 +77,7 @@ class FireStore {
             .set(
                 mapOf(
                     "id" to userId, // いいねをつけたユーザーのid
-                    "createTime" to FieldValue.serverTimestamp()
+                    // "createTime" to FieldValue.serverTimestamp()
                 )
             )
 
@@ -110,12 +109,14 @@ class FireStore {
                     userDocumentRef.document(uid).collection("advertise").document(postId)
                         .get()
                         .addOnSuccessListener { advertiseSnapshot ->
+                            val postId = advertiseSnapshot.id
                             val body = advertiseSnapshot.getString("body")
                             val myPostRef = userRef.collection("post").document() // ドキュメントIDを自動生成
                             imageRef = postId
                             myPostRef.set(
                                 mapOf(
                                     "otherName" to otherName,
+                                    "postId" to postId,
                                     "body" to body,
                                     "likeCount" to 0, // いいねされた数
                                     "type" to 2
@@ -150,9 +151,12 @@ class FireStore {
                                     .addOnSuccessListener { querySnapshot ->
                                         for (documentSnapshot in querySnapshot.documents) {
                                             // todo type2のデータに、otherPostIdを作り、それをimageRefとして渡す。if文で分ける
+
                                             val postId = documentSnapshot.id
                                             val body = documentSnapshot.getString("body")
                                             val type = documentSnapshot.getLong("type")!!.toInt()
+                                            lateinit var imageRef: String
+                                            if (type == 1) imageRef = postId else imageRef = documentSnapshot.getString("postId").toString()
                                             //val createTime = FieldValue.serverTimestamp()
 
                                             val userPost = Post(
@@ -160,7 +164,7 @@ class FireStore {
                                                 postId = postId,
                                                 body = body!!,
                                                 likedCount = likedCount,
-                                                image = storageRef.child(postId),
+                                                image = storageRef.child(imageRef),
                                                 author = author!!,
                                                 type = type,
 
