@@ -1,6 +1,7 @@
 package com.example.bluettoothmatching.adapter
 
 import android.graphics.BitmapFactory
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -11,7 +12,17 @@ import com.example.bluettoothmatching.database.FireStore
 import com.example.bluettoothmatching.databinding.AdvertiseItemBinding
 
 class AdvertiseAdapter()
-    : ListAdapter<Post, AdvertiseAdapter.ItemViewHolder>(DiffCallback){
+    : ListAdapter<Post, AdvertiseAdapter.ItemViewHolder>(DiffCallback) {
+
+    fun updateList(list: List<Post>) {
+        this.submitList(list) {
+            list.forEachIndexed { index, value ->
+                if (value == getItem(index)) {
+                    this.notifyItemChanged(index)
+                }
+            }
+        }
+    }
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -58,7 +69,12 @@ class AdvertiseAdapter()
             }
 
             override fun areContentsTheSame(oldItem: Post, newItem: Post): Boolean {
-                return oldItem.author == newItem.author
+                if (oldItem.author == newItem.author || oldItem.body == newItem.body) {
+                    Log.d("areContentsTheSame", "古いアイテムは" + oldItem + ", 新しいアイテムは" + newItem)
+                    return false
+                } else {
+                    return true
+                }
             }
         }
     }

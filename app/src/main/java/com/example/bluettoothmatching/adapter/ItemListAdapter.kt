@@ -15,7 +15,17 @@ import com.example.bluettoothmatching.databinding.UserProfileItemBinding
 
 
 class ItemListAdapter()
-    : ListAdapter<Post, RecyclerView.ViewHolder>(DiffUtilItemCallback){
+    : ListAdapter<Post, RecyclerView.ViewHolder>(DiffUtilItemCallback) {
+
+    fun updateList(list: List<Post>) {
+        this.submitList(list) {
+            list.forEachIndexed { index, value ->
+                if (value == getItem(index)) {
+                    this.notifyItemChanged(index)
+                }
+            }
+        }
+    }
 
     override fun getItemViewType(position: Int): Int {
         val item = getItem(position)
@@ -98,7 +108,7 @@ class ItemListAdapter()
             }
 
             override fun areContentsTheSame(oldItem: Post, newItem: Post): Boolean {
-                return oldItem.author == newItem.author
+                return oldItem.author == newItem.author || oldItem.body == newItem.body || oldItem.likedCount == newItem.likedCount
             }
         }
     }

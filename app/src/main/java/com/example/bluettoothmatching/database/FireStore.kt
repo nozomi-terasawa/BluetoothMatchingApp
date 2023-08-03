@@ -81,10 +81,11 @@ class FireStore {
                 )
             )
 
-        val likedUsersRef = userRef.collection("post").document(postId).collection("likedUsers")
+        val likedUsersRef = postRef.collection("likedUsers")
         likedUsersRef.addSnapshotListener { snapshot, e ->
             likedCount = snapshot?.size() ?: 0
             Log.d("like", likedCount.toString())
+        
         }
     }
 
@@ -195,7 +196,8 @@ class FireStore {
                                 tasks.add(task)
                                 Tasks.whenAllSuccess<DocumentSnapshot>(tasks) // すべての非同期タスクが完了するまで待機
                                     .addOnSuccessListener {
-                                        itemListAdapter.submitList(postList) // UIの更新
+                                        itemListAdapter.updateList(postList)
+                                        // itemListAdapter.submitList(postList)  { } UIの更新
                                     }
                             }
                         }
@@ -244,7 +246,7 @@ class FireStore {
 
                                     if (!advertiseList.contains(advertise)) {
                                         advertiseList.add(advertise)
-                                        Log.d("snapshot", "advertiseListに加えられました")
+                                        Log.d("advertiseList", advertiseList.toString())
                                     }
                                     //advertiseAdapter.submitList(advertiseList)
                                     Log.d("snapshot", "現在のリスト" + advertiseList.toString())
@@ -253,7 +255,8 @@ class FireStore {
                             tasks.add(task)
                             Tasks.whenAllSuccess<DocumentSnapshot>(tasks) // すべての非同期タスクが完了するまで待機
                                 .addOnSuccessListener {
-                                    advertiseAdapter.submitList(advertiseList) // UIの更新
+                                    // advertiseAdapter.submitList(advertiseList) // UIの更新
+                                    advertiseAdapter.updateList(advertiseList)
                                 }
                     }
                 }
