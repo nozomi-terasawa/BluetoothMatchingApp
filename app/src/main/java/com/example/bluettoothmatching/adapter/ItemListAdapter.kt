@@ -48,8 +48,6 @@ class ItemListAdapter()
         }
     }
 
-
-
     class ItemViewHolder(private var binding: UserProfileItemBinding)
         : RecyclerView.ViewHolder(binding.root) {
 
@@ -64,12 +62,12 @@ class ItemListAdapter()
                     binding.image.setImageBitmap(bitmap)
                 }
             // binding.time.text = post.createTime.toString()
+            binding.likeCount.text = post.likedCount.toString()
 
             binding.likeButton.setOnClickListener {
                 val uid = post.uid
                 val postId = post.postId
                 fireStore.addLikedUserToPost(uid, postId)
-                binding.likeCount.text = post.likedCount.toString()
             }
 
         }
@@ -90,16 +88,15 @@ class ItemListAdapter()
                     binding.image.setImageBitmap(bitmap)
                 }
             // binding.time.text = post.createTime.toString()
+            binding.likeCount.text = post.likedCount.toString()
 
             binding.likeButton.setOnClickListener {
                 val uid = post.uid
                 val postId = post.postId
                 fireStore.addLikedUserToPost(uid, postId)
-                binding.likeCount.text = post.likedCount.toString()
             }
         }
     }
-
 
     companion object {
         private val DiffUtilItemCallback = object: DiffUtil.ItemCallback<Post>() {

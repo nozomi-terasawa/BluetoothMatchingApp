@@ -85,7 +85,12 @@ class FireStore {
         likedUsersRef.addSnapshotListener { snapshot, e ->
             likedCount = snapshot?.size() ?: 0
             Log.d("like", likedCount.toString())
-        
+
+            postRef
+                .update("likeCount", likedCount)
+                .addOnSuccessListener {
+
+                }
         }
     }
 
@@ -159,6 +164,8 @@ class FireStore {
                                             val postId = documentSnapshot.id
                                             val body = documentSnapshot.getString("body")
                                             val type = documentSnapshot.getLong("type")!!.toInt()
+                                            val currentLikedCount = documentSnapshot.getLong("likeCount")!!.toInt()
+                                            Log.d("likedCount", currentLikedCount.toString() + "がいいね数です")
                                             lateinit var imageRef: String
                                             if (type == 1) {
                                                 imageRef = postId
@@ -172,7 +179,7 @@ class FireStore {
                                                 uid = matchUid,
                                                 postId = postId,
                                                 body = body!!,
-                                                likedCount = likedCount,
+                                                likedCount = currentLikedCount,
                                                 image = storageRef.child(imageRef),
                                                 author = author!!,
                                                 type = type,
@@ -230,12 +237,14 @@ class FireStore {
                                 for (documentSnapshot in querySnapshot.documents) {
                                     val advertiseId = documentSnapshot.id
                                     val body = documentSnapshot.getString("body").toString()
+                                    val currentLikedCount = 0
+                                    Log.d("likedCount", currentLikedCount.toString() + "がいいね数です")
 
                                     val advertise = Post(
                                         uid = uid,
                                         postId = advertiseId,
                                         body = body,
-                                        likedCount = likedCount,
+                                        likedCount = currentLikedCount,
                                         image = storageRef.child(advertiseId),
                                         author = author!!,
                                         //createTime = createTime
