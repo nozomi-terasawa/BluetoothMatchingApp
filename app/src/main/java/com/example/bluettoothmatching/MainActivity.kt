@@ -1,6 +1,5 @@
 package com.example.bluettoothmatching
 
-import android.app.Activity
 import android.bluetooth.BluetoothAdapter
 import android.content.Intent
 import android.os.Bundle
@@ -88,7 +87,7 @@ class MainActivity : AppCompatActivity() {
 
                 R.id.of_bluetooth -> {
                     val intent = Intent(this, BlutoothBK::class.java)
-                    Activity().stopService(intent);
+                    this.stopService(intent);
                     // メニュー項目2が選択されたときの処理
                     Log.d("nav", "true")
                     true
