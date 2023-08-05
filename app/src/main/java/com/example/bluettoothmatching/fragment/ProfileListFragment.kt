@@ -1,20 +1,16 @@
 package com.example.bluettoothmatching.fragment
 
-import android.bluetooth.BluetoothAdapter
-import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.bluettoothmatching.MainActivity
 import com.example.bluettoothmatching.R
 import com.example.bluettoothmatching.adapter.ItemListAdapter
-import com.example.bluettoothmatching.bluetooth.BlutoothBK
 import com.example.bluettoothmatching.bluetooth.tmpList
 import com.example.bluettoothmatching.database.FireStore
 import com.example.bluettoothmatching.databinding.FragmentProfileListBinding
@@ -46,6 +42,13 @@ class ProfileListFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         activity?.findViewById<View>(R.id.bottom_navigation_view)?.visibility = View.VISIBLE
 
+        val mainActivity = requireActivity() as MainActivity
+        val drawerLayout = mainActivity.findViewById<DrawerLayout>(R.id.drawer_layout)
+        val action = mainActivity.getActionBarDrawerToggle()
+        action.isDrawerIndicatorEnabled = true
+        drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
+
+
         val itemListAdapter = ItemListAdapter()
 
         binding.recyclerView.layoutManager = LinearLayoutManager(this.context)
@@ -60,6 +63,7 @@ class ProfileListFragment : Fragment() {
             this.findNavController().navigate(action)
         }
 
+        /*
         // navdrawer
         drawerLayout = binding.drawerLayout
         navigationView = binding.navigationDrawer
@@ -112,6 +116,8 @@ class ProfileListFragment : Fragment() {
                 }
             }
         }
+
+         */
     }
 
     override fun onDestroyView() {

@@ -7,7 +7,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
+import com.example.bluettoothmatching.MainActivity
 import com.example.bluettoothmatching.R
 import com.example.bluettoothmatching.database.FireBaseStorage
 import com.example.bluettoothmatching.database.FireStore
@@ -33,6 +35,12 @@ class CreatePostFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         activity?.findViewById<View>(R.id.bottom_navigation_view)?.visibility = View.GONE
+        // navigationDrawerの非表示
+        val mainActivity = requireActivity() as MainActivity
+        val drawerLayout = mainActivity.findViewById<DrawerLayout>(R.id.drawer_layout)
+        val action = mainActivity.getActionBarDrawerToggle()
+        action.isDrawerIndicatorEnabled = false
+        drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
 
         binding.postButton.setOnClickListener {
             val body = binding.createBody.text.toString()

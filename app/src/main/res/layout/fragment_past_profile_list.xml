@@ -7,6 +7,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".fragment.PastProfileListFragment">
 
+    <!--
     <TextView
         android:id="@+id/past_profile_list"
         android:layout_width="match_parent"
@@ -21,6 +22,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toTopOf="@id/recyclerView"
         android:layout_marginTop="0dp" />
+        -->
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
@@ -29,7 +31,8 @@
         android:scrollbars="vertical"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/past_profile_list"
+        app:layout_constraintTop_toTopOf="parent"
+        android:paddingTop="50dp"
         android:layout_margin="15dp"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
