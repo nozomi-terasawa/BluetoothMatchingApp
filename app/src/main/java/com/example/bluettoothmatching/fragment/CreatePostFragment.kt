@@ -41,6 +41,9 @@ class CreatePostFragment : Fragment() {
         val action = mainActivity.getActionBarDrawerToggle()
         action.isDrawerIndicatorEnabled = false
         drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
+        //トップメニューの非表示
+        val toolbar = mainActivity.findViewById<androidx.appcompat.widget.Toolbar>(R.id.toolbar)
+        toolbar.visibility = View.GONE
 
         binding.postButton.setOnClickListener {
             val body = binding.createBody.text.toString()

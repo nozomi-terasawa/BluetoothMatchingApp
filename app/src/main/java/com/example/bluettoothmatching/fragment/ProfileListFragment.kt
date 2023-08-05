@@ -47,6 +47,8 @@ class ProfileListFragment : Fragment() {
         val action = mainActivity.getActionBarDrawerToggle()
         action.isDrawerIndicatorEnabled = true
         drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
+        val toolbar = mainActivity.findViewById<androidx.appcompat.widget.Toolbar>(R.id.toolbar)
+        toolbar.visibility = View.VISIBLE
 
 
         val itemListAdapter = ItemListAdapter()
