@@ -18,7 +18,12 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="@color/secondary"
-            android:elevation="10dp" />
+            android:elevation="10dp" >
+
+
+        </androidx.appcompat.widget.Toolbar>
+
+
 
     </LinearLayout>
 

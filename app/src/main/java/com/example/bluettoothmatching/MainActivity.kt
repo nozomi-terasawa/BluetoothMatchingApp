@@ -23,7 +23,6 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var actionBarDrawerToggle: ActionBarDrawerToggle
     private lateinit var binding: ActivityMainBinding
-    private var auth = FirebaseAuth.getInstance()
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var navigationView: NavigationView
 
@@ -139,6 +138,7 @@ class MainActivity : AppCompatActivity() {
 
     // todo 絶対に消せーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
     private fun checkSignInStatus() {
+        val auth = FirebaseAuth.getInstance()
         val currentUser = auth.currentUser
         if (currentUser != null) {
             // ログイン済みの場合は自動ログイン処理

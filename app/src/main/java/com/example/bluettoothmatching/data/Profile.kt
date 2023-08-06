@@ -7,5 +7,6 @@ data class Profile(
     val name: String,
     val introduction: String,
     val createTime: Timestamp,
-    val likePostCount: Int
+    val likePostCount: Int,
+    val point: Int
 )

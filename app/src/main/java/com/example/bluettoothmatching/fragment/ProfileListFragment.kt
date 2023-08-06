@@ -50,11 +50,12 @@ class ProfileListFragment : Fragment() {
         val toolbar = mainActivity.findViewById<androidx.appcompat.widget.Toolbar>(R.id.toolbar)
         toolbar.visibility = View.VISIBLE
 
-
         val itemListAdapter = ItemListAdapter()
 
         binding.recyclerView.layoutManager = LinearLayoutManager(this.context)
         binding.recyclerView.adapter = itemListAdapter
+
+        fireStore.getPoint(binding, requireContext())
 
         tmpList.observe(viewLifecycleOwner, { value ->
             fireStore.getData(itemListAdapter, this)

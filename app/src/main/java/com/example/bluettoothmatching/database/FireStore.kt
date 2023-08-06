@@ -1,11 +1,14 @@
 package com.example.bluettoothmatching.database
 
+import android.content.Context
 import android.util.Log
 import androidx.fragment.app.Fragment
+import com.example.bluettoothmatching.R
 import com.example.bluettoothmatching.adapter.AdvertiseAdapter
 import com.example.bluettoothmatching.adapter.ItemListAdapter
 import com.example.bluettoothmatching.bluetooth.tmpList
 import com.example.bluettoothmatching.data.Post
+import com.example.bluettoothmatching.databinding.FragmentProfileListBinding
 import com.google.android.gms.tasks.Task
 import com.google.android.gms.tasks.Tasks
 import com.google.firebase.firestore.DocumentSnapshot
@@ -33,6 +36,7 @@ class FireStore {
                     "macAddress" to macAddress,
                     "name" to name,
                     "introduction" to introduction,
+                    "point" to 0
                     // "createTime" to FieldValue.serverTimestamp(),
                     // "likePostCount" to 0,
 
@@ -105,6 +109,16 @@ class FireStore {
 
         // todo 非同期処理に対応してユーザーの参照を取得
         // todo ページング処理
+    }
+
+    fun getPoint(binding: FragmentProfileListBinding, context: Context) {
+        userRef
+            .addSnapshotListener { snapshot, e ->
+                if (snapshot != null) {
+                    val point = snapshot.getLong("point")!!.toString()
+                    binding.pointText.text = context.getString(R.string.current_point, point)
+                }
+            }
     }
 
     fun insertAdsForPost(uid: String, postId: String) {
