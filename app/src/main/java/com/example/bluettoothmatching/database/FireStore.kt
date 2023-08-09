@@ -36,10 +36,9 @@ class FireStore {
                     "macAddress" to macAddress,
                     "name" to name,
                     "introduction" to introduction,
-                    "point" to 0
+                    "point" to 0,
                     // "createTime" to FieldValue.serverTimestamp(),
                     // "likePostCount" to 0,
-
                 )
             )
     }
@@ -70,6 +69,8 @@ class FireStore {
             )
         )
     }
+
+
 
     fun addLikedUserToPost(userId: String, postId: String) {
         Log.d("like", "true")
@@ -149,28 +150,61 @@ class FireStore {
     }
 
     fun getData(itemListAdapter: ItemListAdapter, fragment: Fragment) {
-        Log.d("getData", "開始")
         userDocumentRef
             .addSnapshotListener { snapshot, e -> // users
                 if (snapshot != null) {
-                    Log.d("getData", "snapshotが存在する")
-                    val postList = mutableListOf<Post>()
                     val tasks = mutableListOf<Task<QuerySnapshot>>() // 非同期タスクのリストを作成
-                    //tmpList.observe(fragment.viewLifecycleOwner, {
+                    val postList = mutableListOf<Post>()
                     for (userDocument in snapshot.documents) {
                         Log.d("getData", "documentが存在する")
                         val address = userDocument.getString("macAddress")
-                        // tmpList.observe(fragment.viewLifecycleOwner, {
-                            Log.d("getData", "オブザーバー突入")
                             val currentList = tmpList.value?.toList()
-                            if (currentList != null && address!! in currentList) {
+                            if (currentList != null && address!! in currentList) { // ここですれ違い
                                 val author = userDocument.getString("name")
                                 val matchUid = userDocument.id
+                                val matchedUserRef = userRef.collection("alreadyMatchedUsers")
+                                // 既にマッチしたユーザーのリストを取得する
+                                matchedUserRef.get()
+                                    .addOnSuccessListener { querySnapshot ->
+                                        val matchedUserIds = querySnapshot.documents.map { it.getString("userId") }
+
+                                        if (matchUid !in matchedUserIds) {
+                                            // まだマッチしていない場合か、一致するIDがない場合、新しいドキュメントを作成
+                                            userDocumentRef.document(matchUid).collection("post")
+                                                .get()
+                                                .addOnSuccessListener { querySnapshot ->
+                                                    if (!querySnapshot.isEmpty) {
+                                                        matchedUserRef.add(mapOf("userId" to matchUid))
+                                                            .addOnSuccessListener {
+                                                                userDocumentRef.document(matchUid)
+                                                                    .get()
+                                                                    .addOnSuccessListener { snapshot->
+                                                                        Log.d("point", "true")
+                                                                        var point =snapshot.getLong("point")!!.toInt()
+                                                                        point += 10
+                                                                        Log.d("point", "現在のポイントは" + point)
+
+                                                                        userDocumentRef.document(matchUid)
+                                                                            .update("point", point)
+                                                                    }
+                                                            }
+                                                            .addOnFailureListener { exception ->
+                                                            }
+                                                    }
+                                                }
+
+                                        } else {
+                                            Log.d("current", "既にマッチしています")
+                                        }
+                                    }
+                                    .addOnFailureListener { exception ->
+                                        Log.e("current", "クエリの実行に失敗しました：$exception")
+                                    }
+
                                 val task = userDocumentRef.document(matchUid).collection("post")
                                     .get()
                                     .addOnSuccessListener { querySnapshot ->
                                         for (documentSnapshot in querySnapshot.documents) {
-                                            // todo type2のデータに、otherPostIdを作り、それをimageRefとして渡す。if文で分ける
                                             var otherName = ""
                                             if (documentSnapshot.getString("otherName") != null) {
                                                 otherName = documentSnapshot.getString("otherName").toString()
@@ -185,9 +219,7 @@ class FireStore {
                                                 imageRef = postId
                                             } else {
                                                 imageRef = documentSnapshot.getString("postId").toString()
-
                                             }
-                                            //val createTime = FieldValue.serverTimestamp()
 
                                             val userPost = Post(
                                                 uid = matchUid,
@@ -198,31 +230,20 @@ class FireStore {
                                                 author = author!!,
                                                 type = type,
                                                 otherAuthor = otherName
-                                                //createTime = createTime
                                             )
 
                                             if (!postList.contains(userPost)) {
                                                 postList.add(userPost)
-                                                Log.d("getData", postList.toString())
                                             }
-                                            //itemListAdapter.submitList(postList)
-                                            Log.d("getData", "画面の更新")
                                         }
-                                        /*
-                                        itemListAdapter.submitList(postList)
-                                        Log.d("getData", "画面の更新")
-
-                                         */
                                     }
                                 tasks.add(task)
                                 Tasks.whenAllSuccess<DocumentSnapshot>(tasks) // すべての非同期タスクが完了するまで待機
                                     .addOnSuccessListener {
                                         itemListAdapter.updateList(postList)
-                                        // itemListAdapter.submitList(postList)  { } UIの更新
                                     }
                             }
                         }
-                    // })
                 }
             }
     }
@@ -286,88 +307,4 @@ class FireStore {
             }
 
     }
-
-
-
-
-
-    /*
-    fun getData(itemListAdapter: ItemListAdapter, fragment: Fragment) {
-            Log.d("FUJI", "true")
-
-            val profileList = ArrayList<Profile>() // [Profile(address="", name="", message=""),...]
-            val tasks = mutableListOf<Task<QuerySnapshot>>() // 非同期タスクのリストを作成
-
-            db.collection("users") // CollectionReference
-                .addSnapshotListener { profile, e -> // profileは取得されたドキュメントのsnapshot addSnapshotでリアルタイム更新
-                    tmpList.observe(fragment.viewLifecycleOwner, { // todo fragmentのインスタンスの取得が遅れるとnullになって、ライフサイクルエラーになる
-                        val size = tmpList.value?.size ?: 0
-                        for (i in 0 until size) {
-                            val item = tmpList.value?.get(i)
-                            val collectionRef =
-                                db.collection("users")
-                            val query = collectionRef.whereEqualTo(
-                                "address",
-                                item
-                            ).orderBy(
-                                "address",
-                                Query.Direction.ASCENDING
-                            ) // addressがtmpListの中にあれば、そのコレクションを参照
-                            val task = query.get()
-                                .addOnSuccessListener { querySnapshot ->
-                                    if (!querySnapshot.isEmpty) { // クエリ結果が空ではない場合にのみログを出力
-                                        Log.d("FUJI", "成功" + item)
-                                        for (documentSnapshot in querySnapshot.documents) {
-                                            val profile = documentSnapshot.toObject(Profile::class.java)
-                                            profile?.let {
-                                                if (!profileList.contains(profile)) {
-                                                    profileList.add(profile)
-                                                    //if (!allList.contains(profile)) {
-                                                      //  allList.add(profile)
-                                                   // } // todo フラグメントを遷移すると要素が重複する。しかもリストが消える
-                                                    //todo ここからinsertAllDataの処理
-                                                    val allUserRef = db.collection("allusers")
-                                                    allUserRef.add(profile)
-                                                        .addOnSuccessListener { documentReference ->
-                                                        /*
-                                                            documentReference.get()
-                                                                .addOnSuccessListener { documentSnapshot ->
-                                                                    val addedProfile = documentSnapshot.toObject(Profile::class.java)
-                                                                    addedProfile?.let {
-                                                                        allList.add(addedProfile)
-                                                                        itemListAdapter.submitList(
-                                                                            allList) // todo このクエリをpastFragmentでやる
-                                                                    }
-
-
-                                                                }
-                                                            */
-                                                        }
-                                                        .addOnFailureListener {
-                                                            Log.d("FUJI", "追加できていません")
-                                                        }
-
-                                                }
-                                            }
-                                        }
-                                    } else {
-                                        // Log.d("FUJI", "失敗" + item)
-                                    }
-                                    // Log.d("FUJI", profileList.toString())
-                                }
-                                .addOnFailureListener { }
-                            tasks.add(task) // タスクをリストに追加
-                        }
-                        Tasks.whenAllSuccess<DocumentSnapshot>(tasks) // すべての非同期タスクが完了するまで待機
-                            .addOnSuccessListener {
-                                itemListAdapter.submitList(profileList) // UIの更新
-                            }
-                            .addOnFailureListener {} // 参照の取得に失敗したとき
-                    })
-                }
-        }
-
-     */
-
-
 }
