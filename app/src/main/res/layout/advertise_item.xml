@@ -25,18 +25,6 @@
             app:layout_constraintBottom_toTopOf="@id/body"
             android:paddingBottom="15dp"/>
 
-        <!--
-        <TextView
-            android:id="@+id/time"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintStart_toEndOf="@id/author"
-            app:layout_constraintTop_toTopOf="parent"
-            android:textSize="20dp"
-            tools:text="2023年7月11日"
-            android:paddingStart="15dp" />
-        -->
-
         <TextView
             android:id="@+id/body"
             android:layout_width="wrap_content"
@@ -65,7 +53,6 @@
             android:layout_margin="10dp"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
 
 </com.google.android.material.card.MaterialCardView>
 

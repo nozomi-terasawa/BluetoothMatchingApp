@@ -10,6 +10,6 @@ data class Post(
     val author: String = "",
     val otherAuthor: String,
     //val createTime: Timestamp,
-    val likedCount: Int, // いいねされた数
+    val likedCount: Int,
     val type: Int,
 )

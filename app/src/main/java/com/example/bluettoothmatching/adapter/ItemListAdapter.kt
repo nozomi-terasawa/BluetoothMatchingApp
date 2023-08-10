@@ -13,10 +13,8 @@ import com.example.bluettoothmatching.database.FireStore
 import com.example.bluettoothmatching.databinding.RepostAdsItemBinding
 import com.example.bluettoothmatching.databinding.UserProfileItemBinding
 
-
-class ItemListAdapter()
+class ItemListAdapter
     : ListAdapter<Post, RecyclerView.ViewHolder>(DiffUtilItemCallback) {
-
     fun updateList(list: List<Post>) {
         this.submitList(list) {
             list.forEachIndexed { index, value ->
@@ -26,7 +24,6 @@ class ItemListAdapter()
             }
         }
     }
-
     override fun getItemViewType(position: Int): Int {
         val item = getItem(position)
         return if (item.type == 1) 1 else 2
@@ -47,12 +44,10 @@ class ItemListAdapter()
             else -> throw IllegalArgumentException("Unknown ViewHolder type")
         }
     }
-
     class ItemViewHolder(private var binding: UserProfileItemBinding)
         : RecyclerView.ViewHolder(binding.root) {
 
         private val fireStore = FireStore()
-
         fun bind(post: Post) {
             binding.author.text = post.author
             binding.body.text = post.body
@@ -61,18 +56,14 @@ class ItemListAdapter()
                     val bitmap = BitmapFactory.decodeByteArray(imageData, 0, imageData.size)
                     binding.image.setImageBitmap(bitmap)
                 }
-            // binding.time.text = post.createTime.toString()
             binding.likeCount.text = post.likedCount.toString()
-
             binding.likeButton.setOnClickListener {
                 val uid = post.uid
                 val postId = post.postId
                 fireStore.addLikedUserToPost(uid, postId)
             }
-
         }
     }
-
     class AdsItemViewHolder(private var binding: RepostAdsItemBinding, private val context: Context)
         :RecyclerView.ViewHolder(binding.root) {
 
@@ -87,9 +78,7 @@ class ItemListAdapter()
                     val bitmap = BitmapFactory.decodeByteArray(imageData, 0, imageData.size)
                     binding.image.setImageBitmap(bitmap)
                 }
-            // binding.time.text = post.createTime.toString()
             binding.likeCount.text = post.likedCount.toString()
-
             binding.likeButton.setOnClickListener {
                 val uid = post.uid
                 val postId = post.postId
@@ -97,13 +86,11 @@ class ItemListAdapter()
             }
         }
     }
-
     companion object {
         private val DiffUtilItemCallback = object: DiffUtil.ItemCallback<Post>() {
             override fun areItemsTheSame(oldItem: Post, newItem: Post): Boolean {
                 return oldItem == newItem
             }
-
             override fun areContentsTheSame(oldItem: Post, newItem: Post): Boolean {
                 return oldItem.author == newItem.author || oldItem.body == newItem.body || oldItem.likedCount == newItem.likedCount
             }

@@ -43,20 +43,12 @@ class InitialScreenFragment : Fragment() {
         val toolbar = mainActivity.findViewById<androidx.appcompat.widget.Toolbar>(R.id.toolbar)
         toolbar.visibility = View.GONE
 
-
-
         // login
         binding.loginButton.setOnClickListener {
             val loginUserEmail = binding.loginUserEmailInput.text.toString()
             val loginUserPassword = binding.loginUserPasswordInput.text.toString()
             if (!loginUserEmail.isNullOrEmpty() && !loginUserPassword.isNullOrEmpty()) {
                 myAuth.login(loginUserEmail, loginUserPassword)
-                /*
-                val action =
-                    InitialScreenFragmentDirections.actionInitialScreenFragmentToProfileListFragment()
-                this.findNavController().navigate(action)
-
-                 */
             } else {
             Toast.makeText(context, "メールアドレスとパスワードを正しく入力してください", Toast.LENGTH_SHORT).show()
             }
@@ -66,12 +58,7 @@ class InitialScreenFragment : Fragment() {
             val userPassword = binding.loginUserPasswordInput.text.toString()
             val userEmail = binding.loginUserEmailInput.text.toString()
             if (!userPassword.isNullOrEmpty() && !userEmail.isNullOrEmpty()) {
-                myAuth.signUp(userEmail, userPassword) // 登録
-                /*
-                val action = InitialScreenFragmentDirections.actionInitialScreenFragmentToCreateProfileFragment()
-                this.findNavController().navigate(action)
-
-                 */
+                myAuth.signUp(userEmail, userPassword)
             } else {
                 Toast.makeText(context, "メールアドレスとパスワードを正しく入力してください", Toast.LENGTH_SHORT).show()
             }
@@ -80,8 +67,6 @@ class InitialScreenFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        //activity?.findViewById<View>(R.id.bottom_navigation_view)?.visibility = View.VISIBLE
-
         _binding = null
     }
 }

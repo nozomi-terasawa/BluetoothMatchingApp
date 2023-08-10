@@ -14,7 +14,6 @@
         android:layout_height="wrap_content"
         android:background="#ff69b4">
 
-
         <TextView
             android:id="@+id/author"
             android:layout_width="wrap_content"
@@ -34,19 +33,6 @@
             android:textSize="20sp"
             app:layout_constraintBottom_toTopOf="@id/body"
             app:layout_constraintStart_toStartOf="parent" />
-
-
-        <!--
-        <TextView
-            android:id="@+id/time"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintStart_toEndOf="@id/author"
-            app:layout_constraintTop_toTopOf="parent"
-            android:textSize="20dp"
-            tools:text="2023年7月11日"
-            android:paddingStart="15dp" />
-        -->
 
         <TextView
             android:id="@+id/body"

@@ -9,9 +9,8 @@ class FireBaseStorage {
 
     private val storage = Firebase.storage
     var storageRef = storage.reference
-
     fun uploadImageToFirebaseStorage(imageUri: Uri, imageName: String) {
         val imageRef: StorageReference = storageRef.child(imageName)
-        val uploadTask = imageRef.putFile(imageUri)
+        imageRef.putFile(imageUri)
     }
 }

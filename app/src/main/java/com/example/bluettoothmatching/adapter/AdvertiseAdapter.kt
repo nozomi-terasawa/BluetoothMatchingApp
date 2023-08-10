@@ -1,7 +1,6 @@
 package com.example.bluettoothmatching.adapter
 
 import android.graphics.BitmapFactory
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -11,9 +10,8 @@ import com.example.bluettoothmatching.data.Post
 import com.example.bluettoothmatching.database.FireStore
 import com.example.bluettoothmatching.databinding.AdvertiseItemBinding
 
-class AdvertiseAdapter()
+class AdvertiseAdapter
     : ListAdapter<Post, AdvertiseAdapter.ItemViewHolder>(DiffCallback) {
-
     fun updateList(list: List<Post>) {
         this.submitList(list) {
             list.forEachIndexed { index, value ->
@@ -23,7 +21,6 @@ class AdvertiseAdapter()
             }
         }
     }
-
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
@@ -34,20 +31,16 @@ class AdvertiseAdapter()
             )
         )
     }
-
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
         val current = getItem(position)
         holder.itemView.setOnClickListener {
         }
         holder.bind(current)
     }
-
-
     class ItemViewHolder(private var binding: AdvertiseItemBinding)
         :RecyclerView.ViewHolder(binding.root) {
 
         private val fireStore = FireStore()
-
             fun bind(post: Post) {
                 binding.author.text = post.author
                 binding.body.text = post.body
@@ -58,7 +51,6 @@ class AdvertiseAdapter()
                     }
                 binding.getAdsButton.setOnClickListener {
                     fireStore.insertAdsForPost(post.uid, post.postId)
-
                 }
             }
         }
@@ -67,14 +59,8 @@ class AdvertiseAdapter()
             override fun areItemsTheSame(oldItem: Post, newItem: Post): Boolean {
                 return oldItem == newItem
             }
-
             override fun areContentsTheSame(oldItem: Post, newItem: Post): Boolean {
-                if (oldItem.author == newItem.author || oldItem.body == newItem.body) {
-                    Log.d("areContentsTheSame", "古いアイテムは" + oldItem + ", 新しいアイテムは" + newItem)
-                    return false
-                } else {
-                    return true
-                }
+                return oldItem.author == newItem.author || oldItem.body == newItem.body
             }
         }
     }

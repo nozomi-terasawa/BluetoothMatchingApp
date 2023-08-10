@@ -25,16 +25,12 @@ class BlutoothBK : Service() {
 
     private var MacAddressSet = mutableSetOf<String?>()
     private var MacAddressList = mutableListOf<String?>()
-
-
     companion object {
         const val CHANNEL_ID = "1111"
     }
 
     private var bluetoothAdapter: BluetoothAdapter? = null
-
     private var gpsEnabled: Boolean = false
-
     private val receiver = object : BroadcastReceiver() {
 
         override fun onReceive(context: Context, intent: Intent) {
@@ -47,7 +43,6 @@ class BlutoothBK : Service() {
                     val device: BluetoothDevice? =
                         intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE)
                     Log.d("FUJI", "起動")
-
 
                     if (device == null) {
                         Log.d("nullDevice", "Device is null")
@@ -76,18 +71,12 @@ class BlutoothBK : Service() {
                     MacAddressList.add("1") // todo ここはスタートに入れるものだからあとで消す
                     tmpList.value = MacAddressList.filterNotNull().distinct().toMutableList()
 
-
                     Log.d("FUJI",MacAddressSet.toString())
                 }
             }
         }
     }
-
-
-
-
     override fun onCreate() {
-
 
         Log.d("startSuccess2", "onCreate() success")
 
@@ -101,18 +90,12 @@ class BlutoothBK : Service() {
         var locationManager: LocationManager = getSystemService(LOCATION_SERVICE) as LocationManager
         gpsEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
 
-
         registerReceiver(receiver, IntentFilter(BluetoothDevice.ACTION_FOUND))
         registerReceiver(receiver, IntentFilter(BluetoothAdapter.ACTION_DISCOVERY_FINISHED))
-
         Log.d("startSuccess3", "onCreate() success")
-
     }
-
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-
         //MacAddressSet.clear()
-
         val openIntent = Intent(this, MainActivity::class.java).let {
             PendingIntent.getActivity(this, 0, it, 0)
         }
@@ -141,7 +124,6 @@ class BlutoothBK : Service() {
 
         startForeground(2222, notification)
 
-
         Log.d("startSuccess4", "onStartCommand() success")
 
         startReceiver()
@@ -151,9 +133,7 @@ class BlutoothBK : Service() {
             Log.d("startSuccess5", "startDiscovery() success")
 
         }else{
-
             Log.d("startSuccess6", "startDiscovery() No")
-
         }
 
         setNextAlarmService(this)
@@ -200,7 +180,6 @@ class BlutoothBK : Service() {
         bluetoothAdapter!!.cancelDiscovery()
         stopAlarmService()
         unregisterReceiver(receiver)
-
     }
 
     override fun onBind(intent: Intent): IBinder {

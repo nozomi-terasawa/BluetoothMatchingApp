@@ -2,7 +2,6 @@ package com.example.bluettoothmatching.database
 
 import android.content.Context
 import android.util.Log
-import androidx.fragment.app.Fragment
 import com.example.bluettoothmatching.R
 import com.example.bluettoothmatching.adapter.AdvertiseAdapter
 import com.example.bluettoothmatching.adapter.ItemListAdapter
@@ -37,8 +36,6 @@ class FireStore {
                     "name" to name,
                     "introduction" to introduction,
                     "point" to 0,
-                    // "createTime" to FieldValue.serverTimestamp(),
-                    // "likePostCount" to 0,
                 )
             )
     }
@@ -50,9 +47,7 @@ class FireStore {
         postRef.set(
             mapOf(
                 "body" to body,
-                // "author" to userRef,
-                // "createTime" to FieldValue.serverTimestamp(),
-                "likeCount" to 0, // いいねされた数
+                "likeCount" to 0,
                 "type" to 1
             )
         )
@@ -64,37 +59,27 @@ class FireStore {
         advertiseRef.set(
             mapOf(
                 "body" to body,
-                // "author" to userRef,
-                // "createTime" to FieldValue.serverTimestamp(),
             )
         )
     }
 
-
-
     fun addLikedUserToPost(userId: String, postId: String) {
-        Log.d("like", "true")
         val userRef = userDocumentRef.document(userId)
         val postRef = userRef.collection("post").document(postId)
-
         // サブコレクションを追加
         postRef.collection("likedUsers").document(uid!!)
             .set(
                 mapOf(
                     "id" to userId, // いいねをつけたユーザーのid
-                    // "createTime" to FieldValue.serverTimestamp()
                 )
             )
 
         val likedUsersRef = postRef.collection("likedUsers")
         likedUsersRef.addSnapshotListener { snapshot, e ->
             likedCount = snapshot?.size() ?: 0
-            Log.d("like", likedCount.toString())
-
             postRef
                 .update("likeCount", likedCount)
                 .addOnSuccessListener {
-
                 }
         }
     }
@@ -149,14 +134,13 @@ class FireStore {
             }
     }
 
-    fun getData(itemListAdapter: ItemListAdapter, fragment: Fragment) {
+    fun getData(itemListAdapter: ItemListAdapter) {
         userDocumentRef
             .addSnapshotListener { snapshot, e -> // users
                 if (snapshot != null) {
                     val tasks = mutableListOf<Task<QuerySnapshot>>() // 非同期タスクのリストを作成
                     val postList = mutableListOf<Post>()
                     for (userDocument in snapshot.documents) {
-                        Log.d("getData", "documentが存在する")
                         val address = userDocument.getString("macAddress")
                             val currentList = tmpList.value?.toList()
                             if (currentList != null && address!! in currentList) { // ここですれ違い
@@ -167,7 +151,6 @@ class FireStore {
                                 matchedUserRef.get()
                                     .addOnSuccessListener { querySnapshot ->
                                         val matchedUserIds = querySnapshot.documents.map { it.getString("userId") }
-
                                         if (matchUid !in matchedUserIds) {
                                             // まだマッチしていない場合か、一致するIDがない場合、新しいドキュメントを作成
                                             userDocumentRef.document(matchUid).collection("post")
@@ -179,11 +162,8 @@ class FireStore {
                                                                 userDocumentRef.document(matchUid)
                                                                     .get()
                                                                     .addOnSuccessListener { snapshot->
-                                                                        Log.d("point", "true")
                                                                         var point =snapshot.getLong("point")!!.toInt()
                                                                         point += 10
-                                                                        Log.d("point", "現在のポイントは" + point)
-
                                                                         userDocumentRef.document(matchUid)
                                                                             .update("point", point)
                                                                     }
@@ -192,15 +172,8 @@ class FireStore {
                                                             }
                                                     }
                                                 }
-
-                                        } else {
-                                            Log.d("current", "既にマッチしています")
                                         }
                                     }
-                                    .addOnFailureListener { exception ->
-                                        Log.e("current", "クエリの実行に失敗しました：$exception")
-                                    }
-
                                 val task = userDocumentRef.document(matchUid).collection("post")
                                     .get()
                                     .addOnSuccessListener { querySnapshot ->
@@ -213,14 +186,12 @@ class FireStore {
                                             val body = documentSnapshot.getString("body")
                                             val type = documentSnapshot.getLong("type")!!.toInt()
                                             val currentLikedCount = documentSnapshot.getLong("likeCount")!!.toInt()
-                                            Log.d("likedCount", currentLikedCount.toString() + "がいいね数です")
                                             lateinit var imageRef: String
                                             if (type == 1) {
                                                 imageRef = postId
                                             } else {
                                                 imageRef = documentSnapshot.getString("postId").toString()
                                             }
-
                                             val userPost = Post(
                                                 uid = matchUid,
                                                 postId = postId,
@@ -231,7 +202,6 @@ class FireStore {
                                                 type = type,
                                                 otherAuthor = otherName
                                             )
-
                                             if (!postList.contains(userPost)) {
                                                 postList.add(userPost)
                                             }
@@ -249,7 +219,6 @@ class FireStore {
     }
 
     fun getAdvertise(advertiseAdapter: AdvertiseAdapter) {
-        // userDocumentRef
         db.collection("users")
             .addSnapshotListener { snapshot, e ->
                 if (e != null) {
@@ -257,15 +226,12 @@ class FireStore {
                 }
 
                 if (snapshot != null) {
-                    Log.d("snapshot", "addSnapshotが動いています")
                     val advertiseList = mutableListOf<Post>()
                     val tasks = mutableListOf<Task<QuerySnapshot>>() // 非同期タスクのリストを作成
-                    Log.d("snapshot", "advertiseListが作られました")
                         for (userDocument in snapshot.documents) {
                         val uid = userDocument.id
                         val author = userDocument.getString("name")
                         val advertiseRef = userDocumentRef.document(uid).collection("advertise")
-
                             val task = advertiseRef
                             .get()
                             .addOnSuccessListener { querySnapshot ->
@@ -273,7 +239,6 @@ class FireStore {
                                     val advertiseId = documentSnapshot.id
                                     val body = documentSnapshot.getString("body").toString()
                                     val currentLikedCount = 0
-                                    Log.d("likedCount", currentLikedCount.toString() + "がいいね数です")
 
                                     val advertise = Post(
                                         uid = uid,
@@ -286,20 +251,14 @@ class FireStore {
                                         otherAuthor = "",
                                         type = 0
                                     )
-                                    Log.d("snapshot", advertise.toString())
-
                                     if (!advertiseList.contains(advertise)) {
                                         advertiseList.add(advertise)
-                                        Log.d("advertiseList", advertiseList.toString())
                                     }
-                                    //advertiseAdapter.submitList(advertiseList)
-                                    Log.d("snapshot", "現在のリスト" + advertiseList.toString())
                                 }
                             }
                             tasks.add(task)
                             Tasks.whenAllSuccess<DocumentSnapshot>(tasks) // すべての非同期タスクが完了するまで待機
                                 .addOnSuccessListener {
-                                    // advertiseAdapter.submitList(advertiseList) // UIの更新
                                     advertiseAdapter.updateList(advertiseList)
                                 }
                     }

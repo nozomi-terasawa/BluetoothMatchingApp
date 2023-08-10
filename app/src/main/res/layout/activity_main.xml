@@ -20,10 +20,7 @@
             android:background="@color/secondary"
             android:elevation="10dp" >
 
-
         </androidx.appcompat.widget.Toolbar>
-
-
 
     </LinearLayout>
 

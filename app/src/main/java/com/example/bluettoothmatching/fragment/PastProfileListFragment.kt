@@ -35,11 +35,7 @@ class PastProfileListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val itemListAdapter = ItemListAdapter(
-            //val action =
-              //  ProfileListFragmentDirections.actionProfileListFragmentToProfileDetailFragment2() // ToDo navgraphで引数を渡す
-            //this.findNavController().navigate(action)
-        )
+        val itemListAdapter = ItemListAdapter()
         binding.recyclerView.layoutManager = LinearLayoutManager(this.context)
         binding.recyclerView.adapter = itemListAdapter
         // itemListAdapter.submitList(allList)
@@ -65,7 +61,6 @@ class PastProfileListFragment : Fragment() {
             .addOnSuccessListener {
                 itemListAdapter.submitList(allList)
             }
-
  */
     }
 
