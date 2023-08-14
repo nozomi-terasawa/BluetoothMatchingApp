@@ -32,6 +32,8 @@ class CreatePostFragment : Fragment() {
         return binding.root
     }
 
+
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         activity?.findViewById<View>(R.id.bottom_navigation_view)?.visibility = View.GONE
@@ -44,6 +46,8 @@ class CreatePostFragment : Fragment() {
         //トップメニューの非表示
         val toolbar = mainActivity.findViewById<androidx.appcompat.widget.Toolbar>(R.id.toolbar)
         toolbar.visibility = View.GONE
+
+
 
         binding.postButton.setOnClickListener {
             val body = binding.createBody.text.toString()
@@ -89,6 +93,7 @@ class CreatePostFragment : Fragment() {
                 try {
                     resultData?.data?.also { uri ->
                         imageUri = uri // 画像のURI取得
+                            //binding.image.setImageURI(uri)
                     }
                 } catch (e: Exception) {
                 }

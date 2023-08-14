@@ -18,15 +18,29 @@
         app:layout_constraintTop_toTopOf="parent"
         android:layout_margin="15dp" />
 
-    <EditText
-        android:id="@+id/create_body"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="20dp"
-        android:hint="本文"
-        app:layout_constraintStart_toStartOf="parent"
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cardView"
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        android:layout_margin="5dp"
         app:layout_constraintTop_toBottomOf="@id/create_post"
-        android:layout_margin="15dp"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:theme="@style/Theme.MaterialComponents.Light"
+        app:cardCornerRadius="4dp"
+        app:cardElevation="4dp">
+
+        <EditText
+            android:id="@+id/create_body"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20dp"
+            android:hint="本文"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/create_post"
+            android:layout_margin="15dp"/>
+
+    </com.google.android.material.card.MaterialCardView>
 
     <Button
         android:id="@+id/insert_image"
@@ -35,8 +49,17 @@
         android:text="画像の挿入"
         android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/create_body"
+        app:layout_constraintTop_toBottomOf="@id/cardView"
         android:layout_margin="15dp" />
+
+    <!--<ImageView
+        android:id="@+id/image"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/insert_image"
+        android:layout_margin="10dp" />
+        -->
 
     <Button
         android:id="@+id/post_button"
@@ -45,9 +68,9 @@
         android:text="自分で発信する"
         android:textSize="20dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/advertise_button"
-        android:layout_margin="15dp" />
+        app:layout_constraintEnd_toStartOf="@id/advertise_button"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="10dp"/>
 
     <Button
         android:id="@+id/advertise_button"
@@ -55,10 +78,10 @@
         android:layout_height="wrap_content"
         android:text="宣伝してもらう"
         android:textSize="20sp"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@id/post_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_margin="20dp" />
+        android:layout_marginBottom="10dp"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
