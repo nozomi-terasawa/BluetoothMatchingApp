@@ -2,6 +2,8 @@ package com.example.bluettoothmatching.database
 
 import android.content.Context
 import android.util.Log
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.example.bluettoothmatching.R
 import com.example.bluettoothmatching.adapter.AdvertiseAdapter
 import com.example.bluettoothmatching.adapter.ItemListAdapter
@@ -11,6 +13,7 @@ import com.example.bluettoothmatching.databinding.FragmentProfileListBinding
 import com.google.android.gms.tasks.Task
 import com.google.android.gms.tasks.Tasks
 import com.google.firebase.firestore.DocumentSnapshot
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.firestore.ktx.firestore
@@ -27,6 +30,10 @@ class FireStore {
 
     private val userDocumentRef = db.collection("users")
     private val userRef = userDocumentRef.document(uid!!)
+
+    // livedata
+    private val _postListData: MutableLiveData<List<Post>> = MutableLiveData()
+    val postListLiveData: LiveData<List<Post>> = _postListData
 
     fun createProfile(macAddress: String, name: String, introduction: String) {
         userRef
@@ -48,7 +55,9 @@ class FireStore {
             mapOf(
                 "body" to body,
                 "likeCount" to 0,
-                "type" to 1
+                "type" to 1,
+                "createTime" to FieldValue.serverTimestamp(),
+                "postId" to postRef.id
             )
         )
     }
@@ -59,6 +68,8 @@ class FireStore {
         advertiseRef.set(
             mapOf(
                 "body" to body,
+                "postId" to advertiseRef.id,
+                "createTime" to FieldValue.serverTimestamp()
             )
         )
     }
@@ -117,24 +128,33 @@ class FireStore {
                         .addOnSuccessListener { advertiseSnapshot ->
                             val postId = advertiseSnapshot.id
                             val body = advertiseSnapshot.getString("body")
-                            val myPostRef = userRef.collection("post").document() // ドキュメントIDを自動生成
                             imageRef = postId
-                            myPostRef.set(
-                                mapOf(
-                                    "otherName" to otherName,
-                                    "postId" to postId,
-                                    "body" to body,
-                                    "likeCount" to 0, // いいねされた数
-                                    "type" to 2
+                            userRef.collection("post") // todo ドキュメントIDを自動生成
+                                .get()
+                                .addOnSuccessListener { querySnapshot ->
+                                    val allPosts = querySnapshot.documents.map { it.getString("postId") }
+                                    if (postId !in allPosts) {
+                                        //todo getDataと同じ要領で重複をなくす
+                                        userRef.collection("post").document().set(
+                                            mapOf(
+                                                "otherName" to otherName,
+                                                "postId" to postId,
+                                                "body" to body,
+                                                "likeCount" to 0, // いいねされた数
+                                                "type" to 2,
+                                                "createTime" to FieldValue.serverTimestamp()
 
-                                )
-                            )
+                                            )
+                                        )
+                                    }
+                                }
                         }
                 }
             }
     }
 
     fun getData(itemListAdapter: ItemListAdapter) {
+        Log.d("getData", "true")
         userDocumentRef
             .addSnapshotListener { snapshot, e -> // users
                 if (snapshot != null) {
@@ -142,78 +162,88 @@ class FireStore {
                     val postList = mutableListOf<Post>()
                     for (userDocument in snapshot.documents) {
                         val address = userDocument.getString("macAddress")
-                            val currentList = tmpList.value?.toList()
-                            if (currentList != null && address!! in currentList) { // ここですれ違い
-                                val author = userDocument.getString("name")
-                                val matchUid = userDocument.id
-                                val matchedUserRef = userRef.collection("alreadyMatchedUsers")
-                                // 既にマッチしたユーザーのリストを取得する
-                                matchedUserRef.get()
-                                    .addOnSuccessListener { querySnapshot ->
-                                        val matchedUserIds = querySnapshot.documents.map { it.getString("userId") }
-                                        if (matchUid !in matchedUserIds) {
-                                            // まだマッチしていない場合か、一致するIDがない場合、新しいドキュメントを作成
-                                            userDocumentRef.document(matchUid).collection("post")
-                                                .get()
-                                                .addOnSuccessListener { querySnapshot ->
-                                                    if (!querySnapshot.isEmpty) {
-                                                        matchedUserRef.add(mapOf("userId" to matchUid))
-                                                            .addOnSuccessListener {
-                                                                userDocumentRef.document(matchUid)
-                                                                    .get()
-                                                                    .addOnSuccessListener { snapshot->
-                                                                        var point =snapshot.getLong("point")!!.toInt()
-                                                                        point += 10
-                                                                        userDocumentRef.document(matchUid)
-                                                                            .update("point", point)
-                                                                    }
-                                                            }
-                                                            .addOnFailureListener { exception ->
-                                                            }
-                                                    }
+                        val currentList = tmpList.value?.toList()
+                        if (currentList != null && address!! in currentList) { // ここですれ違い
+                            val author = userDocument.getString("name")
+                            val matchUid = userDocument.id
+                            val matchedUserRef = userRef.collection("alreadyMatchedUsers")
+                            // 既にマッチしたユーザーのリストを取得する
+                            matchedUserRef.get()
+                                .addOnSuccessListener { querySnapshot ->
+                                    val matchedUserIds =
+                                        querySnapshot.documents.map { it.getString("userId") }
+                                    if (matchUid !in matchedUserIds) {
+                                        // まだマッチしていない場合か、一致するIDがない場合、新しいドキュメントを作成
+                                        userDocumentRef.document(matchUid).collection("post")
+                                            .get()
+                                            .addOnSuccessListener { querySnapshot ->
+                                                if (!querySnapshot.isEmpty) {
+                                                    matchedUserRef.add(mapOf("userId" to matchUid))
+                                                        .addOnSuccessListener {
+                                                            userDocumentRef.document(matchUid)
+                                                                .get()
+                                                                .addOnSuccessListener { snapshot ->
+                                                                    var point =
+                                                                        snapshot.getLong("point")!!
+                                                                            .toInt()
+                                                                    point += 10
+                                                                    userDocumentRef.document(
+                                                                        matchUid
+                                                                    )
+                                                                        .update("point", point)
+                                                                }
+                                                        }
+                                                        .addOnFailureListener { exception ->
+                                                        }
                                                 }
+                                            }
+                                    }
+                                }
+                            val task = userDocumentRef.document(matchUid).collection("post")
+                                .orderBy("createTime", Query.Direction.DESCENDING)
+                                .get()
+                                .addOnSuccessListener { querySnapshot ->
+                                    for (documentSnapshot in querySnapshot.documents) {
+                                        var otherName = ""
+                                        if (documentSnapshot.getString("otherName") != null) {
+                                            otherName =
+                                                documentSnapshot.getString("otherName").toString()
+                                        }
+                                        val postId = documentSnapshot.id
+                                        val body = documentSnapshot.getString("body")
+                                        val type = documentSnapshot.getLong("type")!!.toInt()
+                                        val currentLikedCount =
+                                            documentSnapshot.getLong("likeCount")!!.toInt()
+                                        lateinit var imageRef: String
+                                        if (type == 1) {
+                                            imageRef = postId
+                                        } else {
+                                            imageRef =
+                                                documentSnapshot.getString("postId").toString()
+                                        }
+                                        val userPost = Post(
+                                            uid = matchUid,
+                                            postId = postId,
+                                            body = body!!,
+                                            likedCount = currentLikedCount,
+                                            image = storageRef.child(imageRef),
+                                            author = author!!,
+                                            type = type,
+                                            otherAuthor = otherName
+                                        )
+                                        if (!postList.contains(userPost)) {
+                                            postList.add(userPost)
                                         }
                                     }
-                                val task = userDocumentRef.document(matchUid).collection("post")
-                                    .get()
-                                    .addOnSuccessListener { querySnapshot ->
-                                        for (documentSnapshot in querySnapshot.documents) {
-                                            var otherName = ""
-                                            if (documentSnapshot.getString("otherName") != null) {
-                                                otherName = documentSnapshot.getString("otherName").toString()
-                                            }
-                                            val postId = documentSnapshot.id
-                                            val body = documentSnapshot.getString("body")
-                                            val type = documentSnapshot.getLong("type")!!.toInt()
-                                            val currentLikedCount = documentSnapshot.getLong("likeCount")!!.toInt()
-                                            lateinit var imageRef: String
-                                            if (type == 1) {
-                                                imageRef = postId
-                                            } else {
-                                                imageRef = documentSnapshot.getString("postId").toString()
-                                            }
-                                            val userPost = Post(
-                                                uid = matchUid,
-                                                postId = postId,
-                                                body = body!!,
-                                                likedCount = currentLikedCount,
-                                                image = storageRef.child(imageRef),
-                                                author = author!!,
-                                                type = type,
-                                                otherAuthor = otherName
-                                            )
-                                            if (!postList.contains(userPost)) {
-                                                postList.add(userPost)
-                                            }
-                                        }
-                                    }
-                                tasks.add(task)
-                                Tasks.whenAllSuccess<DocumentSnapshot>(tasks) // すべての非同期タスクが完了するまで待機
-                                    .addOnSuccessListener {
-                                        itemListAdapter.updateList(postList)
-                                    }
-                            }
+                                }
+                            tasks.add(task)
+                            Tasks.whenAllSuccess<DocumentSnapshot>(tasks) // すべての非同期タスクが完了するまで待機
+                                .addOnSuccessListener {
+                                    itemListAdapter.updateList(postList)
+                                    _postListData.postValue(postList)
+                                }
                         }
+                    }
                 }
             }
     }
@@ -228,11 +258,12 @@ class FireStore {
                 if (snapshot != null) {
                     val advertiseList = mutableListOf<Post>()
                     val tasks = mutableListOf<Task<QuerySnapshot>>() // 非同期タスクのリストを作成
-                        for (userDocument in snapshot.documents) {
+                    for (userDocument in snapshot.documents) {
                         val uid = userDocument.id
                         val author = userDocument.getString("name")
                         val advertiseRef = userDocumentRef.document(uid).collection("advertise")
-                            val task = advertiseRef
+                        val task = advertiseRef
+                            .orderBy("createTime", Query.Direction.DESCENDING)
                             .get()
                             .addOnSuccessListener { querySnapshot ->
                                 for (documentSnapshot in querySnapshot.documents) {
@@ -256,14 +287,13 @@ class FireStore {
                                     }
                                 }
                             }
-                            tasks.add(task)
-                            Tasks.whenAllSuccess<DocumentSnapshot>(tasks) // すべての非同期タスクが完了するまで待機
-                                .addOnSuccessListener {
-                                    advertiseAdapter.updateList(advertiseList)
-                                }
+                        tasks.add(task)
+                        Tasks.whenAllSuccess<DocumentSnapshot>(tasks) // すべての非同期タスクが完了するまで待機
+                            .addOnSuccessListener {
+                                advertiseAdapter.updateList(advertiseList)
+                            }
                     }
                 }
             }
-
     }
 }

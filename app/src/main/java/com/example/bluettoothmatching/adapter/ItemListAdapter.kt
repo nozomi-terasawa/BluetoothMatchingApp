@@ -53,8 +53,9 @@ class ItemListAdapter
             binding.body.text = post.body
             post.image?.getBytes(1024 * 1024)
                 ?.addOnSuccessListener { imageData ->
-                    val bitmap = BitmapFactory.decodeByteArray(imageData, 0, imageData.size)
+                    var bitmap = BitmapFactory.decodeByteArray(imageData, 0, imageData.size)
                     binding.image.setImageBitmap(bitmap)
+                    bitmap = null
                 }
             binding.likeCount.text = post.likedCount.toString()
             binding.likeButton.setOnClickListener {

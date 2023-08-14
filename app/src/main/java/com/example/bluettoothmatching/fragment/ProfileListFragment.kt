@@ -1,6 +1,7 @@
 package com.example.bluettoothmatching.fragment
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -53,6 +54,11 @@ class ProfileListFragment : Fragment() {
 
         tmpList.observe(viewLifecycleOwner, { value ->
             fireStore.getData(itemListAdapter)
+        })
+
+        fireStore.postListLiveData.observe(viewLifecycleOwner, {
+            Log.d("postListRealTime", "true")
+            // fireStore.getData(itemListAdapter)
         })
 
         binding.createPostButton.setOnClickListener {
