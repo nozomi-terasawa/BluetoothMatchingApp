@@ -12,4 +12,5 @@ data class Post(
     //val createTime: Timestamp,
     val likedCount: Int,
     val type: Int,
+    val color: String
 )

@@ -9,6 +9,7 @@ import com.example.bluettoothmatching.adapter.AdvertiseAdapter
 import com.example.bluettoothmatching.adapter.ItemListAdapter
 import com.example.bluettoothmatching.bluetooth.tmpList
 import com.example.bluettoothmatching.data.Post
+import com.example.bluettoothmatching.databinding.FragmentCreatePostBinding
 import com.example.bluettoothmatching.databinding.FragmentProfileListBinding
 import com.google.android.gms.tasks.Task
 import com.google.android.gms.tasks.Tasks
@@ -48,7 +49,7 @@ class FireStore {
     }
 
     // 投稿
-    fun post(body: String) {
+    fun post(body: String, color: String) {
         val postRef = userRef.collection("post").document() // ドキュメントIDを自動生成
         imageRef = postRef.id
         postRef.set(
@@ -57,12 +58,13 @@ class FireStore {
                 "likeCount" to 0,
                 "type" to 1,
                 "createTime" to FieldValue.serverTimestamp(),
-                "postId" to postRef.id
+                "postId" to postRef.id,
+                "color" to color
             )
         )
     }
 
-    fun advertise(body: String) {
+    fun advertise(body: String, color: String) {
         val advertiseRef = userRef.collection("advertise").document()
         imageRef = advertiseRef.id
         advertiseRef.set(
@@ -114,6 +116,35 @@ class FireStore {
                 if (snapshot != null) {
                     val point = snapshot.getLong("point")!!.toString()
                     binding.pointText.text = context.getString(R.string.current_point, point)
+                }
+            }
+    }
+
+    fun currentPoint(binding: FragmentCreatePostBinding, context: Context) {
+        userRef
+            .addSnapshotListener { snapshot, e ->
+                if (snapshot != null) {
+                    val point = snapshot.getLong("point")!!.toString()
+                    binding.currentPoint.text = context.getString(R.string.current_point, point)
+                }
+            }
+    }
+
+    fun usePoint() {
+        var flag = true
+        Log.d("usePoint", "ture")
+        userRef
+            .addSnapshotListener { snapshot, e ->
+                if (flag == true) {
+                    if (snapshot != null) {
+                        var point = snapshot.getLong("point")
+                        if (point!! >= 10) {
+                            point -= 10
+                            userRef
+                                .update("point", point)
+                            flag = false
+                        }
+                    }
                 }
             }
     }
@@ -215,6 +246,7 @@ class FireStore {
                                         val currentLikedCount =
                                             documentSnapshot.getLong("likeCount")!!.toInt()
                                         lateinit var imageRef: String
+                                        val color = documentSnapshot.getString("color").toString()
                                         if (type == 1) {
                                             imageRef = postId
                                         } else {
@@ -229,7 +261,8 @@ class FireStore {
                                             image = storageRef.child(imageRef),
                                             author = author!!,
                                             type = type,
-                                            otherAuthor = otherName
+                                            otherAuthor = otherName,
+                                            color = color
                                         )
                                         if (!postList.contains(userPost)) {
                                             postList.add(userPost)
@@ -270,6 +303,7 @@ class FireStore {
                                     val advertiseId = documentSnapshot.id
                                     val body = documentSnapshot.getString("body").toString()
                                     val currentLikedCount = 0
+                                    val color = documentSnapshot.getString("color").toString()
 
                                     val advertise = Post(
                                         uid = uid,
@@ -280,7 +314,8 @@ class FireStore {
                                         author = author!!,
                                         //createTime = createTime
                                         otherAuthor = "",
-                                        type = 0
+                                        type = 0,
+                                        color = color
                                     )
                                     if (!advertiseList.contains(advertise)) {
                                         advertiseList.add(advertise)

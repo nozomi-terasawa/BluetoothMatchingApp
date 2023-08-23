@@ -1,6 +1,7 @@
 package com.example.bluettoothmatching.fragment
 
 import android.content.Intent
+import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -47,11 +48,38 @@ class CreatePostFragment : Fragment() {
         val toolbar = mainActivity.findViewById<androidx.appcompat.widget.Toolbar>(R.id.toolbar)
         toolbar.visibility = View.GONE
 
+        fireStore.currentPoint(binding, requireContext())
 
+        var color: String = "FFFFFF"
+        var selectColorFlag = false
+
+
+        binding.pinkButton.setOnClickListener {
+            // todo ポイントが１０以上じゃないと押せないようにする
+            color = "FFC0CB"
+            selectColorFlag = true
+            binding.cardView.setBackgroundColor(Color.parseColor("#FFC0CB"))
+        }
+
+        binding.blueButton.setOnClickListener {
+            color = "AFEEEE"
+            selectColorFlag = true
+            binding.cardView.setBackgroundColor(Color.parseColor("#AFEEEE"))
+        }
+
+        binding.greenButton.setOnClickListener {
+            color = "98FB98"
+            selectColorFlag = true
+            binding.cardView.setBackgroundColor(Color.parseColor("#98FB98"))
+        }
 
         binding.postButton.setOnClickListener {
             val body = binding.createBody.text.toString()
-            fireStore.post(body)
+
+            fireStore.post(body, color)
+            if (selectColorFlag == true) {
+                fireStore.usePoint()
+            }
 
             if (imageUri != null) {
                 storage.uploadImageToFirebaseStorage(imageUri!!, imageRef.toString())
@@ -61,7 +89,7 @@ class CreatePostFragment : Fragment() {
 
         binding.advertiseButton.setOnClickListener {
             val body = binding.createBody.text.toString()
-            fireStore.advertise(body)
+            fireStore.advertise(body, color)
 
             if (imageUri != null) {
                 storage.uploadImageToFirebaseStorage(imageUri!!, imageRef.toString())

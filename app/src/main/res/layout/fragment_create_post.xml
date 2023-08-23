@@ -52,6 +52,27 @@
         app:layout_constraintTop_toBottomOf="@id/cardView"
         android:layout_margin="15dp" />
 
+    <TextView
+        android:id="@+id/select_color_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="投稿の背景を選ぶ"
+        android:textSize="20dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/insert_image"
+        android:layout_margin="10dp" />
+
+    <TextView
+        android:id="@+id/current_point"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        app:layout_constraintStart_toEndOf="@id/select_color_text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/insert_image"
+        app:layout_constraintBottom_toTopOf="@id/table_layout" />
+
     <!--<ImageView
         android:id="@+id/image"
         android:layout_width="100dp"
@@ -82,6 +103,95 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         android:layout_marginBottom="10dp"/>
+
+    <TableLayout
+        android:id="@+id/table_layout"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/select_color_text"
+        android:layout_width="409dp"
+        android:layout_height="204dp"
+        tools:layout_editor_absoluteX="1dp"
+        tools:layout_editor_absoluteY="467dp">
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="5dp">
+
+            <Button
+                android:id="@+id/pink_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="ピンク"
+                android:backgroundTint="#FFC0CB"
+                android:layout_weight="1"
+                android:layout_margin="5dp" />
+
+            <Button
+                android:id="@+id/blue_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="水色"
+                android:backgroundTint="#AFEEEE"
+                android:layout_weight="1"
+                android:layout_margin="5dp" />
+
+            <Button
+                android:id="@+id/green_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="緑"
+                android:backgroundTint="#98FB98"
+                android:layout_weight="1"
+                android:layout_margin="5dp"/>
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <Button
+                android:id="@+id/button9"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Button"
+                android:layout_weight="1"
+                android:layout_margin="5dp"/>
+
+            <Button
+                android:id="@+id/button8"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Button"
+                android:layout_weight="1"
+                android:layout_margin="5dp"/>
+
+            <Button
+                android:id="@+id/button7"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Button"
+                android:layout_weight="1"
+                android:layout_margin="5dp"/>
+
+            <Button
+                android:id="@+id/button6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Button"
+                android:layout_weight="1"
+                android:layout_margin="5dp"/>
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </TableLayout>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

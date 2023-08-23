@@ -2,6 +2,7 @@ package com.example.bluettoothmatching.adapter
 
 import android.content.Context
 import android.graphics.BitmapFactory
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -30,7 +31,7 @@ class ItemListAdapter
     }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         if (viewType == 1) {
-            return ItemViewHolder(UserProfileItemBinding.inflate(LayoutInflater.from(parent.context), parent, false))
+            return ItemViewHolder(UserProfileItemBinding.inflate(LayoutInflater.from(parent.context), parent, false), parent.context)
         } else {
             return AdsItemViewHolder(RepostAdsItemBinding.inflate(LayoutInflater.from(parent.context), parent, false), parent.context)
         }
@@ -44,11 +45,14 @@ class ItemListAdapter
             else -> throw IllegalArgumentException("Unknown ViewHolder type")
         }
     }
-    class ItemViewHolder(private var binding: UserProfileItemBinding)
+    class ItemViewHolder(private var binding: UserProfileItemBinding, private val context: Context)
         : RecyclerView.ViewHolder(binding.root) {
 
         private val fireStore = FireStore()
         fun bind(post: Post) {
+            var color = post.color
+            itemView.setBackgroundColor(Color.parseColor("#$color"))
+
             binding.author.text = post.author
             binding.body.text = post.body
             post.image?.getBytes(1024 * 1024)
@@ -70,8 +74,7 @@ class ItemListAdapter
 
         private val fireStore = FireStore()
         fun bind(post: Post) {
-            binding.author.text = post.author
-
+             binding.author.text = post.author
             binding.originalPoster.text = context.getString(R.string.original_poster, post.otherAuthor)
             binding.body.text = post.body
             post.image?.getBytes(1024 * 1024)
