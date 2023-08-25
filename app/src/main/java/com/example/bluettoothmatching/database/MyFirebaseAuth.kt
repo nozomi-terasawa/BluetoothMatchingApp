@@ -1,6 +1,7 @@
 package com.example.bluettoothmatching.database
 
 import com.example.bluettoothmatching.fragment.InitialScreenFragmentDirections
+import com.example.bluettoothmatching.fragment.UpDateProfileFragmentDirections
 import com.example.bluettoothmatching.navController
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.ktx.firestore
@@ -50,6 +51,10 @@ class MyFirebaseAuth {
                 "name" to userName
             )
             documentRef.update(updates)
+                .addOnSuccessListener {
+                    val action = UpDateProfileFragmentDirections.actionUpDateProfileFragment3ToProfileListFragment()
+                    navController.navigate(action)
+                }
         }
     }
 }

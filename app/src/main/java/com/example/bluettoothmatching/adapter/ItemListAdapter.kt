@@ -5,6 +5,7 @@ import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -51,7 +52,19 @@ class ItemListAdapter
         private val fireStore = FireStore()
         fun bind(post: Post) {
             var color = post.color
-            itemView.setBackgroundColor(Color.parseColor("#$color"))
+            try {
+                itemView.setBackgroundColor(Color.parseColor("#$color"))
+            } catch (e: java.lang.IllegalArgumentException) {
+                val drawableResourceId = when (color) {
+                    "hosizora" -> R.drawable.hosizora
+                    else -> 0
+                }
+                if (drawableResourceId != 0) {
+                    val drawable = ContextCompat.getDrawable(context, drawableResourceId)
+                    binding.backgroundImageView.setImageDrawable(drawable)
+                }
+                color = ""
+            }
 
             binding.author.text = post.author
             binding.body.text = post.body

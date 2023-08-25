@@ -64,7 +64,11 @@
     <fragment
         android:id="@+id/upDateProfileFragment3"
         android:name="com.example.bluettoothmatching.fragment.UpDateProfileFragment"
-        android:label="UpDateProfileFragment" />
+        android:label="UpDateProfileFragment" >
+        <action
+            android:id="@+id/action_upDateProfileFragment3_to_profileListFragment"
+            app:destination="@id/profileListFragment" />
+    </fragment>
     <fragment
         android:id="@+id/createPostFragment2"
         android:name="com.example.bluettoothmatching.fragment.CreatePostFragment"

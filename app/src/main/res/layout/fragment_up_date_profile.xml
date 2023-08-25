@@ -57,7 +57,7 @@
         app:layout_constraintBottom_toTopOf="@+id/third_text_input"
         app:errorEnabled="true"
         app:counterEnabled="true"
-        app:counterMaxLength="10"
+        app:counterMaxLength="15"
         app:hintEnabled="true"
         app:hintAnimationEnabled="true"
         android:layout_margin="15dp">
@@ -83,7 +83,7 @@
         app:layout_constraintBottom_toBottomOf="@id/save_button"
         app:errorEnabled="true"
         app:counterEnabled="true"
-        app:counterMaxLength="20"
+        app:counterMaxLength="100"
         app:hintEnabled="true"
         app:hintAnimationEnabled="true"
         android:layout_margin="15dp">
@@ -103,7 +103,7 @@
         android:id="@+id/save_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="保存"
+        android:text="変更を保存"
         android:textSize="30sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/third_text_input"

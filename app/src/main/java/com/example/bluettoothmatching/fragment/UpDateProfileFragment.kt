@@ -6,13 +6,18 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.example.bluettoothmatching.database.MyFirebaseAuth
+import com.example.bluettoothmatching.database.uid
 import com.example.bluettoothmatching.databinding.FragmentUpDateProfileBinding
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 
 private val myFirebaseAuth = MyFirebaseAuth()
 
 class UpDateProfileFragment : Fragment() {
     private var _binding: FragmentUpDateProfileBinding? = null
     private val binding get() = _binding!!
+    private val db = Firebase.firestore
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -24,6 +29,16 @@ class UpDateProfileFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        db.collection("users").document(uid!!)
+            .get()
+            .addOnSuccessListener { documentSnapshot ->
+                val userAddress = documentSnapshot.getString("macAddress")
+                val userInfo = documentSnapshot.getString("introduction")
+                val userName = documentSnapshot.getString("name")
+                binding.userAddressInput.setText(userAddress)
+                binding.userNameInput.setText(userName)
+                binding.userInfo.setText(userInfo)
+            }
         binding.saveButton.setOnClickListener {
             val userName = binding.userNameInput.text.toString()
             val userInfo = binding.userInfo.text.toString()
