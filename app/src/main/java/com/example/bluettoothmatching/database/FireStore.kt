@@ -11,6 +11,8 @@ import com.example.bluettoothmatching.bluetooth.tmpList
 import com.example.bluettoothmatching.data.Post
 import com.example.bluettoothmatching.databinding.FragmentCreatePostBinding
 import com.example.bluettoothmatching.databinding.FragmentProfileListBinding
+import com.example.bluettoothmatching.fragment.CreatePostFragmentDirections
+import com.example.bluettoothmatching.navController
 import com.google.android.gms.tasks.Task
 import com.google.android.gms.tasks.Tasks
 import com.google.firebase.firestore.DocumentSnapshot
@@ -62,6 +64,10 @@ class FireStore {
                 "color" to color
             )
         )
+            .addOnSuccessListener {
+                val action = CreatePostFragmentDirections.actionCreatePostFragment2ToProfileListFragment()
+                navController.navigate(action)
+            }
     }
 
     fun advertise(body: String, color: String) {
@@ -74,6 +80,10 @@ class FireStore {
                 "createTime" to FieldValue.serverTimestamp()
             )
         )
+            .addOnSuccessListener {
+                val action = CreatePostFragmentDirections.actionCreatePostFragment2ToProfileListFragment()
+                navController.navigate(action)
+            }
     }
 
     fun addLikedUserToPost(userId: String, postId: String) {
@@ -267,13 +277,46 @@ class FireStore {
                                         if (!postList.contains(userPost)) {
                                             postList.add(userPost)
                                         }
+                                        val postMap = hashMapOf(
+                                            "uid" to userPost.uid,
+                                            "postId" to userPost.postId,
+                                            "body" to userPost.body,
+                                            "likedCount" to userPost.likedCount,
+                                            "image" to userPost.image.toString(), // 画像の URL など適切な形式に変換
+                                            "author" to userPost.author,
+                                            "type" to userPost.type,
+                                            "otherAuthor" to userPost.otherAuthor,
+                                            "color" to userPost.color
+                                        )
+                                        val allPostRef = db.collection("allPost")
+                                        val query = allPostRef.whereEqualTo("postId", userPost.postId)
+                                        Log.d("seikou", "成功")
+                                        // todo 解読
+                                        query.get().addOnCompleteListener { task ->
+                                            if (task.isSuccessful) {
+                                                val documents = task.result?.documents
+                                                if (documents != null && documents.isNotEmpty()) {
+                                                    // 重複が存在する場合の処理
+                                                    Log.d("seikou", "重複")
+                                                } else {
+                                                    // 重複がない場合の処理
+                                                    allPostRef.add(postMap)
+                                                        .addOnSuccessListener {
+                                                            Log.d("seikou", "重複してない")
+                                                        }
+                                                        .addOnFailureListener {
+                                                            // 失敗時の処理
+                                                        }
+                                                }
+                                            }
+                                        }
                                     }
                                 }
                             tasks.add(task)
                             Tasks.whenAllSuccess<DocumentSnapshot>(tasks) // すべての非同期タスクが完了するまで待機
                                 .addOnSuccessListener {
-                                    itemListAdapter.updateList(postList)
-                                    _postListData.postValue(postList)
+                                    itemListAdapter.submitList(postList)
+                                    //_postListData.postValue(postList)
                                 }
                         }
                     }
@@ -325,7 +368,7 @@ class FireStore {
                         tasks.add(task)
                         Tasks.whenAllSuccess<DocumentSnapshot>(tasks) // すべての非同期タスクが完了するまで待機
                             .addOnSuccessListener {
-                                advertiseAdapter.updateList(advertiseList)
+                                advertiseAdapter.submitList(advertiseList)
                             }
                     }
                 }

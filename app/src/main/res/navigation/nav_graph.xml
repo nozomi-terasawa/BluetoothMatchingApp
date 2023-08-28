@@ -73,7 +73,11 @@
         android:id="@+id/createPostFragment2"
         android:name="com.example.bluettoothmatching.fragment.CreatePostFragment"
         android:label="fragment_create_post"
-        tools:layout="@layout/fragment_create_post" />
+        tools:layout="@layout/fragment_create_post" >
+        <action
+            android:id="@+id/action_createPostFragment2_to_profileListFragment"
+            app:destination="@id/profileListFragment" />
+    </fragment>
     <fragment
         android:id="@+id/advertiseListFragment"
         android:name="com.example.bluettoothmatching.fragment.AdvertiseListFragment"

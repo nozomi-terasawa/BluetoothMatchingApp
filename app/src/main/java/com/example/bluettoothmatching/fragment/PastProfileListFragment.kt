@@ -7,20 +7,20 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.bluettoothmatching.adapter.ItemListAdapter
-import com.example.bluettoothmatching.data.Profile
-import com.example.bluettoothmatching.database.FireStore
+import com.example.bluettoothmatching.data.Post
 import com.example.bluettoothmatching.databinding.FragmentPastProfileListBinding
 import com.google.android.gms.tasks.Task
+import com.google.android.gms.tasks.Tasks
+import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.FirebaseStorage
 
-var allList: MutableList<Profile> = mutableListOf() // todo　livedataにする
-private val fireStore = FireStore()
-private val db = Firebase.firestore
 
 class PastProfileListFragment : Fragment() {
-
+    private val db = Firebase.firestore
+    val storage = FirebaseStorage.getInstance()
     private var _binding: FragmentPastProfileListBinding? = null
     private val binding get() = _binding!!
 
@@ -43,15 +43,40 @@ class PastProfileListFragment : Fragment() {
 
         val tasks = mutableListOf<Task<QuerySnapshot>>()
 
-/*        val allUserRef = db.collection("allusers")
-        val task = allUserRef.get()
-            .addOnSuccessListener { querySnapshot ->
-                for (documentSnapshot in querySnapshot) {
-                    val profile = documentSnapshot.toObject(Profile::class.java)
+        val allPostRef = db.collection("allPost")
+        val allPostList = mutableListOf<Post>()
+        val task = allPostRef
+            .orderBy("createTime")
+            .get()
+            .addOnSuccessListener { document ->
+                for (documentSnapshot in document.documents) {
+                    val uid = documentSnapshot.getString("uid")
+                    val author = documentSnapshot.getString("author")
+                    val body = documentSnapshot.getString("body")
+                    val _image = documentSnapshot.getString("image")
+                    val image = storage.getReferenceFromUrl(_image!!)
+                    val likedCount = documentSnapshot.getLong("likedCount")
+                    val otherAuthor = documentSnapshot.getString("otherAuthor")
+                    val postId = documentSnapshot.getString("postId")
+                    val type = documentSnapshot.getLong("type")!!.toInt()
+                    val color = documentSnapshot.getString("color")
 
-                    profile?.let {
-                        if (!allList.contains(profile)) {
-                            allList.add(profile)
+
+                    val allPost = Post(
+                        uid = uid!!,
+                        postId = postId!!,
+                        body = body!!,
+                        likedCount = likedCount?.toInt()!!,
+                        image = image!!,
+                        author = author!!,
+                        type = type,
+                        otherAuthor = otherAuthor!!,
+                        color = color!!
+                    )
+
+                    allPost.let {
+                        if (!allPostList.contains(allPost)) {
+                            allPostList.add(allPost)
                         }
                     }
                 }
@@ -59,9 +84,8 @@ class PastProfileListFragment : Fragment() {
         tasks.add(task)
         Tasks.whenAllSuccess<DocumentSnapshot>(tasks) // すべての非同期タスクが完了するまで待機
             .addOnSuccessListener {
-                itemListAdapter.submitList(allList)
+                itemListAdapter.submitList(allPostList)
             }
- */
     }
 
     override fun onDestroyView() {
