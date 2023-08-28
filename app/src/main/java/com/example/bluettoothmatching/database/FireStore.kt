@@ -11,6 +11,8 @@ import com.example.bluettoothmatching.bluetooth.tmpList
 import com.example.bluettoothmatching.data.Post
 import com.example.bluettoothmatching.databinding.FragmentCreatePostBinding
 import com.example.bluettoothmatching.databinding.FragmentProfileListBinding
+import com.example.bluettoothmatching.databinding.RepostAdsItemBinding
+import com.example.bluettoothmatching.databinding.UserProfileItemBinding
 import com.example.bluettoothmatching.fragment.CreatePostFragmentDirections
 import com.example.bluettoothmatching.navController
 import com.google.android.gms.tasks.Task
@@ -86,7 +88,7 @@ class FireStore {
             }
     }
 
-    fun addLikedUserToPost(userId: String, postId: String) {
+    fun addLikedUserToPost(userId: String, postId: String, binding: UserProfileItemBinding) {
         val userRef = userDocumentRef.document(userId)
         val postRef = userRef.collection("post").document(postId)
         // サブコレクションを追加
@@ -103,6 +105,29 @@ class FireStore {
             postRef
                 .update("likeCount", likedCount)
                 .addOnSuccessListener {
+                    binding.likeCount.text = likedCount.toString()
+                }
+        }
+    }
+
+    fun addLikedUserToPost2(userId: String, postId: String, binding: RepostAdsItemBinding) {
+        val userRef = userDocumentRef.document(userId)
+        val postRef = userRef.collection("post").document(postId)
+        // サブコレクションを追加
+        postRef.collection("likedUsers").document(uid!!)
+            .set(
+                mapOf(
+                    "id" to userId, // いいねをつけたユーザーのid
+                )
+            )
+
+        val likedUsersRef = postRef.collection("likedUsers")
+        likedUsersRef.addSnapshotListener { snapshot, e ->
+            likedCount = snapshot?.size() ?: 0
+            postRef
+                .update("likeCount", likedCount)
+                .addOnSuccessListener {
+                    binding.likeCount.text = likedCount.toString()
                 }
         }
     }

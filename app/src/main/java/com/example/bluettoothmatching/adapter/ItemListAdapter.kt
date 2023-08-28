@@ -61,7 +61,14 @@ class ItemListAdapter
                 }
                 if (drawableResourceId != 0) {
                     val drawable = ContextCompat.getDrawable(context, drawableResourceId)
-                    binding.backgroundImageView.setImageDrawable(drawable)
+                    if (drawable != null) {
+                        binding.backgroundImageView.setImageDrawable(drawable)
+
+                    } else {
+                        // Drawable の取得に失敗した場合の処理
+                        binding.backgroundImageView.setImageDrawable(null)
+                    }
+
                 }
                 color = ""
             }
@@ -74,11 +81,16 @@ class ItemListAdapter
                     binding.image.setImageBitmap(bitmap)
                     bitmap = null
                 }
+                    // todo これがないと画像が増える
+                ?.addOnFailureListener {
+                    // 画像の取得に失敗した場合の処理
+                    binding.image.setImageBitmap(null)
+                }
             binding.likeCount.text = post.likedCount.toString()
             binding.likeButton.setOnClickListener {
                 val uid = post.uid
                 val postId = post.postId
-                fireStore.addLikedUserToPost(uid, postId)
+                fireStore.addLikedUserToPost(uid, postId, binding)
             }
         }
     }
@@ -99,7 +111,7 @@ class ItemListAdapter
             binding.likeButton.setOnClickListener {
                 val uid = post.uid
                 val postId = post.postId
-                fireStore.addLikedUserToPost(uid, postId)
+                fireStore.addLikedUserToPost2(uid, postId, binding)
             }
         }
     }
