@@ -1,6 +1,7 @@
 package com.example.bluettoothmatching.adapter
 
 import android.graphics.BitmapFactory
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -42,6 +43,10 @@ class AdvertiseAdapter
 
         private val fireStore = FireStore()
             fun bind(post: Post) {
+                var color = post.color
+                itemView.setBackgroundColor(Color.parseColor("#$color"))
+                color = ""
+
                 binding.author.text = post.author
                 binding.body.text = post.body
                 post.image?.getBytes(1024 * 1024)

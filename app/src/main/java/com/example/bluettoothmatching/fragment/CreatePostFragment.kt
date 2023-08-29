@@ -74,12 +74,6 @@ class CreatePostFragment : Fragment() {
             binding.cardView.setBackgroundColor(Color.parseColor("#98FB98"))
         }
 
-        binding.hosizoraButton.setOnClickListener {
-            color = "hosizora"
-            selectColorFlag = true
-            binding.cardView.setBackgroundResource(R.drawable.hosizora)
-        }
-
         binding.postButton.setOnClickListener {
             val body = binding.createBody.text.toString()
 

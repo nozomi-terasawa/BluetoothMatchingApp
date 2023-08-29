@@ -79,7 +79,8 @@ class FireStore {
             mapOf(
                 "body" to body,
                 "postId" to advertiseRef.id,
-                "createTime" to FieldValue.serverTimestamp()
+                "createTime" to FieldValue.serverTimestamp(),
+                "color" to color
             )
         )
             .addOnSuccessListener {
@@ -194,6 +195,7 @@ class FireStore {
                         .addOnSuccessListener { advertiseSnapshot ->
                             val postId = advertiseSnapshot.id
                             val body = advertiseSnapshot.getString("body")
+                            val color = advertiseSnapshot.getString("color")
                             imageRef = postId
                             userRef.collection("post") // todo ドキュメントIDを自動生成
                                 .get()
@@ -208,7 +210,8 @@ class FireStore {
                                                 "body" to body,
                                                 "likeCount" to 0, // いいねされた数
                                                 "type" to 2,
-                                                "createTime" to FieldValue.serverTimestamp()
+                                                "createTime" to FieldValue.serverTimestamp(),
+                                                "color" to color
 
                                             )
                                         )
