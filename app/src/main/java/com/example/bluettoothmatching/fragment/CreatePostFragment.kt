@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
@@ -82,9 +83,26 @@ class CreatePostFragment : Fragment() {
         binding.postButton.setOnClickListener {
             val body = binding.createBody.text.toString()
 
-            fireStore.post(body, color)
-            if (selectColorFlag == true) {
-                fireStore.usePoint()
+            if (color != "FFFFFF") {    val builder = AlertDialog.Builder(requireContext()) // FragmentではrequireContext()を使う
+                .setTitle("")
+                .setMessage("ポイントを使用します")
+                .setPositiveButton("はい") { dialog, which ->
+                    // Yesが押された時の挙動
+                    fireStore.post(body, color)
+                    if (selectColorFlag == true) {
+                        fireStore.usePoint()
+                    }
+                }
+                .setNegativeButton("いいえ") { dialog, which ->
+                    // Noが押された時
+                    dialog.dismiss()
+                }
+                builder.show()
+            } else {
+                fireStore.post(body, color)
+                if (selectColorFlag == true) {
+                    fireStore.usePoint()
+                }
             }
 
             if (imageUri != null) {
