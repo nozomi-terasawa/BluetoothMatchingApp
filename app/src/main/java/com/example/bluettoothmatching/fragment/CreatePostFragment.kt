@@ -74,6 +74,12 @@ class CreatePostFragment : Fragment() {
             binding.cardView.setBackgroundColor(Color.parseColor("#98FB98"))
         }
 
+        binding.gradientButton1.setOnClickListener {
+            color = "gradient1"
+            selectColorFlag = true
+            binding.cardView.setBackgroundResource(R.drawable.gradient)
+        }
+
         binding.postButton.setOnClickListener {
             val body = binding.createBody.text.toString()
 

@@ -10,6 +10,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.bluettoothmatching.data.Post
 import com.example.bluettoothmatching.database.FireStore
 import com.example.bluettoothmatching.databinding.AdvertiseItemBinding
+import com.example.bluettoothmatching.fragment.AdvertiseListFragmentDirections
+import com.example.bluettoothmatching.navController
 
 class AdvertiseAdapter
     : ListAdapter<Post, AdvertiseAdapter.ItemViewHolder>(DiffCallback) {
@@ -56,6 +58,12 @@ class AdvertiseAdapter
                     }
                 binding.getAdsButton.setOnClickListener {
                     fireStore.insertAdsForPost(post.uid, post.postId)
+                }
+
+                binding.author.setOnClickListener {
+                    val uid = post.uid
+                    val action = AdvertiseListFragmentDirections.actionAdvertiseListFragmentToYourProfileDetailFragment(uid)
+                    navController.navigate(action)
                 }
             }
         }

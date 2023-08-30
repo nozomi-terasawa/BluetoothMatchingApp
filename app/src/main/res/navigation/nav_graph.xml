@@ -30,6 +30,9 @@
         <action
             android:id="@+id/action_pastProfileListFragment_to_profileListFragment"
             app:destination="@id/profileListFragment" />
+        <action
+            android:id="@+id/action_pastProfileListFragment_to_yourProfileDetailFragment"
+            app:destination="@id/yourProfileDetailFragment" />
     </fragment>
     <fragment
         android:id="@+id/profileListFragment"
@@ -51,6 +54,9 @@
         <action
             android:id="@+id/action_profileListFragment_to_advertiseListFragment"
             app:destination="@id/advertiseListFragment" />
+        <action
+            android:id="@+id/action_profileListFragment_to_yourProfileDetailFragment"
+            app:destination="@id/yourProfileDetailFragment" />
     </fragment>
     <fragment
         android:id="@+id/createProfileFragment"
@@ -82,6 +88,19 @@
         android:id="@+id/advertiseListFragment"
         android:name="com.example.bluettoothmatching.fragment.AdvertiseListFragment"
         android:label="fragment_advertise_list"
-        tools:layout="@layout/fragment_advertise_list" />
+        tools:layout="@layout/fragment_advertise_list" >
+        <action
+            android:id="@+id/action_advertiseListFragment_to_yourProfileDetailFragment"
+            app:destination="@id/yourProfileDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/yourProfileDetailFragment"
+        android:name="com.example.bluettoothmatching.fragment.YourProfileDetailFragment"
+        android:label="fragment_your_profile_detail"
+        tools:layout="@layout/fragment_your_profile_detail" >
+        <argument
+            android:name="uid"
+            app:argType="string" />
+    </fragment>
 
 </navigation>

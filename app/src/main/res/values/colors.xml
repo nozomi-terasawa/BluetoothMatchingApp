@@ -7,4 +7,8 @@
     <color name="back">#A7ECEE</color>
     <color name="colore">#FFEEBB</color>
 
+    <color name="start_color_1">#12C2E9</color>
+    <color name="mid_color_1">#C471ED</color>
+    <color name="end_color_1">#F64F59</color>
+
 </resources>

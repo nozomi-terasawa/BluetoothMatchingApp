@@ -41,12 +41,13 @@ class PastProfileListFragment : Fragment() {
         // itemListAdapter.submitList(allList)
         //fireStore.getData(itemListAdapter, this)
 
+
+
         val tasks = mutableListOf<Task<QuerySnapshot>>()
 
         val allPostRef = db.collection("allPost")
         val allPostList = mutableListOf<Post>()
         val task = allPostRef
-            .orderBy("createTime")
             .get()
             .addOnSuccessListener { document ->
                 for (documentSnapshot in document.documents) {

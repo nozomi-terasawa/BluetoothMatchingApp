@@ -13,6 +13,9 @@ import com.example.bluettoothmatching.data.Post
 import com.example.bluettoothmatching.database.FireStore
 import com.example.bluettoothmatching.databinding.RepostAdsItemBinding
 import com.example.bluettoothmatching.databinding.UserProfileItemBinding
+import com.example.bluettoothmatching.fragment.PastProfileListFragmentDirections
+import com.example.bluettoothmatching.fragment.ProfileListFragmentDirections
+import com.example.bluettoothmatching.navController
 
 class ItemListAdapter
     : ListAdapter<Post, RecyclerView.ViewHolder>(DiffUtilItemCallback) {
@@ -51,7 +54,17 @@ class ItemListAdapter
         private val fireStore = FireStore()
         fun bind(post: Post) {
             var color = post.color
-            itemView.setBackgroundColor(Color.parseColor("#$color"))
+            try {
+                itemView.setBackgroundColor(Color.parseColor("#$color"))
+            } catch (e: java.lang.IllegalArgumentException) {
+                val drawableResourceId = when (color) {
+                    "gradient1" -> R.drawable.gradient
+                    else -> null
+                }
+                if (drawableResourceId != null) {
+                    itemView.setBackgroundResource(drawableResourceId)
+                }
+            }
             color = ""
 
             binding.author.text = post.author
@@ -73,6 +86,11 @@ class ItemListAdapter
                 val postId = post.postId
                 fireStore.addLikedUserToPost(uid, postId, binding)
             }
+            binding.author.setOnClickListener {
+                val uid = post.uid
+                val action = PastProfileListFragmentDirections.actionPastProfileListFragmentToYourProfileDetailFragment(uid)
+                navController.navigate(action)
+            }
         }
     }
     class AdsItemViewHolder(private var binding: RepostAdsItemBinding, private val context: Context)
@@ -81,10 +99,20 @@ class ItemListAdapter
         private val fireStore = FireStore()
         fun bind(post: Post) {
             var color = post.color
-            itemView.setBackgroundColor(Color.parseColor("#$color"))
+            try {
+                itemView.setBackgroundColor(Color.parseColor("#$color"))
+            } catch (e: java.lang.IllegalArgumentException) {
+                val drawableResourceId = when (color) {
+                    "gradient1" -> R.drawable.gradient
+                    else -> null
+                }
+                if (drawableResourceId != null) {
+                    itemView.setBackgroundResource(drawableResourceId)
+                }
+            }
             color = ""
 
-             binding.author.text = post.author
+            binding.author.text = post.author
             binding.originalPoster.text = context.getString(R.string.original_poster, post.otherAuthor)
             binding.body.text = post.body
             post.image?.getBytes(1024 * 1024)
@@ -97,6 +125,17 @@ class ItemListAdapter
                 val uid = post.uid
                 val postId = post.postId
                 fireStore.addLikedUserToPost2(uid, postId, binding)
+            }
+
+            binding.author.setOnClickListener {
+                val uid = post.uid
+                try {
+                    val action = ProfileListFragmentDirections.actionProfileListFragmentToYourProfileDetailFragment(uid)
+                    navController.navigate(action)
+                } catch (e: IllegalArgumentException) {
+                    val action = PastProfileListFragmentDirections.actionPastProfileListFragmentToYourProfileDetailFragment(uid)
+                    navController.navigate(action)
+                }
             }
         }
     }

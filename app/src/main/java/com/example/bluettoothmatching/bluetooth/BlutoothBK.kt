@@ -63,6 +63,7 @@ class BlutoothBK : Service() {
                     MacAddressList.add("3C:01:EF:0e:ee:e3")
                     MacAddressList.add("12:34:56:78:9")
                     tmpList.value = MacAddressList.filterNotNull().distinct().toMutableList()
+                    Log.d("tmpList", tmpList.toString())
                     return
                 }
                 BluetoothAdapter.ACTION_DISCOVERY_FINISHED ->{
