@@ -3,6 +3,7 @@ package com.example.bluettoothmatching.adapter
 import android.content.Context
 import android.graphics.BitmapFactory
 import android.graphics.Color
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -53,6 +54,24 @@ class ItemListAdapter
 
         private val fireStore = FireStore()
         fun bind(post: Post) {
+            Log.d("getImage", "bind関数実行")
+            post.image?.getBytes(5000 * 5000)
+                ?.addOnSuccessListener { imageData ->
+                    Log.d("getImage", "画像の取得に成功")
+                    var bitmap = BitmapFactory.decodeByteArray(imageData, 0, imageData.size)
+
+                    // 画像の取得が成功した後にビューに設定
+                    binding.image.post {
+                        binding.image.setImageBitmap(bitmap)
+                    }
+                }
+                ?.addOnFailureListener { exception ->
+                    Log.e("getImage", "画像の取得に失敗: ${exception.message}")
+
+                    // 画像の取得が失敗した場合はビューをクリア
+                    binding.image.setImageBitmap(null)
+                }
+
             var color = post.color
             try {
                 itemView.setBackgroundColor(Color.parseColor("#$color"))
@@ -69,17 +88,6 @@ class ItemListAdapter
 
             binding.author.text = post.author
             binding.body.text = post.body
-            post.image?.getBytes(1024 * 1024)
-                ?.addOnSuccessListener { imageData ->
-                    var bitmap = BitmapFactory.decodeByteArray(imageData, 0, imageData.size)
-                    binding.image.setImageBitmap(bitmap)
-                    bitmap = null
-                }
-                    // todo これがないと画像が増える
-                ?.addOnFailureListener {
-                    // 画像の取得に失敗した場合の処理
-                    binding.image.setImageBitmap(null)
-                }
             binding.likeCount.text = post.likedCount.toString()
             binding.likeButton.setOnClickListener {
                 val uid = post.uid

@@ -1,12 +1,15 @@
 package com.example.bluettoothmatching.adapter
 
+import android.content.Context
 import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.example.bluettoothmatching.R
 import com.example.bluettoothmatching.data.Post
 import com.example.bluettoothmatching.database.FireStore
 import com.example.bluettoothmatching.databinding.AdvertiseItemBinding
@@ -31,7 +34,7 @@ class AdvertiseAdapter
         return  ItemViewHolder(
             AdvertiseItemBinding.inflate(
                 LayoutInflater.from(parent.context), parent, false
-            )
+            ), parent.context
         )
     }
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
@@ -40,13 +43,23 @@ class AdvertiseAdapter
         }
         holder.bind(current)
     }
-    class ItemViewHolder(private var binding: AdvertiseItemBinding)
+    class ItemViewHolder(private var binding: AdvertiseItemBinding, private val fragmentContext: Context)
         :RecyclerView.ViewHolder(binding.root) {
 
         private val fireStore = FireStore()
             fun bind(post: Post) {
                 var color = post.color
-                itemView.setBackgroundColor(Color.parseColor("#$color"))
+                try {
+                    itemView.setBackgroundColor(Color.parseColor("#$color"))
+                } catch (e: java.lang.IllegalArgumentException) {
+                    val drawableResourceId = when (color) {
+                        "gradient1" -> R.drawable.gradient
+                        else -> null
+                    }
+                    if (drawableResourceId != null) {
+                        itemView.setBackgroundResource(drawableResourceId)
+                    }
+                }
                 color = ""
 
                 binding.author.text = post.author
@@ -57,7 +70,19 @@ class AdvertiseAdapter
                         binding.image.setImageBitmap(bitmap)
                     }
                 binding.getAdsButton.setOnClickListener {
-                    fireStore.insertAdsForPost(post.uid, post.postId)
+                    val message = post.author + "さんの広告を取得しますか？"
+                    val builder = AlertDialog.Builder(fragmentContext) // FragmentではrequireContext()を使う
+                        .setTitle("")
+                        .setMessage(message)
+                        .setPositiveButton("はい") { dialog, which ->
+                            fireStore.insertAdsForPost(post.uid, post.postId)
+                        }
+                        .setNegativeButton("いいえ") { dialog, which ->
+                            // Noが押された時
+                            dialog.dismiss()
+                        }
+                    builder.show()
+                    // fireStore.insertAdsForPost(post.uid, post.postId)
                 }
 
                 binding.author.setOnClickListener {

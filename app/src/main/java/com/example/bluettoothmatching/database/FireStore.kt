@@ -67,8 +67,6 @@ class FireStore {
             )
         )
             .addOnSuccessListener {
-                val action = CreatePostFragmentDirections.actionCreatePostFragment2ToProfileListFragment()
-                navController.navigate(action)
             }
     }
 

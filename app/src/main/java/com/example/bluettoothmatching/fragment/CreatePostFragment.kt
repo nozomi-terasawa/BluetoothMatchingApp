@@ -4,6 +4,7 @@ import android.content.Intent
 import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,6 +18,7 @@ import com.example.bluettoothmatching.database.FireBaseStorage
 import com.example.bluettoothmatching.database.FireStore
 import com.example.bluettoothmatching.database.imageRef
 import com.example.bluettoothmatching.databinding.FragmentCreatePostBinding
+import com.example.bluettoothmatching.navController
 
 class CreatePostFragment : Fragment() {
     private var _binding: FragmentCreatePostBinding? = null
@@ -83,7 +85,8 @@ class CreatePostFragment : Fragment() {
         binding.postButton.setOnClickListener {
             val body = binding.createBody.text.toString()
 
-            if (color != "FFFFFF") {    val builder = AlertDialog.Builder(requireContext()) // FragmentではrequireContext()を使う
+            if (color != "FFFFFF") {
+                val builder = AlertDialog.Builder(requireContext()) // FragmentではrequireContext()を使う
                 .setTitle("")
                 .setMessage("ポイントを使用します")
                 .setPositiveButton("はい") { dialog, which ->
@@ -104,10 +107,13 @@ class CreatePostFragment : Fragment() {
                     fireStore.usePoint()
                 }
             }
-
             if (imageUri != null) {
+                Log.d("getImage", "画像がnull出はないのでアップします")
                 storage.uploadImageToFirebaseStorage(imageUri!!, imageRef.toString())
-                imageUri = null
+                // imageUri = null
+            } else {
+                val action = CreatePostFragmentDirections.actionCreatePostFragment2ToProfileListFragment()
+                navController.navigate(action)
             }
         }
 
