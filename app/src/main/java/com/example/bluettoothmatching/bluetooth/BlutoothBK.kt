@@ -27,6 +27,7 @@ class BlutoothBK : Service() {
     private var MacAddressList = mutableListOf<String?>()
     companion object {
         const val CHANNEL_ID = "1111"
+        const val tuuti_ID = "2222"
     }
 
     private var bluetoothAdapter: BluetoothAdapter? = null
@@ -78,6 +79,13 @@ class BlutoothBK : Service() {
         }
     }
     override fun onCreate() {
+
+        // 通知関連
+        val name = "a"
+        val importance = NotificationManager.IMPORTANCE_HIGH
+        val channel = NotificationChannel(tuuti_ID,name,importance)
+        val manager = getSystemService(NotificationManager::class.java)
+        manager.createNotificationChannel(channel)
 
         Log.d("startSuccess2", "onCreate() success")
 

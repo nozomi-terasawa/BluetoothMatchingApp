@@ -12,16 +12,16 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="掲載広告"
-        android:textSize="30sp"
+        android:textSize="26sp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:padding="10dp" />
+        android:padding="15dp" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
-        android:layout_height="500dp"
+        android:layout_height="570dp"
         android:scrollbars="vertical"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

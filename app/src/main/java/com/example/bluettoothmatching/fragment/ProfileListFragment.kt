@@ -25,7 +25,6 @@ class ProfileListFragment : Fragment() {
     private val fireStore = FireStore()
 
     override fun onCreateView(
-
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
@@ -53,7 +52,7 @@ class ProfileListFragment : Fragment() {
         fireStore.getPoint(binding, requireContext())
 
         tmpList.observe(viewLifecycleOwner, { value ->
-            fireStore.getData(itemListAdapter)
+            fireStore.getData(itemListAdapter, requireContext())
         })
 
         fireStore.postListLiveData.observe(viewLifecycleOwner, {

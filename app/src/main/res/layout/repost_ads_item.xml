@@ -17,30 +17,32 @@
             android:id="@+id/author"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingBottom="15dp"
+            android:padding="5dp"
             android:textSize="20sp"
-            app:layout_constraintBottom_toTopOf="@id/original_poster"
+            app:layout_constraintTop_toBottomOf="@id/original_poster"
             app:layout_constraintStart_toStartOf="parent"
-            tools:text="author" />
+            tools:text="author"
+            android:textStyle="bold"/>
 
         <TextView
             android:id="@+id/original_poster"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingBottom="15dp"
+            android:padding="5dp"
             android:text="@string/original_poster"
-            android:textSize="20sp"
-            app:layout_constraintBottom_toTopOf="@id/body"
-            app:layout_constraintStart_toStartOf="parent" />
+            android:textSize="15sp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
 
         <TextView
             android:id="@+id/body"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingBottom="15dp"
-            android:textSize="20sp"
+            android:padding="5dp"
+            android:textSize="18sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/original_poster"
+            app:layout_constraintTop_toBottomOf="@id/author"
             tools:text="body" />
 
         <ImageView
@@ -48,7 +50,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/body" />
+            app:layout_constraintTop_toBottomOf="@id/body"
+            android:padding="5dp"/>
 
         <Button
             android:id="@+id/like_button"

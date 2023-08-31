@@ -2,11 +2,14 @@ package com.example.bluettoothmatching.database
 
 import android.content.Context
 import android.util.Log
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.bluettoothmatching.R
 import com.example.bluettoothmatching.adapter.AdvertiseAdapter
 import com.example.bluettoothmatching.adapter.ItemListAdapter
+import com.example.bluettoothmatching.bluetooth.BlutoothBK.Companion.tuuti_ID
 import com.example.bluettoothmatching.bluetooth.tmpList
 import com.example.bluettoothmatching.data.Post
 import com.example.bluettoothmatching.databinding.FragmentCreatePostBinding
@@ -32,6 +35,7 @@ class FireStore {
     private val storage = Firebase.storage
     private val storageRef = storage.reference
     private var likedCount: Int = 0
+    private lateinit var fragmentContext: Context
 
     private val userDocumentRef = db.collection("users")
     private val userRef = userDocumentRef.document(uid!!)
@@ -82,8 +86,6 @@ class FireStore {
             )
         )
             .addOnSuccessListener {
-                val action = CreatePostFragmentDirections.actionCreatePostFragment2ToProfileListFragment()
-                navController.navigate(action)
             }
     }
 
@@ -183,6 +185,25 @@ class FireStore {
             }
     }
 
+    fun usePoint2() {
+        var flag = true
+        Log.d("usePoint", "ture")
+        userRef
+            .addSnapshotListener { snapshot, e ->
+                if (flag == true) {
+                    if (snapshot != null) {
+                        var point = snapshot.getLong("point")
+                        if (point!! >= 20) {
+                            point -= 20
+                            userRef
+                                .update("point", point)
+                            flag = false
+                        }
+                    }
+                }
+            }
+    }
+
     fun insertAdsForPost(uid: String, postId: String) {
         userDocumentRef.document(uid)
             .addSnapshotListener { snapshot, e ->
@@ -220,7 +241,8 @@ class FireStore {
             }
     }
 
-    fun getData(itemListAdapter: ItemListAdapter) {
+    fun getData(itemListAdapter: ItemListAdapter, context: Context) {
+        fragmentContext = context
         Log.d("getData", "true")
         userDocumentRef
             .addSnapshotListener { snapshot, e -> // users
@@ -250,6 +272,14 @@ class FireStore {
                                                             userDocumentRef.document(matchUid)
                                                                 .get()
                                                                 .addOnSuccessListener { snapshot ->
+                                                                    val builder = NotificationCompat.Builder(fragmentContext, tuuti_ID)
+                                                                    builder.setSmallIcon(androidx.appcompat.R.drawable.abc_ic_menu_copy_mtrl_am_alpha)
+                                                                    builder.setContentTitle("マッチング！！！！！")
+                                                                    builder.setContentText(author + "さんとマッチング! 10ポイントGet!")
+                                                                    val notification = builder.build()
+                                                                    val manager = NotificationManagerCompat.from(fragmentContext)
+                                                                    manager.notify(100,notification)
+
                                                                     var point =
                                                                         snapshot.getLong("point")!!
                                                                             .toInt()

@@ -5,7 +5,7 @@
     <string name="open_bar">開</string>
     <string name="close_bar">閉</string>
 
-    <string name="original_poster">%sさんの広告</string>
+    <string name="original_poster">☆%sさんの広告のリポスト☆</string>
     <string name="current_point">ポイント：%s</string>
 
 

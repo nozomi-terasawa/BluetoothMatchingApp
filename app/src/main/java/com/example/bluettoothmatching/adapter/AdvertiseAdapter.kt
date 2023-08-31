@@ -3,6 +3,7 @@ package com.example.bluettoothmatching.adapter
 import android.content.Context
 import android.graphics.BitmapFactory
 import android.graphics.Color
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
@@ -53,7 +54,9 @@ class AdvertiseAdapter
                     itemView.setBackgroundColor(Color.parseColor("#$color"))
                 } catch (e: java.lang.IllegalArgumentException) {
                     val drawableResourceId = when (color) {
-                        "gradient1" -> R.drawable.gradient
+                        "gradient1" -> R.drawable.gradient1
+                        "gradient2" -> R.drawable.gradient2
+                        "gradient3" -> R.drawable.gradient3
                         else -> null
                     }
                     if (drawableResourceId != null) {
@@ -64,11 +67,18 @@ class AdvertiseAdapter
 
                 binding.author.text = post.author
                 binding.body.text = post.body
-                post.image?.getBytes(1024 * 1024)
+                post.image?.getBytes(5000 * 5000)
                     ?.addOnSuccessListener { imageData ->
                         val bitmap = BitmapFactory.decodeByteArray(imageData, 0, imageData.size)
                         binding.image.setImageBitmap(bitmap)
                     }
+                    ?.addOnFailureListener { exception ->
+                        Log.e("getImage", "画像の取得に失敗: ${exception.message}")
+
+                        // 画像の取得が失敗した場合はビューをクリア
+                        binding.image.setImageBitmap(null)
+                    }
+
                 binding.getAdsButton.setOnClickListener {
                     val message = post.author + "さんの広告を取得しますか？"
                     val builder = AlertDialog.Builder(fragmentContext) // FragmentではrequireContext()を使う

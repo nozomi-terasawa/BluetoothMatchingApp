@@ -7,38 +7,51 @@
     tools:context=".fragment.YourProfileDetailFragment">
 
     <TextView
+        android:id="@+id/your_profile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="プロフィール"
+        android:textSize="26sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:padding="15dp" />
+
+    <TextView
         android:id="@+id/name_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:textSize="30sp"
-        android:layout_margin="15dp"/>
+        app:layout_constraintTop_toBottomOf="@id/your_profile"
+        android:textSize="24sp"
+        android:layout_margin="10dp"/>
 
     <TextView
         android:id="@+id/introduction_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="25sp"
+        android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/name_text"
-        android:layout_margin="15dp" />
+        android:layout_margin="10dp" />
 
     <TextView
         android:id="@+id/your_posts"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="これまでの投稿"
-        android:textSize="30sp"
+        android:textSize="25sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/introduction_text" />
+        app:layout_constraintTop_toBottomOf="@id/introduction_text"
+        android:layout_margin="10dp"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="435dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/your_posts" />
+        app:layout_constraintTop_toBottomOf="@id/your_posts"
+        android:layout_margin="10dp"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

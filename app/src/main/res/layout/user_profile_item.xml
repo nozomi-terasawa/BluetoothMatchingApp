@@ -33,16 +33,18 @@
             tools:text="author"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintBottom_toTopOf="@id/body"
-            android:paddingBottom="15dp"/>
+            android:textStyle="bold"
+            android:padding="5dp"/>
 
         <TextView
             android:id="@+id/body"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="20sp"
+            android:textSize="18sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/author"
-            tools:text="body" />
+            tools:text="body"
+            android:padding="5dp"/>
 
         <ImageView
             android:id="@+id/image"
@@ -50,7 +52,8 @@
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/body" />
+            app:layout_constraintTop_toBottomOf="@id/body"
+            android:padding="5dp"/>
 
         <Button
             android:id="@+id/like_button"

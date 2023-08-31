@@ -11,4 +11,14 @@
     <color name="mid_color_1">#C471ED</color>
     <color name="end_color_1">#F64F59</color>
 
+    <color name="start_color_2">#C6FFDD</color>
+    <color name="mid_color_2">#FBD786</color>
+    <color name="end_color_2">#F7797D</color>
+
+    <color name="start_color_3">#00F260</color>
+    <color name="end_color_3">#0575E6</color>
+
+
+
+
 </resources>

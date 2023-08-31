@@ -65,6 +65,7 @@ class ItemListAdapter
                         binding.image.setImageBitmap(bitmap)
                     }
                 }
+                    // これないとだめ
                 ?.addOnFailureListener { exception ->
                     Log.e("getImage", "画像の取得に失敗: ${exception.message}")
 
@@ -77,7 +78,9 @@ class ItemListAdapter
                 itemView.setBackgroundColor(Color.parseColor("#$color"))
             } catch (e: java.lang.IllegalArgumentException) {
                 val drawableResourceId = when (color) {
-                    "gradient1" -> R.drawable.gradient
+                    "gradient1" -> R.drawable.gradient1
+                    "gradient2" -> R.drawable.gradient2
+                    "gradient3" -> R.drawable.gradient3
                     else -> null
                 }
                 if (drawableResourceId != null) {
@@ -111,7 +114,7 @@ class ItemListAdapter
                 itemView.setBackgroundColor(Color.parseColor("#$color"))
             } catch (e: java.lang.IllegalArgumentException) {
                 val drawableResourceId = when (color) {
-                    "gradient1" -> R.drawable.gradient
+                    "gradient1" -> R.drawable.gradient1
                     else -> null
                 }
                 if (drawableResourceId != null) {

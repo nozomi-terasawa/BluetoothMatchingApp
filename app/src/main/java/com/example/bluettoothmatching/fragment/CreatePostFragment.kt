@@ -54,61 +54,90 @@ class CreatePostFragment : Fragment() {
         fireStore.currentPoint(binding, requireContext())
 
         var color: String = "FFFFFF"
-        var selectColorFlag = false
+        var selectColorFlag_10 = false
+        var selectColorFlag_20 = false
 
 
         binding.pinkButton.setOnClickListener {
             // todo ポイントが１０以上じゃないと押せないようにする
             color = "FFC0CB"
-            selectColorFlag = true
+            selectColorFlag_10 = true
             binding.cardView.setBackgroundColor(Color.parseColor("#FFC0CB"))
         }
 
         binding.blueButton.setOnClickListener {
             color = "AFEEEE"
-            selectColorFlag = true
+            selectColorFlag_10 = true
             binding.cardView.setBackgroundColor(Color.parseColor("#AFEEEE"))
         }
 
         binding.greenButton.setOnClickListener {
             color = "98FB98"
-            selectColorFlag = true
+            selectColorFlag_10 = true
             binding.cardView.setBackgroundColor(Color.parseColor("#98FB98"))
         }
 
         binding.gradientButton1.setOnClickListener {
             color = "gradient1"
-            selectColorFlag = true
-            binding.cardView.setBackgroundResource(R.drawable.gradient)
+            selectColorFlag_20 = true
+            binding.cardView.setBackgroundResource(R.drawable.gradient1)
+        }
+
+        binding.gradientButton2.setOnClickListener {
+            color = "gradient2"
+            selectColorFlag_20 = true
+            binding.cardView.setBackgroundResource(R.drawable.gradient2)
+        }
+
+        binding.gradientButton3.setOnClickListener {
+            color = "gradient3"
+            selectColorFlag_20 = true
+            binding.cardView.setBackgroundResource(R.drawable.gradient3)
         }
 
         binding.postButton.setOnClickListener {
             val body = binding.createBody.text.toString()
 
-            if (color != "FFFFFF") {
+            if (color != "FFFFFF" && selectColorFlag_10 == true) {
                 val builder = AlertDialog.Builder(requireContext()) // FragmentではrequireContext()を使う
-                .setTitle("")
-                .setMessage("ポイントを使用します")
+                .setTitle("ポイントの使用")
+                .setMessage("10ポイントを使用します")
                 .setPositiveButton("はい") { dialog, which ->
                     // Yesが押された時の挙動
                     fireStore.post(body, color)
-                    if (selectColorFlag == true) {
-                        fireStore.usePoint()
-                    }
+                    fireStore.usePoint()
                 }
                 .setNegativeButton("いいえ") { dialog, which ->
                     // Noが押された時
                     dialog.dismiss()
                 }
                 builder.show()
+            } else if (color != "FFFFFF" && selectColorFlag_20 == true) {
+                val builder = AlertDialog.Builder(requireContext()) // FragmentではrequireContext()を使う
+                    .setTitle("ポイントの使用")
+                    .setMessage("20ポイントを使用します")
+                    .setPositiveButton("はい") { dialog, which ->
+                        // Yesが押された時の挙動
+                        fireStore.post(body, color)
+                        fireStore.usePoint2()
+                    }
+                    .setNegativeButton("いいえ") { dialog, which ->
+                        // Noが押された時
+                        dialog.dismiss()
+                    }
+                builder.show()
             } else {
                 fireStore.post(body, color)
+                    /*
                 if (selectColorFlag == true) {
                     fireStore.usePoint()
                 }
+
+                     */
             }
             if (imageUri != null) {
                 Log.d("getImage", "画像がnull出はないのでアップします")
+
                 storage.uploadImageToFirebaseStorage(imageUri!!, imageRef.toString())
                 // imageUri = null
             } else {
@@ -123,7 +152,9 @@ class CreatePostFragment : Fragment() {
 
             if (imageUri != null) {
                 storage.uploadImageToFirebaseStorage(imageUri!!, imageRef.toString())
-                imageUri = null
+            } else {
+                val action = CreatePostFragmentDirections.actionCreatePostFragment2ToProfileListFragment()
+                navController.navigate(action)
             }
         }
 

@@ -13,11 +13,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="投稿を作成する"
-        android:textSize="30sp"
+        android:textSize="26sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_margin="15dp" />
+        android:padding="10dp" />
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/cardView"
@@ -62,17 +62,19 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/insert_image"
-        android:layout_margin="10dp" />
+        android:padding="8dp"
+        android:layout_marginTop="7dp"/>
 
     <TextView
         android:id="@+id/current_point"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="20sp"
-        app:layout_constraintStart_toEndOf="@id/select_color_text"
+        android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/insert_image"
-        app:layout_constraintBottom_toTopOf="@id/table_layout" />
+        app:layout_constraintTop_toBottomOf="@id/select_color_text"
+        app:layout_constraintBottom_toTopOf="@id/table_layout"
+        android:padding="5dp"
+        android:layout_marginEnd="10dp"/>
 
     <!--<ImageView
         android:id="@+id/image"
@@ -108,11 +110,26 @@
     <TableLayout
         android:id="@+id/table_layout"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/select_color_text"
+        app:layout_constraintTop_toBottomOf="@+id/current_point"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         tools:layout_editor_absoluteX="1dp"
         tools:layout_editor_absoluteY="467dp">
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/point_text_10"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="使用ポイント：10"
+                android:paddingStart="10dp"/>
+
+
+        </TableRow>
+
 
         <TableRow
             android:layout_width="match_parent"
@@ -152,35 +169,59 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
+            <TextView
+                android:id="@+id/point_text_20"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="使用ポイント：20"
+                android:paddingStart="10dp"/>
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="5dp" >
+
+
+
             <Button
                 android:id="@+id/gradient_button1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Button"
+                android:text="グラデーション1"
+                android:textSize="10sp"
+                android:textColor="#000000"
+
+                app:backgroundTint="@null"
+                android:background="@drawable/gradient1"
+                style="@style/Widget.MaterialComponents.Button"
                 android:layout_weight="1"
                 android:layout_margin="5dp"/>
 
             <Button
-                android:id="@+id/button8"
+                android:id="@+id/gradient_button2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Button"
+                android:text="グラデーション2"
+                android:textSize="10sp"
+                android:textColor="#000000"
+                app:backgroundTint="@null"
+                android:background="@drawable/gradient2"
+                style="@style/Widget.MaterialComponents.Button"
                 android:layout_weight="1"
                 android:layout_margin="5dp"/>
 
             <Button
-                android:id="@+id/button7"
+                android:id="@+id/gradient_button3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Button"
-                android:layout_weight="1"
-                android:layout_margin="5dp"/>
-
-            <Button
-                android:id="@+id/button6"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Button"
+                android:text="グラデーション3"
+                android:textSize="10sp"
+                android:textColor="#000000"
+                app:backgroundTint="@null"
+                android:background="@drawable/gradient3"
+                style="@style/Widget.MaterialComponents.Button"
                 android:layout_weight="1"
                 android:layout_margin="5dp"/>
         </TableRow>

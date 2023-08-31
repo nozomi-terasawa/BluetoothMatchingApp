@@ -24,15 +24,26 @@
         android:layout_marginTop="0dp" />
         -->
 
+    <TextView
+        android:id="@+id/past_posts"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="過去に受け取った投稿"
+        android:textSize="26sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:padding="15dp" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="570dp"
         android:scrollbars="vertical"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:paddingTop="50dp"
-        android:layout_margin="15dp"/>
+        android:layout_marginTop="60dp"
+        android:padding="10dp"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
