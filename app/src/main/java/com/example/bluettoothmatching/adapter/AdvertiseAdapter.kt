@@ -78,7 +78,6 @@ class AdvertiseAdapter
                         // 画像の取得が失敗した場合はビューをクリア
                         binding.image.setImageBitmap(null)
                     }
-
                 binding.getAdsButton.setOnClickListener {
                     val message = post.author + "さんの広告を取得しますか？"
                     val builder = AlertDialog.Builder(fragmentContext) // FragmentではrequireContext()を使う

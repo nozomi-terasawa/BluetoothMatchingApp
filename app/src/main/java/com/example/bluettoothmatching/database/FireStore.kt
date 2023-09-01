@@ -275,7 +275,7 @@ class FireStore {
                                                                     val builder = NotificationCompat.Builder(fragmentContext, tuuti_ID)
                                                                     builder.setSmallIcon(androidx.appcompat.R.drawable.abc_ic_menu_copy_mtrl_am_alpha)
                                                                     builder.setContentTitle("マッチング！！！！！")
-                                                                    builder.setContentText(author + "さんとマッチング! 10ポイントGet!")
+                                                                    builder.setContentText(author + "さんとマッチングしました")
                                                                     val notification = builder.build()
                                                                     val manager = NotificationManagerCompat.from(fragmentContext)
                                                                     manager.notify(100,notification)

@@ -32,7 +32,8 @@ class UpDateProfileFragment : Fragment() {
         db.collection("users").document(uid!!)
             .get()
             .addOnSuccessListener { documentSnapshot ->
-                val userAddress = documentSnapshot.getString("macAddress")
+                val _userAddress = documentSnapshot.getString("macAddress")
+                val userAddress = _userAddress?.replace(":", "") ?: ""
                 val userInfo = documentSnapshot.getString("introduction")
                 val userName = documentSnapshot.getString("name")
                 binding.userAddressInput.setText(userAddress)

@@ -99,7 +99,7 @@ class ItemListAdapter
             }
             binding.author.setOnClickListener {
                 val uid = post.uid
-                val action = PastProfileListFragmentDirections.actionPastProfileListFragmentToYourProfileDetailFragment(uid)
+                val action = ProfileListFragmentDirections.actionProfileListFragmentToYourProfileDetailFragment(uid)
                 navController.navigate(action)
             }
         }
