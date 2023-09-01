@@ -129,7 +129,16 @@ class ItemListAdapter
             post.image?.getBytes(1024 * 1024)
                 ?.addOnSuccessListener { imageData ->
                     val bitmap = BitmapFactory.decodeByteArray(imageData, 0, imageData.size)
-                    binding.image.setImageBitmap(bitmap)
+
+                    binding.image.post {
+                        binding.image.setImageBitmap(bitmap)
+                    }
+                }
+                ?.addOnFailureListener { exception ->
+                    Log.e("getImage", "画像の取得に失敗: ${exception.message}")
+
+                    // 画像の取得が失敗した場合はビューをクリア
+                    binding.image.setImageBitmap(null)
                 }
             binding.likeCount.text = post.likedCount.toString()
             binding.likeButton.setOnClickListener {

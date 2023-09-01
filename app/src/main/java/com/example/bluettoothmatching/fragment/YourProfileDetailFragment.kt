@@ -53,7 +53,6 @@ class YourProfileDetailFragment : Fragment() {
                 binding.nameText.text = name
                 binding.introductionText.text = introduction
                 db.collection("users").document(uid)
-
                     .collection("post")
                     .get()
                     .addOnSuccessListener { querySnapshot ->
@@ -91,8 +90,39 @@ class YourProfileDetailFragment : Fragment() {
                                 postList.add(userPost)
                                 itemListAdapter.submitList(postList)
                             }
+                        }
                     }
-                }
+
+
+                db.collection("users").document(uid)
+                    .collection("advertise")
+                    .get()
+                    .addOnSuccessListener { querySnapshot ->
+                        for (snapshot in querySnapshot.documents) {
+                            val uid = snapshot.id
+                            val advertiseId = snapshot.id
+                            val body = snapshot.getString("body")
+                            val color = snapshot.getString("color")
+                            // val type = snapshot.getLong("type")!!.toInt()
+                            // val currentLikedCount = snapshot.getLong("likeCount")!!.toInt()
+
+                            val userPost = Post(
+                                uid = uid,
+                                postId = advertiseId,
+                                body = body!!,
+                                likedCount = 0,
+                                image = storageRef.child(advertiseId),
+                                author = name!!,
+                                type = 0,
+                                otherAuthor = "",
+                                color = color!!
+                            )
+                            if (!postList.contains(userPost)) {
+                                postList.add(userPost)
+                                itemListAdapter.submitList(postList)
+                            }
+                        }
+                    }
             }
     }
 

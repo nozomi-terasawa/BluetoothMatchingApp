@@ -70,7 +70,10 @@ class AdvertiseAdapter
                 post.image?.getBytes(5000 * 5000)
                     ?.addOnSuccessListener { imageData ->
                         val bitmap = BitmapFactory.decodeByteArray(imageData, 0, imageData.size)
-                        binding.image.setImageBitmap(bitmap)
+
+                        binding.image.post {
+                            binding.image.setImageBitmap(bitmap)
+                        }
                     }
                     ?.addOnFailureListener { exception ->
                         Log.e("getImage", "画像の取得に失敗: ${exception.message}")

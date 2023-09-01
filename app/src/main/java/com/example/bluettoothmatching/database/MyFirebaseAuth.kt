@@ -46,7 +46,7 @@ class MyFirebaseAuth {
         if (uid != null) {
             val documentRef = collectionRef.document(uid!!) // todo uidがnull
             val updates = hashMapOf<String, Any>(
-                "address" to userAddress,
+                "macAddress" to userAddress,
                 "message" to userInfo,
                 "name" to userName
             )
