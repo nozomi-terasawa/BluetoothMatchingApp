@@ -318,6 +318,7 @@ class FireStore {
                                         } else {
                                             imageRef =
                                                 documentSnapshot.getString("postId").toString()
+                                            Log.d("image_result","type２です" + imageRef)
                                         }
                                         val userPost = Post(
                                             uid = matchUid,

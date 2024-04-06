@@ -43,6 +43,7 @@ class ItemListAdapter
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val post = getItem(position)
+        Log.d("post_result", post.postId + post.image + "これ")
         when (holder) {
             is ItemViewHolder -> holder.bind(post)
             is AdsItemViewHolder -> holder.bind(post)
@@ -54,10 +55,9 @@ class ItemListAdapter
 
         private val fireStore = FireStore()
         fun bind(post: Post) {
-            Log.d("getImage", "bind関数実行")
             post.image?.getBytes(5000 * 5000)
                 ?.addOnSuccessListener { imageData ->
-                    Log.d("getImage", "画像の取得に成功")
+                    Log.d("getImage", post.image.toString() + "アドレス")
                     var bitmap = BitmapFactory.decodeByteArray(imageData, 0, imageData.size)
 
                     // 画像の取得が成功した後にビューに設定
@@ -126,7 +126,7 @@ class ItemListAdapter
             binding.author.text = post.author
             binding.originalPoster.text = context.getString(R.string.original_poster, post.otherAuthor)
             binding.body.text = post.body
-            post.image?.getBytes(1024 * 1024)
+            post.image?.getBytes(5000 * 5000)
                 ?.addOnSuccessListener { imageData ->
                     val bitmap = BitmapFactory.decodeByteArray(imageData, 0, imageData.size)
 
