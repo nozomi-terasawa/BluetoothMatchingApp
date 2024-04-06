@@ -7,20 +7,13 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.bluettoothmatching.adapter.ItemListAdapter
-import com.example.bluettoothmatching.data.Post
 import com.example.bluettoothmatching.databinding.FragmentPastProfileListBinding
 import com.google.android.gms.tasks.Task
-import com.google.android.gms.tasks.Tasks
-import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.QuerySnapshot
-import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.ktx.Firebase
-import com.google.firebase.storage.FirebaseStorage
 
 
 class PastProfileListFragment : Fragment() {
-    private val db = Firebase.firestore
-    val storage = FirebaseStorage.getInstance()
+
     private var _binding: FragmentPastProfileListBinding? = null
     private val binding get() = _binding!!
 
@@ -41,10 +34,8 @@ class PastProfileListFragment : Fragment() {
         // itemListAdapter.submitList(allList)
         //fireStore.getData(itemListAdapter, this)
 
-
-
         val tasks = mutableListOf<Task<QuerySnapshot>>()
-
+        /**
         val allPostRef = db.collection("allPost")
         val allPostList = mutableListOf<Post>()
         val task = allPostRef
@@ -62,7 +53,6 @@ class PastProfileListFragment : Fragment() {
                     val type = documentSnapshot.getLong("type")!!.toInt()
                     val color = documentSnapshot.getString("color")
 
-
                     val allPost = Post(
                         uid = uid!!,
                         postId = postId!!,
@@ -76,7 +66,7 @@ class PastProfileListFragment : Fragment() {
                     )
 
                     allPost.let {
-                        if (!allPostList.contains(allPost)) {
+                        if (!allPostList.contains(allPost) && uid != allPost.uid) {
                             allPostList.add(allPost)
                         }
                     }
@@ -87,6 +77,7 @@ class PastProfileListFragment : Fragment() {
             .addOnSuccessListener {
                 itemListAdapter.submitList(allPostList)
             }
+        */
     }
 
     override fun onDestroyView() {

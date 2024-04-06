@@ -53,18 +53,14 @@ class BlutoothBK : Service() {
                     val deviceHardwareAddress = device?.address // MAC address
 
                     MacAddressSet.add(deviceHardwareAddress)
-                    Log.d("MacA", MacAddressSet.toString())
-
                     MacAddressList.clear()
                     MacAddressList.addAll(MacAddressSet)
-                    //MacAddressList.add("80:9F:F5:79:8C:E2")
-                    //MacAddressList.add("58:C6:F0:5C:85:68")
+
+                    // テスト用にデバイスをマッチング
                     MacAddressList.add("1")
-                    //MacAddresst.add("2")
-                    MacAddressList.add("3C:01:EF:0e:ee:e3")
-                    MacAddressList.add("12:34:56:78:9")
+                    // MacAddressList.add("12:34:56:78:9a:bc")
+                    
                     tmpList.value = MacAddressList.filterNotNull().distinct().toMutableList()
-                    Log.d("tmpList", tmpList.toString())
                     return
                 }
                 BluetoothAdapter.ACTION_DISCOVERY_FINISHED ->{
